@@ -20,7 +20,7 @@
                <span class="none">Dashboard </span>
              </a>
            </li>
-           <li class="parent">
+           <!-- <li class="parent">
              <a href="" onclick="toggle_menu('tentang'); return false" class=""><i class="fa fa-book mr-3"> </i>
                <span class="none">Tentang<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
@@ -28,7 +28,7 @@
                <li class="child"><a href="<?= base_url() ?>admin/visi_misi" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Visi & Misi</a></li>
                <li class="child"><a href="<?= base_url() ?>admin/sejarah" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Sejarah Perusahaan</a></li>
              </ul>
-           </li>
+           </li> -->
            <li class="parent">
              <a href="" onclick="toggle_menu('datamaster'); return false" class=""><i class="fa fa-book mr-3"> </i>
                <span class="none">Data Master<i class="fa fa-angle-down pull-right align-bottom"></i></span>

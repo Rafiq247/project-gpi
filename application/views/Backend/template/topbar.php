@@ -15,9 +15,10 @@
         <div class="row header shadow-sm">
 
             <!--Logo-->
-            <div class="col-sm-3 pl-0 text-center header-logo">
-                <div class="bg-theme mr-3 pt-3 pb-2 mb-0">
-                    <h3 class="logo"><a href="#" class="text-secondary logo"><i class="fa fa-rocket"></i> Sistem Informasi</a></h3>
+            <!-- bg transparent diilangin, di bg style ilangin jadi ganti di class bg-theme, logo bg jadi text-info -->
+            <div class="bg-transparent col-sm-3 pl-0 pt-0 text-center header-logo">
+                <div class="mr-3 pt-3 pb-2 mb-0" style="background-image: linear-gradient(60deg, #2083C6, #98C73B);">
+                    <h3 class="logo"><span class="text-secondary logo"><i class="fa fa-user text-theme"></i> Sistem Informasi</span></h3>
                 </div>
             </div>
             <!--Logo-->
@@ -59,9 +60,9 @@
                         <!--Notication icon-->
 
 
-                        <span class="menu-icon">
+                        <!-- <span class="menu-icon">
                             <i class="fa fa-th-large"></i>
-                        </span>
+                        </span> -->
                     </div>
                     <!--Menu Icons-->
 

@@ -73,7 +73,7 @@
        </div>
        <div class="card-body">
          <p class="card-text p-typo">
-           <center>Sistem informasi ini merupakan sebuah sistem informasi yang digunakan oleh PT.pangan agung sentosa
+           <center>Sistem informasi ini merupakan sebuah sistem informasi yang digunakan oleh PT. Global Printpack Indonesia
              Untuk penggajian dan absensi</center>
          </p>
        </div>

@@ -4,7 +4,7 @@
 
   <div class="container-fluid login-wrapper">
     <div class="login-box">
-      <h1 class="text-center" style="margin-bottom: 32px;"><i class="fa fa-user text-info"></i> SISTEM INFORMASI KEPEGAWAIAN</h1>
+      <h1 class="text-center" style="margin-bottom: 32px;"><i class="fa fa-user text-theme"></i> SISTEM INFORMASI KEPEGAWAIAN</h1>
       <div class="row fw-bold">
         <div class="justify col-md-6 col-sm-6 col-12 login-box-info" style="background-image: linear-gradient(60deg, #2083C6, #98C73B);">
           <div class="h3 text-bold mb-3">PT. Global Printpack Indonesia</div>
