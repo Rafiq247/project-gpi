@@ -542,40 +542,218 @@ class pegawai extends CI_Controller
 		$data['title'] = 'Cetak Payrol Bulanan';
 
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$dataa['pegawai'] = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
+
+		$userData = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
+
+		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
+		$data['pegawai'] = $this->Admin_model->getPegawai();
+		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
+		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
+
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
 		$data['thnselected'] = $thn;
-		$data['pegawai'] = $this->Admin_model->getAllpegawai();
-
-
-		$data['list_th'] = $this->Admin_model->getTahun();
-		$data['list_bln'] = $this->Admin_model->getBln();
 
 		if ($bln < 10) {
-			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
-			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
+			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01' . ' 00:00:00';
+			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31' . ' 23:59:59';
 		} else {
-			$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
-			$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
+			$thnpilihan1 = $thn . '-' . $bln . '-' . '01' . ' 00:00:00';
+			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
-		// 
-		$isi = $this->Admin_model->getAllGajiByDateID($thnpilihan1, $thnpilihan2, $dataa['pegawai']['id_pegawai']);
-
-		if ($isi == null) {
-
-			$data['gaji']['id_pegawai'] = '';
-			$data['gaji']['nama_pegawai'] = '';
-			$data['gaji']['namjab'] = '';
-			$data['gaji']['gaji_pokok'] = '';
-			$data['gaji']['gaji_lembur'] = '';
-			$data['gaji']['bonus'] = '';
-			$data['gaji']['keterangan'] = '';
-			$data['gaji']['gaji_bersih'] = '';
+		if (empty($this->input->post('th'))) {
+			$data['absensi'] = $this->Admin_model->getAbsensi();
 		} else {
-			$data['gaji'] = $isi;
+			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
 		}
+		$data['blnnya'] = $bln;
+		$data['thn'] = $thn;
+
+		$entryDate = "";
+		$onCheck = false;
+		$pass = false;
+		$lembur = false;
+		$data['recap'] = [];
+		foreach ($data['absensi'] as $key => $value) {
+			if (!$onCheck) {
+				if (strcmp($value['status'], "Lembur Masuk") == 0) {
+					$lembur = true;
+				}
+			}
+			if ($onCheck) {
+				if ($lembur) {
+					if (strcmp($value['status'], "Lembur Keluar") == 0) {
+						$pass = true;
+					}
+				} else {
+					if (strcmp($value['status'], "C/Keluar") == 0) {
+						$pass = true;
+					}
+				}
+			}
+			if ($pass) {
+				$exitDate = $value['datetime'];
+				$date1 = DateTime::createFromFormat('d/m/Y H:i:s', $entryDate, new DateTimeZone('Asia/Jakarta'));
+				$date2 = DateTime::createFromFormat('d/m/Y H:i:s', $exitDate, new DateTimeZone('Asia/Jakarta'));
+				$dayNow = $date1->format('D');
+				$dateInterval = $date1->diff($date2);
+				$hours = $dateInterval->h;
+
+				$hadirLembur  = "Lembur";
+				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
+					$overtime = $hours;
+				} else {
+					$overtime = $hours - 8;
+					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
+				}
+
+				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
+				$jabatan = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				$dataRecap = [
+					"hadir" =>  "hadir" . $hadirLembur,
+					"name" => $dataEmployee['nama_pegawai'],
+					"id_pegawai" => $dataEmployee['id_pegawai'],
+					"kode_verifikasi" => $value['verification_code'],
+					"overtime" => $overtime,
+					"date" => $entryDate . " - " . $exitDate,
+					"day" => $dayNow
+				];
+				array_push($data['recap'], $dataRecap);
+				$entryDate = "";
+				$onCheck = false;
+				$pass = false;
+			} else if (!$onCheck) {
+				$entryDate = $value['datetime'];
+				$onCheck = true;
+			}
+		}
+
+		$data['gaji'] = [];
+
+		// $this->checkData($data['recap']);
+
+		foreach ($data['recap'] as $key => $recapValue) {
+			$date = substr($recapValue['date'], 3, 7);
+			if (count($data['gaji']) == 0) {
+				$data['gaji'][$date] = [];
+			} else {
+				foreach ($data['gaji'] as $keyGaji => $gajiValue) {
+					if (strcmp($keyGaji, $date) == 0) {
+						break;
+					} else {
+						$data['gaji'][$date] = [];
+					}
+				}
+			}
+
+			$dataPenggajian = [];
+			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
+				$pegawai = $recapValue['id_pegawai'];
+				if (count($data['gaji'][$date]) == 0) {
+					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
+					$sakit = 0;
+					$valueTotalIzin = 0;
+					$izin = 0;
+					foreach ($totalIzin as $value) {
+						if ($value['acc'] == 1) {
+							if (strcmp($value['jenis'], "Sakit") == 0) {
+								$sakit += 1;
+							} else {
+								$izin += 1;
+							}
+							$valueTotalIzin += 1;
+						}
+					}
+					$dataPenggajian = [
+						"id_pegawai" => $recapValue['id_pegawai'],
+						"name" => $recapValue['name'],
+						"jabatan" => $jabatan['jabatan'],
+						"gaji_pokok" => $jabatan['salary'],
+						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
+						"Tanggal" => $date,
+						"jam_lembur" => $recapValue['overtime'],
+						"value_pengurangan" => ($jabatan['salary'] / 30),
+						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"gaji_total" => "",
+						"hadir" => 1,
+						"tidak_hadir" => 0,
+						"bonus" => $jabatan['bonus'],
+						"sakit" => $sakit,
+						"izin" => $izin,
+						"gaji_bersih" => "-",
+						"keterangan" => $valueTotalIzin,
+					];
+					array_push($data['gaji'][$date], $dataPenggajian);
+				} else {
+					foreach ($data['gaji'][$date] as $keyGajiDate => $valGajiDate) {
+						if (strcmp($valGajiDate['id_pegawai'], $pegawai) == 0) {
+							$data['gaji'][$date][$keyGajiDate]['jam_lembur'] += $recapValue['overtime'];
+							$data['gaji'][$date][$keyGajiDate]['lembur'] += $recapValue['overtime'] * $jabatan['overtime'];
+							$data['gaji'][$date][$keyGajiDate]['hadir'] += 1;
+						} else {
+							if ($keyGajiDate == count($data['gaji'][$date]) - 1) {
+								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
+								$sakit = 0;
+								$izin = 0;
+								$valueTotalIzin = 0;
+								foreach ($totalIzin as $value) {
+									if ($value['acc'] == 1) {
+										if (strcmp($value['jenis'], "Sakit") == 0) {
+											$sakit += 1;
+										} else {
+											$izin += 1;
+										}
+										$valueTotalIzin += 1;
+									}
+								}
+								$dataPenggajian = [
+									"id_pegawai" => $recapValue['id_pegawai'],
+									"name" => $recapValue['name'],
+									"jabatan" => $jabatan['jabatan'],
+									"gaji_pokok" => $jabatan['salary'],
+									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
+									"Tanggal" => $date,
+									"jam_lembur" => $recapValue['overtime'],
+									"value_pengurangan" => ($jabatan['salary'] / 30),
+									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"gaji_total" => "",
+									"hadir" => 1,
+									"tidak_hadir" => 0,
+									"bonus" => $jabatan['bonus'],
+									"sakit" => $sakit,
+									"izin" => $izin,
+									"keterangan" => $valueTotalIzin,
+									"gaji_bersih" => "-",
+								];
+								array_push($data['gaji'][$date], $dataPenggajian);
+							}
+						}
+					}
+				}
+			}
+		}
+		// $this->checkData($data['gaji'][$date]);
+		// // 
+		$dataFinal = [];
+
+		$counter = 0;
+		foreach ($data['gaji'] as $key => $value) {
+			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
+			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {
+				$data['gaji'][$key][$dateKey]['tidak_hadir'] = $workingDaysCount - $valueDate['hadir'] >= 0 ? $workingDaysCount - $valueDate['hadir'] : 0;
+				$data['gaji'][$key][$dateKey]['pengurangan'] += ($data['gaji'][$key][$dateKey]['tidak_hadir'] * $valueDate['value_pengurangan']);
+				if (strcmp($userData['id_pegawai'], $data['gaji'][$key][$dateKey]['id_pegawai'])) {
+					array_push($dataFinal, $data['gaji'][$key][$dateKey]);
+					$dataFinal[$counter]['date'] = $key;
+					$counter += 1;
+				}
+			}
+		}
+		// $this->checkData($dataFinal);
+		$data['dataFinal'] = $dataFinal;
+		// return;
+
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
 
@@ -584,6 +762,44 @@ class pegawai extends CI_Controller
 		$this->load->view('backend/f_template/sidebar', $data);
 		$this->load->view('backend/user/laporan/laporan_tpp', $data);
 		$this->load->view('backend/f_template/footer', $data);
+	}
+
+	public function getWorkingDaysInMonth($year, $month)
+	{
+		$totalDays = cal_days_in_month(CAL_GREGORIAN, intval($month), intval($year));
+
+		$workingDaysCount = 0;
+
+		for ($day = 1; $day <= $totalDays; $day++) {
+			$date = "$year-$month-$day";
+			$dayOfWeek = date('N', strtotime($date));
+
+			if ($dayOfWeek >= 6) {
+				continue;
+			}
+
+			// if ($this->isIndonesiaHoliday($date)) {
+			// 	continue;
+			// }
+
+			$workingDaysCount++;
+		}
+
+		return $workingDaysCount;
+	}
+
+	//use if api avail
+	public function isIndonesiaHoliday($date)
+	{
+		$year = date('Y', strtotime($date));
+		$holidays = $this->Admin_model->getIndonesiaHolidays($year);
+		foreach ($holidays as $holiday) {
+			if ($holiday['date'] === $date) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 	public function detail_laporan_tpp_bulanan($id_pegawai, $bln, $thn)
 	{

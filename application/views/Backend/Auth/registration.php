@@ -39,6 +39,8 @@ $id_pegawai = $huruf_pegawai . $urutan;
 								<div class="text-center">
 									<h1 class="h4 text-gray-900 mb-4">Daftar Akun Kepegawaian</h1>
 								</div>
+								<strong><?= $this->session->flashdata('message'); ?></strong>
+								<?= $this->session->unset_userdata('message'); ?>
 								<div class="card-body">
 									<form class="user" method="post" action="<?= base_url('auth/registration'); ?>">
 										<input type="hidden" name="temp" class="form-control " value="<?= $temp ?>">

@@ -75,8 +75,8 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['jabatan'] = $this->Admin_model->getAlljabatan();
 		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime'], 0, ',', '.');
-			$data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 0, ',', '.');
+			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime'], 2, ',', '.');
+			$data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 		}
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -190,9 +190,12 @@ class Admin extends CI_Controller
 		$upload_image1 = $_FILES['userfilektp']['name'];
 		// var_dump($upload_image1);
 		// die;
+
+		$fotoName = "";
 		if ($upload_image) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+			$config['allowed_types']        = '*';
+			// $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
@@ -200,17 +203,17 @@ class Admin extends CI_Controller
 
 			if ($this->upload->do_upload('userfilefoto')) {
 				$new_image = $this->upload->data('file_name');
-				$data = $this->db->set('foto', $new_image);
+				$fotoName = $new_image;
 				$gambar_user = $new_image;
 			} else {
 				echo $this->upload->display_errors();
 			}
 		}
 		//upload foto ktp
-
+		$ktpName = "";
 		if ($upload_image1) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+			$config['allowed_types']        = '*';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
@@ -218,27 +221,12 @@ class Admin extends CI_Controller
 
 			if ($this->upload->do_upload('userfilektp')) {
 				$new_image1 = $this->upload->data('file_name');
-				$data = $this->db->set('ktp', $new_image1);
+				// $data = $this->db->set('ktp', $new_image1);
+				$ktpName = $new_image1;
 			} else {
 				echo $this->upload->display_errors();
 			}
 		}
-
-		// 
-		$data = [
-			"id_pegawai" => $id_pegawai,
-			"id_user" => $id_user,
-			"nama_pegawai" => $nama_pegawai,
-			"jekel" => $jekel,
-			"pendidikan" => $pendidikan,
-			"status_kepegawaian" => $status_pegawai,
-			"agama" => $agama,
-			"jabatan" => $jabatan,
-			"no_hp" => $nohp,
-			"alamat" => $alamat,
-			"tanggal_masuk" => $tgl_msk
-		];
-		$this->db->insert('tb_pegawai', $data);
 
 		$data1 = [
 			"id" => $id_user,
@@ -252,7 +240,28 @@ class Admin extends CI_Controller
 			'temp' => $temp
 
 		];
+
 		$this->db->insert('user', $data1);
+
+		// 
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"id_user" => $id_user,
+			"nama_pegawai" => $nama_pegawai,
+			"jekel" => $jekel,
+			"pendidikan" => $pendidikan,
+			"status_kepegawaian" => $status_pegawai,
+			"agama" => $agama,
+			"jabatan" => $jabatan,
+			"no_hp" => $nohp,
+			"alamat" => $alamat,
+			"tanggal_masuk" => $tgl_msk,
+			"ktp" => $ktpName,
+			"foto" => $fotoName,
+		];
+		$this->db->insert('tb_pegawai', $data);
+
+
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/pegawai');
 	}
@@ -389,7 +398,6 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/lembur/lembur', $data);
 		$this->load->view('backend/template/footer');
 	}
-
 	public function simpan_lembur_pegawai()
 	{
 		$data['title'] = 'Lembur Hari Ini';
@@ -556,6 +564,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/topbar', $data);
 		$this->load->view('backend/template/sidebar', $data);
 		$this->load->view('backend/admin/absen-input/input', $data);
+		$this->load->view('backend/admin/absen-input/recap', $data);
 		$this->load->view('backend/admin/absen-input/input_findicator', $data);
 		$this->load->view('backend/template/footer');
 	}
@@ -582,6 +591,7 @@ class Admin extends CI_Controller
 		$highestRow = $targetSheet->getHighestRow();
 		$highestColumn = $targetSheet->getHighestColumn();
 
+		$this->db->db_debug = false;
 		$this->db->trans_start();
 		try {
 			for ($row = 2; $row <= $highestRow; $row++) {
@@ -811,93 +821,39 @@ class Admin extends CI_Controller
 	//data absen
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Input Absensi';
+		$data['title'] = 'Absen Bulanan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
-		$data['pegawai'] = $this->Admin_model->getPegawai();
-		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
-		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
-
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
 		$data['thnselected'] = $thn;
+		$id_peg = $this->input->post('id_peg');
+		// $data['petugas'] = $this->db->get_where('user')->result_array();
+		// 
+		$data['list_th'] = $this->Admin_model->getTahun();
+		$data['list_bln'] = $this->Admin_model->getBln();
+		$data['pegawai'] = $this->Admin_model->getAllpegawai();
+		$isi = $this->Admin_model->getAllpegawaiByid($id_peg);
+		if ($isi == null) {
+			$data['detail_pegawai']['nama_pegawai'] = '';
+			$data['detail_pegawai']['namjab'] = '';
+		} else {
+			$data['detail_pegawai'] = $isi;
+		}
+
 
 		if ($bln < 10) {
-			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01' . ' 00:00:00';
-			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31' . ' 23:59:59';
+			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
 		} else {
-			$thnpilihan1 = $thn . '-' . $bln . '-' . '01' . ' 00:00:00';
-			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
+			$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
 		}
-		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
-		} else {
-			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
-		}
+		$data['absen'] = $this->Admin_model->getAllAbsen($thnpilihan1, $thnpilihan2, $id_peg);
+
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
-
-		$entryDate = "";
-		$onCheck = false;
-		$pass = false;
-		$lembur = false;
-		$data['recap'] = [];
-		foreach ($data['absensi'] as $key => $value) {
-			if (!$onCheck) {
-				if (strcmp($value['status'], "Lembur Masuk") == 0) {
-					$lembur = true;
-				}
-			}
-			if ($onCheck) {
-				if ($lembur) {
-					if (strcmp($value['status'], "Lembur Keluar") == 0) {
-						$pass = true;
-					}
-				} else {
-					if (strcmp($value['status'], "C/Keluar") == 0) {
-						$pass = true;
-					}
-				}
-			}
-			if ($pass) {
-				$exitDate = $value['datetime'];
-				$date1 = DateTime::createFromFormat('d/m/Y H:i:s', $entryDate, new DateTimeZone('Asia/Jakarta'));
-				$date2 = DateTime::createFromFormat('d/m/Y H:i:s', $exitDate, new DateTimeZone('Asia/Jakarta'));
-				$dayNow = $date1->format('D'); // Extracting day of the week directly from $date1
-
-				$dateInterval = $date1->diff($date2);
-				$hours = $dateInterval->h;
-
-				$hadirLembur  = "Lembur";
-				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
-				} else {
-					$overtime = $hours - 8;
-					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
-				}
-
-				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-
-				$dataRecap = [
-					"hadir" =>  "hadir" . $hadirLembur,
-					"name" => $dataEmployee['nama_pegawai'],
-					"id_pegawai" => $dataEmployee['id_pegawai'],
-					"kode_verifikasi" => $value['verification_code'],
-					"overtime" => $overtime,
-					"date" => $entryDate . " - " . $exitDate,
-					"day" => $dayNow
-				];
-				array_push($data['recap'], $dataRecap);
-				$entryDate = "";
-				$onCheck = false;
-				$pass = false;
-			} else if (!$onCheck) {
-				$entryDate = $value['datetime'];
-				$onCheck = true;
-			}
-		}
 
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -906,42 +862,42 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/footer');
 	}
 
-	// public function cetak_absen_bulanan($thn, $bln, $idpeg)
-	// {
+	public function cetak_absen_bulanan($thn, $bln, $idpeg)
+	{
 
-	// 	$data['blnselected'] = $bln;
-	// 	$data['thnselected'] = $thn;
+		$data['blnselected'] = $bln;
+		$data['thnselected'] = $thn;
 
-	// 	if ($bln < 10) {
-	// 		$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
-	// 		$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
-	// 	} else {
-	// 		$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
-	// 		$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
-	// 	}
-	// 	// 
-	// 	$data['detail_pegawai'] = $this->Admin_model->getAllpegawaiByid($idpeg);
-	// 	$data['absen'] = $this->Admin_model->getAllAbsen($thnpilihan1, $thnpilihan2, $idpeg);
+		if ($bln < 10) {
+			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
+		} else {
+			$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
+		}
+		// 
+		$data['detail_pegawai'] = $this->Admin_model->getAllpegawaiByid($idpeg);
+		$data['absen'] = $this->Admin_model->getAllAbsen($thnpilihan1, $thnpilihan2, $idpeg);
 
-	// 	$data['blnnya'] = $bln;
-	// 	$data['thn'] = $thn;
-	// 	// $this->load->view('backend/template/header', $data);
-	// 	$this->load->view('backend/admin/absenbulanan/cetak', $data);
-	// }
+		$data['blnnya'] = $bln;
+		$data['thn'] = $thn;
+		// $this->load->view('backend/template/header', $data);
+		$this->load->view('backend/admin/absenbulanan/cetak', $data);
+	}
 
-	// public function detail_absen($id)
-	// {
-	// 	$data['title'] = 'Detail Absensi';
-	// 	// mengambil data user berdasarkan email yang ada di session
-	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-	// 	$data['detail_absensi'] = $this->Admin_model->getDetailAbsen($id);
+	public function detail_absen($id)
+	{
+		$data['title'] = 'Detail Absensi';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['detail_absensi'] = $this->Admin_model->getDetailAbsen($id);
 
-	// 	$this->load->view('backend/template/header', $data);
-	// 	$this->load->view('backend/template/topbar', $data);
-	// 	$this->load->view('backend/template/sidebar', $data);
-	// 	$this->load->view('backend/admin/absenbulanan/detail', $data);
-	// 	$this->load->view('backend/template/footer');
-	// }
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/absenbulanan/detail', $data);
+		$this->load->view('backend/template/footer');
+	}
 
 
 

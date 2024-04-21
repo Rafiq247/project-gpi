@@ -149,9 +149,11 @@ class Auth extends CI_Controller
       $upload_image = isset($_FILES['userfilefoto']['name']) ? $_FILES['userfilefoto']['name'] : null;
       $upload_image1 = isset($_FILES['userfilektp']['name']) ? $_FILES['userfilektp']['name'] : null;
 
+      $fotoName = "";
       if ($upload_image) {
         $config['upload_path']          = './gambar/pegawai/';
-        $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+        $config['allowed_types']        = '*';
+        // $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
         $config['max_size']             = 10000;
         $config['max_width']            = 10000;
         $config['max_height']           = 10000;
@@ -159,17 +161,17 @@ class Auth extends CI_Controller
 
         if ($this->upload->do_upload('userfilefoto')) {
           $new_image = $this->upload->data('file_name');
-          $data = $this->db->set('foto', $new_image);
+          $fotoName = $new_image;
           $gambar_user = $new_image;
         } else {
           echo $this->upload->display_errors();
         }
       }
       //upload foto ktp
-
+      $ktpName = "";
       if ($upload_image1) {
         $config['upload_path']          = './gambar/pegawai/';
-        $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+        $config['allowed_types']        = '*';
         $config['max_size']             = 10000;
         $config['max_width']            = 10000;
         $config['max_height']           = 10000;
@@ -177,7 +179,8 @@ class Auth extends CI_Controller
 
         if ($this->upload->do_upload('userfilektp')) {
           $new_image1 = $this->upload->data('file_name');
-          $data = $this->db->set('ktp', $new_image1);
+          // $data = $this->db->set('ktp', $new_image1);
+          $ktpName = $new_image1;
         } else {
           echo $this->upload->display_errors();
         }
@@ -193,21 +196,6 @@ class Auth extends CI_Controller
         $this->load->view('backend/auth/biodata', $registration_data);
         $this->load->view('backend/template/Auth_footer');
       } else {
-        $data = [
-          "id_pegawai" => $id_pegawai,
-          "id_user" => $id_user,
-          "nama_pegawai" => $name,
-          "jekel" => $jekel,
-          "pendidikan" => $pendidikan,
-          "status_kepegawaian" => $status_pegawai,
-          "agama" => $agama,
-          "jabatan" => $jabatan,
-          "no_hp" => $nohp,
-          "alamat" => $alamat,
-          "tanggal_masuk" => $tgl_msk
-        ];
-        $this->db->insert('tb_pegawai', $data);
-        $this->session->unset_userdata('registration_data');
 
         $data1 = [
           "id" => $id_user,
@@ -221,8 +209,25 @@ class Auth extends CI_Controller
           'temp' => $temp
         ];
         $this->db->insert('user', $data1);
-
         // Setelah selesai, unset session 'registration_data'
+        $this->session->unset_userdata('registration_data');
+
+        $data = [
+          "id_pegawai" => $id_pegawai,
+          "id_user" => $id_user,
+          "nama_pegawai" => $name,
+          "jekel" => $jekel,
+          "pendidikan" => $pendidikan,
+          "status_kepegawaian" => $status_pegawai,
+          "agama" => $agama,
+          "jabatan" => $jabatan,
+          "no_hp" => $nohp,
+          "alamat" => $alamat,
+          "tanggal_masuk" => $tgl_msk,
+          "ktp" => $ktpName,
+          "foto" => $fotoName,
+        ];
+        $this->db->insert('tb_pegawai', $data);
         $this->session->unset_userdata('registration_data');
 
         // Redirect ke halaman login atau halaman lain yang sesuai
@@ -235,6 +240,9 @@ class Auth extends CI_Controller
       // Session 'registration_data' tidak ada, tangani kasus ini
       // Mungkin tampilkan pesan kesalahan atau arahkan kembali ke halaman registrasi
       // Redirect ke halaman registrasi jika perlu
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+        Akun gagal dibuat! Mohon masukkan data yang benar
+        </div>');
       redirect('auth/registration');
     }
   }
@@ -300,144 +308,7 @@ class Auth extends CI_Controller
     }
   }
 
-  // private function _send_reset_email($email, $reset_link)
-  // {
-  //   if (isset($_POST['submit'])) {
-  //     $mail = new PHPMailer(true);
 
-  //     $email = $this->input->post('email');
-
-  //     try {
-  //       //Server settings
-  //       // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-  //       $mail->isSMTP();                                            //Send using SMTP
-  //       $mail->Host       = 'ssl://smtp.googlemail.com';                     //Set the SMTP server to send through
-  //       $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-  //       $mail->Username   = 'a.andri.rafiq247@gmail.com';                     //SMTP username
-  //       $mail->Password   = '';                               //SMTP password
-  //       $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-  //       $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-  //       //Recipients
-  //       $mail->setFrom('a.andri.rafiq247@gmail.com');
-  //       $mail->addAddress($email);     //Add a recipient
-  //       // $mail->addAddress('ellen@example.com');               //Name is optional
-  //       $mail->addReplyTo('a.andri.rafiq247@gmail.com');
-  //       // $mail->addCC('cc@example.com');
-  //       // $mail->addBCC('bcc@example.com');
-
-  //       // //Attachments
-  //       // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-  //       // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-
-  //       //Content
-  //       $mail->isHTML(true);                                  //Set email format to HTML
-  //       $mail->Subject = 'Here is the subject';
-  //       $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-  //       $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-  //       if ($mail->send()) {
-  //         echo "Input form berhasil! Silahkan cek email";
-  //       } else {
-  //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-  //       }
-
-  //       // } catch (Exception $e) {
-  //       //   echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-  //       // }
-  //       echo 'Message has been sent';
-  //     } catch (Exception $e) {
-  //       echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-  //     }
-  //   } else {
-  //     echo "Isi terlebih dahulu emailnya";
-  //   }
-  //   // Buat objek PHPMailer
-  //   // $mail = new PHPMailer(true);
-
-  //   // SMTP Configuration
-  //   // $mail->isSMTP();
-  //   // $mail->Host     = 'smtp.gmail.com'; // Ganti dengan alamat SMTP Anda
-  //   // $mail->SMTPAuth = true;
-  //   // $mail->Username = 'a.andri.rafiq247@gmail.com'; // Ganti dengan email Anda
-  //   // $mail->Password = '12345'; // Ganti dengan password email Anda
-  //   // $mail->SMTPSecure = 'tls';
-  //   // $mail->Port     = 587; // Port SMTP Anda
-
-  //   // // Email Configuration
-  //   // $mail->setFrom('a.andri.rafiq247@gmail.com', 'HALLO DECK'); // Ganti dengan alamat email dan nama pengirim Anda
-  //   // $mail->addAddress($email); // Tambahkan alamat email penerima
-  //   // $mail->Subject = 'Reset Password'; // Subjek email
-  //   // $mail->isHTML(true);
-
-  //   // // Isi Email
-  //   // $mailContent = "Silakan klik tautan berikut untuk mereset password Anda: <a href='$reset_link'>$reset_link</a>";
-  //   // $mail->Body = $mailContent;
-
-  //   // // Kirim email
-  //   // if ($mail->send()) {
-  //   //   return true;
-  //   // } else {
-  //   //   return false;
-  //   // }
-
-
-  // }
-
-  public function reset_password_view($token)
-  {
-    $user = $this->Auth_model->getUserByToken($token);
-    if ($user) {
-      // Token valid, lanjutkan dengan menampilkan halaman reset password
-      $data['token'] = $token;
-      $this->load->view('auth/reset_password', $data);
-    } else {
-      // Token tidak valid, tampilkan pesan kesalahan atau redirect ke halaman lain
-      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Token tidak valid atau sudah kadaluarsa.
-        </div>');
-      redirect('auth/updatePassword');
-    }
-  }
-
-  public function updatePassword()
-  {
-    $token = $this->input->post('token');
-    $password = $this->input->post('password');
-
-    $this->form_validation->set_rules('token', 'Token', 'required');
-    $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[5]|matches[password2]', [
-      'matches' => 'Password tidak sama!',
-      'min_length' => 'Password terlalu pendek!'
-    ]);
-    $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
-
-    if ($this->form_validation->run() == false) {
-      $data['title'] = 'Ganti Ulang Password';
-
-      $this->load->view('backend/template/Auth_header', $data);
-      $this->load->view('auth/reset_password', array('token' => $token));
-      $this->load->view('backend/template/Auth_footer');
-    } else {
-      // Validasi token dan update password
-      $user = $this->Auth_model->getUserByToken($token);
-      if ($user) {
-        // Token valid, update password
-        $this->Auth_model->updatePassword($user['id_user'], password_hash($password, PASSWORD_DEFAULT));
-        // Hapus token reset password dari database
-        $this->Auth_model->deleteToken($token);
-        $this->session->set_flashdata(
-          'message',
-          '<div class="alert alert-success" role="alert">Password berhasil direset.
-        </div>'
-        );
-        redirect('auth');
-      } else {
-        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Token tidak valid atau sudah kadaluarsa.
-        </div>');
-        redirect('auth/updatePassword');
-      }
-    }
-  }
 
   public function logout()
   {

@@ -38,7 +38,7 @@ $id_pegawai = $huruf_pegawai . $urutan;
                             <div class="col-lg">
                                 <div class="p-5">
                                     <div class="text-center mb-3">
-                                        <span class="h2"><i class="bi bi-shield-lock"></i> Lupa Password</span>
+                                        <span class="h2"><i class="fas fa-key" style="font-size: 28px;"></i></i> Lupa Password</span>
                                     </div>
                                     <div class="card-body">
                                         <?= $this->session->flashdata('message'); ?>
@@ -47,7 +47,7 @@ $id_pegawai = $huruf_pegawai . $urutan;
                                         <form class="user" method="post" action="<?= base_url('auth/forgotpassword'); ?>">
                                             <div class="input-group mb-4">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope"></i></span>
+                                                    <span class="input-group-text" id="basic-addon1"><i class="far fa-envelope"></i></span>
                                                 </div>
                                                 <input type="text" class="form-control form-control-user" style="padding: 20px 15px;" id="email" name="email" placeholder="Masukkan Email Anda" required>
                                                 <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
