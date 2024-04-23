@@ -247,34 +247,34 @@ class Auth extends CI_Controller
     }
   }
 
-  private function _sendEmail($reset_link)
-  {
-    $config = [
-      'protocol'  => 'smtp',
-      'smtp_host' => 'ssl://smtp.googlemail.com',
-      'smtp_user' => 'joyiseod4mban@gmail.com',
-      'smtp_pass' => 'ksurnbftyxgafqku',
-      'smtp_port' => 465,
-      'mailtype'  => 'html',
-      'charset'   => 'utf-8',
-      'newline'   => "\r\n"
-    ];
+  // private function _sendEmail($reset_link)
+  // {
+  //   $config = [
+  //     'protocol'  => 'smtp',
+  //     'smtp_host' => 'ssl://smtp.googlemail.com',
+  //     'smtp_user' => 'joyiseod4mban@gmail.com',
+  //     'smtp_pass' => 'ksurnbftyxgafqku',
+  //     'smtp_port' => 465,
+  //     'mailtype'  => 'html',
+  //     'charset'   => 'utf-8',
+  //     'newline'   => "\r\n"
+  //   ];
 
-    $this->load->library('email', $config);
-    $this->email->initialize($config);
+  //   $this->load->library('email', $config);
+  //   $this->email->initialize($config);
 
-    $this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
-    $this->email->to('emasku001@gmail.com');
-    $this->email->subject('Tester');
-    $this->email->message('Silahkan klik link ini untuk mereset password anda : ');
+  //   $this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+  //   $this->email->to('emasku001@gmail.com');
+  //   $this->email->subject('Tester');
+  //   $this->email->message('Silahkan klik link ini untuk mereset password anda : ');
 
-    if ($this->email->send()) {
-      return true;
-    } else {
-      echo $this->email->print_debugger();
-      die;
-    }
-  }
+  //   if ($this->email->send()) {
+  //     return true;
+  //   } else {
+  //     echo $this->email->print_debugger();
+  //     die;
+  //   }
+  // }
 
   public function forgotPassword()
   {
@@ -293,21 +293,103 @@ class Auth extends CI_Controller
       $user = $this->db->get_where('user', ['email' => $email, 'is_active' => 1])->row_array();
 
       if ($user) {
-        $token = md5(uniqid(rand(), true));
-        $this->Auth_model->saveResetToken($user['id'], $token);
+        $reset_token = md5(uniqid(rand(), true));
+
+        //update token di database
+        $this->Auth_model->updateResetToken($user->id, $reset_token);
+        // $this->Auth_model->saveResetToken($user['id'], $token);
+        $this->Auth_model->saveToken($user['id'], $reset_token);
+
+        $resetLink = base_url('auth/reset/' . $reset_token);
+
+        $config = [
+          'protocol'  => 'smtp',
+          'smtp_host' => 'ssl://smtp.googlemail.com',
+          'smtp_user' => 'joyiseod4mban@gmail.com',
+          'smtp_pass' => 'ksurnbftyxgafqku',
+          'smtp_port' => 465,
+          'mailtype'  => 'html',
+          'charset'   => 'utf-8',
+          'newline'   => "\r\n"
+        ];
+
+        $this->load->library('email', $config);
+        $this->email->initialize($config);
+
+        $this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+        $this->email->to($email);
+        $this->email->subject('Lupa Password');
+        $this->email->message('Your reset token: ' . $resetLink);
+
+        if ($this->email->send()) {
+          $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+        Email berhasil dikirim dengan tautan reset password.
+        </div>');
+          redirect('auth/forgot-password');
+        } else {
+          echo $this->email->print_debugger();
+          die;
+        }
 
         // Send email with reset link containing token
-        $reset_link = base_url('auth/resetpassword' . $token);
-        $this->_sendEmail($reset_link);
-        echo "Email berhasil dikirim dengan tautan reset password.";
+        // $reset_link = base_url('auth/resetpassword' . $token);
+        // $this->_sendEmail($reset_link);
+        // echo "Email berhasil dikirim dengan tautan reset password.";
       } else {
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Email belum diverifikasi atau belum terdaftar!
         </div>');
-        redirect('auth/forgotpassword');
+        redirect('auth/forgot-password');
       }
     }
   }
 
+  public function reset($token)
+  {
+    // Lakukan validasi token di sini
+    $data['token'] = $this->Auth_model->getTokenByUserId($token);
+
+    $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[5]|matches[password2]');
+    $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+
+    if ($this->form_validation->run() == false) {
+      $data['title'] = 'Ganti Ulang Kata Sandi';
+      $this->load->view('backend/template/Auth_header', $data);
+      $this->load->view('backend/auth/reset_password'); // Tampilkan halaman reset password
+      $this->load->view('backend/template/Auth_footer');
+    } else {
+      $password = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
+      $email = $this->session->userdata('reset_email');
+
+      $this->Auth_model->getNewPasswordByEmail($password, $email);
+    }
+  }
+
+  public function reset_password()
+  {
+    $reset_token = $this->input->post('token');
+    $password = $this->input->post('password');
+
+    // Lakukan validasi token dan reset password di sini
+    $tokenData = $this->Auth_model->getTokenByUserId();
+    if (!$tokenData) {
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Token Kadaluarsa!
+        </div>');
+      redirect('auth/reset');
+      return;
+    }
+
+    // Ubah kata sandi pengguna
+    $userId = $tokenData->user_id;
+    $this->Auth_model->updatePassword($userId, $password);
+
+    // Hapus token dari database (opsional)
+    $this->Auth_model->deleteToken($tokenData->id);
+
+    // Redirect atau tampilkan pesan sukses setelah reset password berhasil
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Ganti ulang kata sandi telah berhasil!
+        </div>');
+    redirect('auth');
+  }
 
 
   public function logout()

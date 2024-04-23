@@ -44,7 +44,7 @@ $id_pegawai = $huruf_pegawai . $urutan;
                                         <?= $this->session->flashdata('message'); ?>
                                         <?= $this->session->unset_userdata('message'); ?>
                                         <p class="mb-3" style="font-size: large; font-weight: 500;">Kami akan mengirimkan sebuah link ke email anda untuk mengatur ulang password anda yang akan memberikan akses menuju ke halaman ganti ulang password. Pastikan email tersebut sudah terdaftar</p>
-                                        <form class="user" method="post" action="<?= base_url('auth/forgotpassword'); ?>">
+                                        <form class="user" method="post" action="<?= base_url('auth/forgot-password'); ?>">
                                             <div class="input-group mb-4">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="far fa-envelope"></i></span>

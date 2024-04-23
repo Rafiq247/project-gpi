@@ -12,8 +12,10 @@
                                     <h1 class="h4 text-gray-900 mb-4">Silahkan Buat Password Baru Anda</h1>
                                 </div>
                                 <div class="card-body">
-                                    <form class="user" method="post" action="<?= base_url('auth/updatepassword'); ?>">
-                                        <input type="hidden" name="token" value="<?php echo $token; ?>">
+                                    <?= $this->session->flashdata('message'); ?>
+                                    <?= $this->session->unset_userdata('message'); ?>
+                                    <form class="user" method="post" action="<?= base_url('auth/reset-password'); ?>">
+                                        <input type="text" name="reset_token" value="<?php echo $token->token; ?>">
 
                                         <label>Password Baru</label>
                                         <div class="form-group">

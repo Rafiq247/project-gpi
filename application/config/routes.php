@@ -92,7 +92,7 @@
     $route['admin/hapus-input-absen/(:any)'] = 'admin/deleteInputAbsensi/$1';
     $route['admin/edit-absensi'] = 'admin/editAbsensi';
     $route['admin/edit-fingerprint'] = 'admin/editFingerprint';
-	
+
 
     $route['admin/tambah-lembur'] = 'admin/lembur_pegawai';
     $route['admin/simpan-lembur'] = 'admin/simpan_lembur_pegawai';
@@ -145,7 +145,14 @@
     $route['pegawai/detail-laporan-tpp/(:any)/(:any)/(:any)'] = 'pegawai/detail_laporan_tpp_bulanan/$1/$2/$3';
     $route['pegawai/cetak-payrol-pegawai/(:any)/(:any)/(:any)'] = 'pegawai/cetak_payrol_pegawai/$1/$2/$3';
 
-    // febby
+
+    // Auth
+    $route['auth/forgot-password'] = 'auth/forgotpassword';
+    // $route['forgot-password/sendToken'] = 'forgotpassword/sendToken';
+    $route['auth/forgot-password/reset/(:any)'] = 'auth/forgotpassword/reset/$1';
+    $route['auth/reset-password'] = 'auth/reset_password';
+
+
 
     $route['default_controller'] = 'auth';
     $route['404_override'] = '';

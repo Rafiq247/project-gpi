@@ -23,24 +23,30 @@ class Auth_model extends CI_model
         return $query->row_array();
     }
 
-    public function saveResetToken($id_user, $token)
+    public function saveToken($userId, $reset_token)
     {
         $data = array(
-            'id_user' => $id_user,
-            'token' => $token
+            'user_id' => $userId,
+            'token' => $reset_token // Simpan token reset password juga di sini
         );
         $this->db->insert('password_resets', $data);
     }
 
-    public function getUserByToken($token)
+    public function updateResetToken($userId, $reset_token)
     {
-        $query = $this->db->get_where('password_resets', array('token' => $token));
-        return $query->row_array();
+        $this->db->where('user_id', $userId);
+        $this->db->update('password_resets', ['token' => $reset_token]);
     }
 
-    public function deleteToken($token)
+    public function getTokenByUserId($token)
     {
-        $this->db->delete('password_resets', array('token' => $token));
+        return $this->db->get_where('password_resets', ['token' => $token])->row();
+    }
+
+    public function deleteToken($tokenId)
+    {
+        $this->db->where('id', $tokenId);
+        $this->db->delete('password_resets', array('token' => $tokenId));
     }
 
     public function updatePassword($id_user, $password)
@@ -48,6 +54,13 @@ class Auth_model extends CI_model
         $data = array('password' => $password);
         $this->db->where('id', $id_user);
         $this->db->update('user', $data);
+    }
+
+    public function getNewPasswordByEmail($password, $email)
+    {
+        $this->db->set('password', $password);
+        $this->db->where('email', $email);
+        $this->db->update('user');
     }
 
     // public function getAuthRegister()
