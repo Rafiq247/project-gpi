@@ -651,7 +651,6 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/topbar', $data);
 		$this->load->view('backend/template/sidebar', $data);
 		$this->load->view('backend/admin/absen-input/input', $data);
-		$this->load->view('backend/admin/absen-input/recap', $data);
 		$this->load->view('backend/admin/absen-input/input_findicator', $data);
 		$this->load->view('backend/template/footer');
 	}
@@ -681,7 +680,7 @@ class Admin extends CI_Controller
 		$this->db->db_debug = false;
 		$this->db->trans_start();
 		try {
-			for ($row = 2; $row <= $highestRow; $row++) {
+			for ($row = 2; $row <= 150; $row++) {
 				$rowData = $targetSheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 				$data = [
 					"id_fingerprint" => $rowData[0][2],
