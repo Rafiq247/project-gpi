@@ -235,7 +235,7 @@ class Admin extends CI_Controller
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
 			'role_id' => 2,
-			'is_active' => 1,
+			'is_active' => 0,
 			'date_created' => time(),
 			'temp' => $temp
 
@@ -259,12 +259,99 @@ class Admin extends CI_Controller
 			"ktp" => $ktpName,
 			"foto" => $fotoName,
 		];
+
+		$token = base64_encode(random_bytes(32));
+		$user_token = [
+			'email' => $email,
+			'token' => $token,
+			'date_created' => time()
+		];
+
 		$this->db->insert('tb_pegawai', $data);
+		$this->db->insert('user_token', $user_token);
+
+		$this->_sendEmail($token, 'verify');
 
 
-		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		$this->session->set_flashdata('flash', 'Data karyawan berhasil ditambah!');
 		redirect('admin/pegawai');
 	}
+
+	private function _sendEmail($token, $type)
+	{
+		$config = [
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_user' => 'joyiseod4mban@gmail.com',
+			'smtp_pass' => 'ksurnbftyxgafqku',
+			'smtp_port' => 465,
+			'mailtype'  => 'html',
+			'charset'   => 'utf-8',
+			'newline'   => "\r\n"
+		];
+
+		$this->load->library('email', $config);
+		$this->email->initialize($config);
+
+		$this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+		$this->email->to($this->input->post('email'));
+
+		if ($type == 'verify') {
+			$this->email->subject('Account Verification');
+			$this->email->message('Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>');
+		}
+
+
+		if ($this->email->send()) {
+			return true;
+		} else {
+			echo $this->email->print_debugger();
+			die;
+		}
+	}
+
+	public function verify()
+	{
+		$email = $this->input->get('email');
+		$token = $this->input->get('token');
+
+		$user = $this->Auth_model->getUserByEmail($email);
+
+		if ($user) {
+			$user_token = $this->Auth_model->getTokenByUserId($token);
+
+			if ($user_token) {
+				if (time() - $user_token->date_created < (60 * 60 * 24)) {
+
+					$this->db->set('is_active', 1);
+					$this->db->where('email', $email);
+					$this->db->update('user');
+
+					$this->db->delete('user_token', ['email' => $email]);
+
+					$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
+          			</div>');
+					redirect('auth');
+				} else {
+					$this->db->delete('user', ['email' => $email]);
+					$this->db->delete('user_token', ['email' => $email]);
+
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
+        			</div>');
+					redirect('auth');
+				}
+			} else {
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
+        		</div>');
+				redirect('auth');
+			}
+		} else {
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
+        </div>');
+			redirect('auth');
+		}
+	}
+
 	public function edit_pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
@@ -564,6 +651,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/topbar', $data);
 		$this->load->view('backend/template/sidebar', $data);
 		$this->load->view('backend/admin/absen-input/input', $data);
+		$this->load->view('backend/admin/absen-input/recap', $data);
 		$this->load->view('backend/admin/absen-input/input_findicator', $data);
 		$this->load->view('backend/template/footer');
 	}
@@ -820,93 +908,39 @@ class Admin extends CI_Controller
 	//data absen
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Input Absensi';
+		$data['title'] = 'Absen Bulanan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
-		$data['pegawai'] = $this->Admin_model->getPegawai();
-		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
-		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
-
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
 		$data['thnselected'] = $thn;
+		$id_peg = $this->input->post('id_peg');
+		// $data['petugas'] = $this->db->get_where('user')->result_array();
+		// 
+		$data['list_th'] = $this->Admin_model->getTahun();
+		$data['list_bln'] = $this->Admin_model->getBln();
+		$data['pegawai'] = $this->Admin_model->getAllpegawai();
+		$isi = $this->Admin_model->getAllpegawaiByid($id_peg);
+		if ($isi == null) {
+			$data['detail_pegawai']['nama_pegawai'] = '';
+			$data['detail_pegawai']['namjab'] = '';
+		} else {
+			$data['detail_pegawai'] = $isi;
+		}
+
 
 		if ($bln < 10) {
-			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01' . ' 00:00:00';
-			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31' . ' 23:59:59';
+			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
 		} else {
-			$thnpilihan1 = $thn . '-' . $bln . '-' . '01' . ' 00:00:00';
-			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
+			$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
+			$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
 		}
-		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
-		} else {
-			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
-		}
+		$data['absen'] = $this->Admin_model->getAllAbsen($thnpilihan1, $thnpilihan2, $id_peg);
+
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
-
-		$entryDate = "";
-		$onCheck = false;
-		$pass = false;
-		$lembur = false;
-		$data['recap'] = [];
-		foreach ($data['absensi'] as $key => $value) {
-			if (!$onCheck) {
-				if (strcmp($value['status'], "Lembur Masuk") == 0) {
-					$lembur = true;
-				}
-			}
-			if ($onCheck) {
-				if ($lembur) {
-					if (strcmp($value['status'], "Lembur Keluar") == 0) {
-						$pass = true;
-					}
-				} else {
-					if (strcmp($value['status'], "C/Keluar") == 0) {
-						$pass = true;
-					}
-				}
-			}
-			if ($pass) {
-				$exitDate = $value['datetime'];
-				$date1 = DateTime::createFromFormat('d/m/Y H:i:s', $entryDate, new DateTimeZone('Asia/Jakarta'));
-				$date2 = DateTime::createFromFormat('d/m/Y H:i:s', $exitDate, new DateTimeZone('Asia/Jakarta'));
-				$dayNow = $date1->format('D'); // Extracting day of the week directly from $date1
-
-				$dateInterval = $date1->diff($date2);
-				$hours = $dateInterval->h;
-
-				$hadirLembur  = "Lembur";
-				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
-				} else {
-					$overtime = $hours - 8;
-					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
-				}
-
-				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-
-				$dataRecap = [
-					"hadir" =>  "hadir" . $hadirLembur,
-					"name" => $dataEmployee['nama_pegawai'],
-					"id_pegawai" => $dataEmployee['id_pegawai'],
-					"kode_verifikasi" => $value['verification_code'],
-					"overtime" => $overtime,
-					"date" => $entryDate . " - " . $exitDate,
-					"day" => $dayNow
-				];
-				array_push($data['recap'], $dataRecap);
-				$entryDate = "";
-				$onCheck = false;
-				$pass = false;
-			} else if (!$onCheck) {
-				$entryDate = $value['datetime'];
-				$onCheck = true;
-			}
-		}
 
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);

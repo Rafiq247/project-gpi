@@ -36,6 +36,9 @@ class User_model extends CI_model
 	{
 		$sql = "SELECT * FROM `absensi_pegawai` WHERE `absensi_pegawai`.`id_pegawai` = '$id'";
 		$result = $this->db->query($sql);
+		if ($result->row_array() == 0) {
+			return [];
+		}
 		$idFingerprint = $result->result_array()[0]["id_fingerprint"];
 		$sql = "SELECT * FROM `absensi` WHERE `absensi`.`id_fingerprint` = '$idFingerprint'";
 		$result = $this->db->query($sql);

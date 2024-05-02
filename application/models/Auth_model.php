@@ -40,7 +40,7 @@ class Auth_model extends CI_model
 
     public function getTokenByUserId($token)
     {
-        return $this->db->get_where('password_resets', ['token' => $token])->row();
+        return $this->db->get_where('user_token', ['token' => $token])->row();
     }
 
     public function deleteToken($tokenId)

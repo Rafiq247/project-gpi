@@ -8,40 +8,39 @@
     switch ($angka) {
       case 1:
         return "Januari";
-        break;
+
       case 2:
         return "Februari";
-        break;
+
       case 3:
         return "Maret";
-        break;
+
       case 4:
         return "April";
-        break;
+
       case 5:
         return "Mei";
-        break;
+
       case 6:
         return "Juni";
-        break;
+
       case 7:
         return "Juli";
-        break;
+
       case 8:
         return "Agustus";
-        break;
+
       case 9:
         return "September";
-        break;
+
       case 10:
         return "Oktober";
-        break;
+
       case 11:
         return "November";
-        break;
+
       case 12:
         return "Desember";
-        break;
     }
   }
   ?>
@@ -124,62 +123,42 @@
                  <button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Refresh</button>
                <?php endif ?>
                &nbsp;
-
-
              </div>
              <!--  -->
            </div>
          </form>
-
          <div class="table-responsive">
            <table id="example" class="table table-striped table-bordered">
              <thead>
                <tr>
-
                  <th>NAMA KARYAWAN</th>
                  <th>JABATAN</th>
                  <th>GAJI POKOK</th>
                  <th>LEMBUR</th>
                  <th>BONUS</th>
+                 <th>PENGURANGAN</th>
                  <th>KETERANGAN</th>
                  <th>GAJI BERSIH</th>
-                 <th width=60>AKSI</th>
                </tr>
              </thead>
              <tbody>
-
-
-               <tr>
-
-                 <td><?= $gaji['nama_pegawai']; ?></td>
-                 <td><?= $gaji['namjab']; ?></td>
-                 <td><?= $gaji['gaji_pokok']; ?></td>
-                 <td><?= $gaji['gaji_lembur']; ?></td>
-                 <td><?= $gaji['bonus']; ?></td>
-                 <td><?= $gaji['keterangan']; ?></td>
-                 <td><?= $gaji['gaji_bersih']; ?></td>
-                 <td width="20px">
-                   <?php if ($gaji['gaji_bersih'] != '') : ?>
-                     <div class="row">
-                       <a href="<?= base_url('pegawai/detail-laporan-tpp') ?>/<?= $gaji['id_pegawai']; ?>/<?= $blnselected; ?>/<?= $thnselected; ?>" class="ml-3 mb-0">
-                         <button type="button" class="btn btn-theme">
-                           <i class="fa fa-eye"></i>
-                         </button>
-                       </a>
-                       <hr>
-                       <a target="_blank" href="<?= base_url(); ?>pegawai/cetak-payrol-pegawai/<?= $gaji['id_pegawai']; ?>/<?php echo $blnnya  ?>/<?php echo $thn  ?>" class="ml-0">
-                         <button type="button" class="btn btn-danger">
-                           <i class="fa fa-print"></i>
-                         </button>
-                       </a>
-                     </div>
-                   <?php endif ?>
-                 </td>
-
-               </tr>
-
+               <?php
+                foreach ($dataFinal as $key => $a) {
+                ?>
+                 <tr>
+                   <td><?= $a['name']; ?></td>
+                   <td><?= $a['jabatan']; ?></td>
+                   <td><?php echo 'Rp ' . number_format($a['gaji_pokok'], 2, ',', '.'); ?></td>
+                   <td><?php echo 'Rp ' . number_format($a['lembur'], 2, ',', '.'); ?></td>
+                   <td><?php echo 'Rp ' . number_format($a['bonus'], 2, ',', '.'); ?></td>
+                   <td><?php echo 'Rp ' . number_format($a['pengurangan'], 2, ',', '.'); ?></td>
+                   <td>-</td>
+                   <td><?php echo 'Rp ' . number_format($a['gaji_pokok'] - $a['pengurangan'] + $a['lembur'] + $a['bonus'], 2, ',', '.'); ?></td>
+                 </tr>
+               <?php
+                }
+                ?>
              </tbody>
-
            </table>
          </div>
        </div>

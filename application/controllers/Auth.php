@@ -56,12 +56,14 @@ class Auth extends CI_Controller
             redirect('pegawai');
           }
         } else {
-          $this->session->set_flashdata('message', 'password salah');
+          $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+				Password salah!
+		 		 </div>');
           redirect('auth');
         }
       } else {
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-				Email belum diaktivasi
+				Email belum diaktifkan
 		 		 </div>');
         redirect('auth');
       }
@@ -72,6 +74,8 @@ class Auth extends CI_Controller
       redirect('auth');
     }
   }
+
+
 
   public function registration()
   {
@@ -204,7 +208,7 @@ class Auth extends CI_Controller
           "image" => $gambar_user,
           "password" => $password, // Gunakan data 'password' dari session
           'role_id' => 2,
-          'is_active' => 1,
+          'is_active' => 0,
           'date_created' => time(),
           'temp' => $temp
         ];
@@ -225,9 +229,21 @@ class Auth extends CI_Controller
           "alamat" => $alamat,
           "tanggal_masuk" => $tgl_msk,
           "ktp" => $ktpName,
-          "foto" => $fotoName,
+          "foto" => $fotoName
         ];
+
+        $token = base64_encode(random_bytes(32));
+        $user_token = [
+          'email' => $email,
+          'token' => $token,
+          'date_created' => time()
+        ];
+
         $this->db->insert('tb_pegawai', $data);
+        $this->db->insert('user_token', $user_token);
+
+        $this->_sendEmail($token, 'verify');
+
         $this->session->unset_userdata('registration_data');
 
         // Redirect ke halaman login atau halaman lain yang sesuai
@@ -247,34 +263,80 @@ class Auth extends CI_Controller
     }
   }
 
-  // private function _sendEmail($reset_link)
-  // {
-  //   $config = [
-  //     'protocol'  => 'smtp',
-  //     'smtp_host' => 'ssl://smtp.googlemail.com',
-  //     'smtp_user' => 'joyiseod4mban@gmail.com',
-  //     'smtp_pass' => 'ksurnbftyxgafqku',
-  //     'smtp_port' => 465,
-  //     'mailtype'  => 'html',
-  //     'charset'   => 'utf-8',
-  //     'newline'   => "\r\n"
-  //   ];
+  private function _sendEmail($token, $type)
+  {
+    $config = [
+      'protocol'  => 'smtp',
+      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'smtp_user' => 'joyiseod4mban@gmail.com',
+      'smtp_pass' => 'ksurnbftyxgafqku',
+      'smtp_port' => 465,
+      'mailtype'  => 'html',
+      'charset'   => 'utf-8',
+      'newline'   => "\r\n"
+    ];
 
-  //   $this->load->library('email', $config);
-  //   $this->email->initialize($config);
+    $this->load->library('email', $config);
+    $this->email->initialize($config);
 
-  //   $this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
-  //   $this->email->to('emasku001@gmail.com');
-  //   $this->email->subject('Tester');
-  //   $this->email->message('Silahkan klik link ini untuk mereset password anda : ');
+    $this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+    $this->email->to($this->input->post('email'));
 
-  //   if ($this->email->send()) {
-  //     return true;
-  //   } else {
-  //     echo $this->email->print_debugger();
-  //     die;
-  //   }
-  // }
+    if ($type == 'verify') {
+      $this->email->subject('Account Verification');
+      $this->email->message('Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>');
+    }
+
+
+    if ($this->email->send()) {
+      return true;
+    } else {
+      echo $this->email->print_debugger();
+      die;
+    }
+  }
+
+  public function verify()
+  {
+    $email = $this->input->get('email');
+    $token = $this->input->get('token');
+
+    $user = $this->Auth_model->getUserByEmail($email);
+
+    if ($user) {
+      $user_token = $this->Auth_model->getTokenByUserId($token);
+
+      if ($user_token) {
+        if (time() - $user_token->date_created < (60 * 60 * 24)) {
+
+          $this->db->set('is_active', 1);
+          $this->db->where('email', $email);
+          $this->db->update('user');
+
+          $this->db->delete('user_token', ['email' => $email]);
+
+          $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
+          </div>');
+          redirect('auth');
+        } else {
+          $this->db->delete('user', ['email' => $email]);
+          $this->db->delete('user_token', ['email' => $email]);
+
+          $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
+        </div>');
+          redirect('auth');
+        }
+      } else {
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
+        </div>');
+        redirect('auth');
+      }
+    } else {
+      $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
+        </div>');
+      redirect('auth');
+    }
+  }
 
   public function forgotPassword()
   {

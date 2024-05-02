@@ -38,12 +38,12 @@
             </div>
           </form>
           <hr>
-          <div class="text-center mt-4 mb-4" style="font-size: 14px;">
-            Lupa kata sandi? <a class="text-primary" style="font-size: 14px;" href="<?= base_url('auth/forgot-password'); ?>">Klik disini!</a>
+          <div class="text-center mt-4" style="font-size: 14px;">
+            Lupa password? <a class="text-primary" style="font-size: 14px;" href="<?= base_url('auth/forgot-password'); ?>">Klik disini!</a>
           </div>
-          <div class="text-center" style="font-size: 14px;">
+          <!-- <div class="text-center" style="font-size: 14px;">
             Tidak mempunyai akun? <a class="text-primary" style="font-size: 14px;" href="<?= base_url('auth/registration'); ?>">Daftar akun</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
