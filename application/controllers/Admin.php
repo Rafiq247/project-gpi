@@ -262,6 +262,7 @@ class Admin extends CI_Controller
 
 		$token = base64_encode(random_bytes(32));
 		$user_token = [
+			"id_user" => $id_user,
 			'email' => $email,
 			'token' => $token,
 			'date_created' => time()
@@ -290,6 +291,40 @@ class Admin extends CI_Controller
 			'newline'   => "\r\n"
 		];
 
+		$emailContent = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Verify Your Account</title>
+        </head>
+        <body style='font-family: Arial, sans-serif;'>
+          <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+            <tr>
+              <td align='center'>
+                <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
+                  <tr>
+                    <td align='center'>
+                      <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
+                      <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
+                      <table border='0' cellspacing='0' cellpadding='0'>
+                        <tr>
+                          <td align='center'>
+                            <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+        ";
+
 		$this->load->library('email', $config);
 		$this->email->initialize($config);
 
@@ -298,7 +333,10 @@ class Admin extends CI_Controller
 
 		if ($type == 'verify') {
 			$this->email->subject('Account Verification');
-			$this->email->message('Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>');
+			// $this->email->message(
+			// 	'Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>'
+			// );
+			$this->email->message($emailContent);
 		}
 
 
@@ -907,39 +945,97 @@ class Admin extends CI_Controller
 	//data absen
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Absen Bulanan';
+		$data['title'] = 'Input Absensi';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
+		$data['pegawai'] = $this->Admin_model->getPegawai();
+		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
+		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
+
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
 		$data['thnselected'] = $thn;
-		$id_peg = $this->input->post('id_peg');
-		// $data['petugas'] = $this->db->get_where('user')->result_array();
-		// 
-		$data['list_th'] = $this->Admin_model->getTahun();
-		$data['list_bln'] = $this->Admin_model->getBln();
-		$data['pegawai'] = $this->Admin_model->getAllpegawai();
-		$isi = $this->Admin_model->getAllpegawaiByid($id_peg);
-		if ($isi == null) {
-			$data['detail_pegawai']['nama_pegawai'] = '';
-			$data['detail_pegawai']['namjab'] = '';
-		} else {
-			$data['detail_pegawai'] = $isi;
-		}
-
 
 		if ($bln < 10) {
-			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01';
-			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31';
+			$thnpilihan1 = $thn . '-' . '0' . $bln . '-' . '01' . ' 00:00:00';
+			$thnpilihan2 = $thn . '-' . '0' . $bln . '-' . '31' . ' 23:59:59';
 		} else {
-			$thnpilihan1 = $thn . '-' . $bln . '-' . '01';
-			$thnpilihan2 = $thn . '-' . $bln . '-' . '31';
+			$thnpilihan1 = $thn . '-' . $bln . '-' . '01' . ' 00:00:00';
+			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
-		$data['absen'] = $this->Admin_model->getAllAbsen($thnpilihan1, $thnpilihan2, $id_peg);
-
+		if (empty($this->input->post('th'))) {
+			$data['absensi'] = $this->Admin_model->getAbsensi();
+		} else {
+			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
+		}
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
+
+		$entryDate = "";
+		$onCheck = false;
+		$pass = false;
+		$lembur = false;
+		$data['recap'] = [];
+		foreach ($data['absensi'] as $key => $value) {
+			if (!$onCheck) {
+				if (strcmp($value['status'], "Lembur Masuk") == 0) {
+					$lembur = true;
+				}
+			}
+			if ($onCheck) {
+				if ($lembur) {
+					if (strcmp($value['status'], "Lembur Keluar") == 0) {
+						$pass = true;
+					}
+				} else {
+					if (strcmp($value['status'], "C/Keluar") == 0) {
+						$pass = true;
+					}
+				}
+			}
+			if ($pass) {
+				$exitDate = $value['datetime'];
+				$date1 = DateTime::createFromFormat('d/m/Y H:i:s', $entryDate, new DateTimeZone('Asia/Jakarta'));
+				$date2 = DateTime::createFromFormat('d/m/Y H:i:s', $exitDate, new DateTimeZone('Asia/Jakarta'));
+				$dayNow = $date1->format('D'); // Extracting day of the week directly from $date1
+
+				$dateInterval = $date1->diff($date2);
+				$hours = $dateInterval->h;
+
+				$hadirLembur  = "Lembur";
+				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
+					if (strcmp("Sun", $dayNow) == 0) {
+						$overtime = $hours + 3; // Menambahkan waktu 3 jam di hari Minggu
+					} else {
+						$overtime = $hours; // Jumlah jam kerja pada Sabtu
+					}
+				} else {
+					$overtime = $hours - 8;
+					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
+				}
+
+				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
+
+				$dataRecap = [
+					"hadir" =>  "hadir" . $hadirLembur,
+					"name" => $dataEmployee['nama_pegawai'],
+					"id_pegawai" => $dataEmployee['id_pegawai'],
+					"kode_verifikasi" => $value['verification_code'],
+					"overtime" => $overtime,
+					"date" => $entryDate . " - " . $exitDate,
+					"day" => $dayNow
+				];
+				array_push($data['recap'], $dataRecap);
+				$entryDate = "";
+				$onCheck = false;
+				$pass = false;
+			} else if (!$onCheck) {
+				$entryDate = $value['datetime'];
+				$onCheck = true;
+			}
+		}
 
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -1048,7 +1144,11 @@ class Admin extends CI_Controller
 
 				$hadirLembur  = "Lembur";
 				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
+					if (strcmp("Sun", $dayNow) == 0) {
+						$overtime = $hours + 3; // Menambahkan waktu 3 jam di hari Minggu
+					} else {
+						$overtime = $hours; // Jumlah jam kerja pada Sabtu
+					}
 				} else {
 					$overtime = $hours - 8;
 					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
@@ -1294,7 +1394,11 @@ class Admin extends CI_Controller
 
 				$hadirLembur  = "Lembur";
 				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
+					if (strcmp("Sun", $dayNow) == 0) {
+						$overtime = $hours + 3; // Menambahkan waktu 3 jam di hari Minggu
+					} else {
+						$overtime = $hours; // Jumlah jam kerja pada Sabtu
+					}
 				} else {
 					$overtime = $hours - 8;
 					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
