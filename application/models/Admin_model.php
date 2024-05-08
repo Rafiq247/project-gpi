@@ -17,13 +17,13 @@ class Admin_model extends CI_model
 		return $result->result_array();
 	}
 	public function getAllDetail()
-{
-    $role_ids = [1, 2, 3, 4]; // Define the array of role IDs
-    $sql = "SELECT * from user where role_id IN (". implode(',', $role_ids). ")";
-    $result = $this->db->query($sql);
-    return $result->result_array();
-}
-	
+	{
+		$role_ids = [1, 2, 3, 4]; // Define the array of role IDs
+		$sql = "SELECT * from user where role_id IN (". implode(',', $role_ids). ")";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+		
 
 	public function getAllpegawai()
 	{

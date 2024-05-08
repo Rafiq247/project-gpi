@@ -58,7 +58,7 @@ class Auth extends CI_Controller
             $this->session->set_userdata('masuk_leader', true);
             redirect('leader');
           } elseif ($user['role_id'] == 4) {
-            $this->session->set_userdata('masuk_pegawai', true);
+            $this->session->set_userdata('masuk_user', true);
             redirect('pegawai');
           } 
         } else {

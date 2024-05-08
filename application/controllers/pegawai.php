@@ -13,7 +13,6 @@ class pegawai extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->model('User_model');
 		$this->load->model('Admin_model');
-		$this->load->model('supervisor_model');
 	}
 
 	public function index()
