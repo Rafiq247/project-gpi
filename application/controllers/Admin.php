@@ -172,6 +172,7 @@ class Admin extends CI_Controller
 
 		$id_user = $this->input->post('id_user', true);
 		$id_pegawai = $this->input->post('id_pegawai', true);
+		$role_id = $this->input->post('role_id', true);
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$jekel = $this->input->post('jekel', true);
 		$pendidikan = $this->input->post('pendidikan', true);
@@ -234,8 +235,8 @@ class Admin extends CI_Controller
 			"email" => $email,
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
-			'role_id' => 2,
-			'is_active' => 0,
+			'role_id' => $role_id,
+			'is_active' => 1,
 			'date_created' => time(),
 			'temp' => $temp
 
@@ -243,11 +244,12 @@ class Admin extends CI_Controller
 
 		$this->db->insert('user', $data1);
 
-		// 
+		
 		$data = [
 			"id_pegawai" => $id_pegawai,
 			"id_user" => $id_user,
 			"nama_pegawai" => $nama_pegawai,
+			'role_id' => $role_id,
 			"jekel" => $jekel,
 			"pendidikan" => $pendidikan,
 			"status_kepegawaian" => $status_pegawai,
@@ -398,6 +400,7 @@ class Admin extends CI_Controller
 
 		$id_pegawai = $this->input->post('id_pegawai', true);
 		$id_user = $this->input->post('id_user', true);
+		$role_id = $this->input->post('role_id', true);
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$jekel = $this->input->post('jekel', true);
 		$pendidikan = $this->input->post('pendidikan', true);
@@ -452,6 +455,7 @@ class Admin extends CI_Controller
 		$data = [
 
 			"nama_pegawai" => $nama_pegawai,
+			"role_id" => $role_id,
 			"jekel" => $jekel,
 			"pendidikan" => $pendidikan,
 			"status_kepegawaian" => $status_pegawai,
@@ -474,6 +478,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 		redirect('admin/pegawai');
 	}
+	
 	public function hapus_pegawai($id, $id_user)
 	{
 		$this->db->where('id_pegawai', $id);

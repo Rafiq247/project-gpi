@@ -51,10 +51,16 @@ class Auth extends CI_Controller
           if ($user['role_id'] == 1) {
             $this->session->set_userdata('masuk_admin', true);
             redirect('admin');
-          } else {
-            $this->session->set_userdata('masuk_user', true);
+          } elseif ($user['role_id'] == 2) {
+            $this->session->set_userdata('masuk_supervisor', true);
+            redirect('supervisor');
+          } elseif ($user['role_id'] == 3) {
+            $this->session->set_userdata('masuk_leader', true);
+            redirect('leader');
+          } elseif ($user['role_id'] == 4) {
+            $this->session->set_userdata('masuk_pegawai', true);
             redirect('pegawai');
-          }
+          } 
         } else {
           $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
 				Password salah!

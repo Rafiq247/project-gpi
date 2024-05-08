@@ -13,6 +13,7 @@ class pegawai extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->model('User_model');
 		$this->load->model('Admin_model');
+		$this->load->model('supervisor_model');
 	}
 
 	public function index()
@@ -202,8 +203,6 @@ class pegawai extends CI_Controller
 		$id_peg = $data['pegawai']['id_pegawai'];
 		// $data['petugas'] = $this->db->get_where('user')->result_array();
 		// 
-
-
 
 		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
 		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();

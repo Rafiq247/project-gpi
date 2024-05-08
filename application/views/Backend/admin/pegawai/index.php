@@ -124,6 +124,18 @@
                      </div>
                    </div>
                    <div class="form-group">
+                     <label>User Role</label>
+                     <div>
+                       <select class="form-control" id="role_id" name="role_id">
+                         <option value="">-pilih-</option>
+                         <option value="1">Admin</option>
+                         <option value="2">Supervisor</option>
+                         <option value="3">Leader</option>
+                         <option value="4">Pegawai</option>
+                       </select>
+                     </div>
+                   </div>
+                   <div class="form-group">
                      <label>Jenis Kelamin</label>
                      <div>
                        <select class="form-control" id="jekel" name="jekel">
@@ -235,6 +247,7 @@
      <?php foreach ($pegawai as $j) :
         $id_pegawai = $j['id_pegawai'];
         $nama_pegawai = $j['nama_pegawai'];
+        $role_id = $j['role_id'];
         $jekel1 = $j['jekel'];
         $id_user1 = $j['id_user'];
         $pendidikan = $j['pendidikan'];
@@ -269,25 +282,67 @@
                          <input type="text" name="nama_pegawai" class="form-control " value="<?= $nama_pegawai ?>">
                        </div>
                      </div>
+                     <?php $role_id = $this->Admin_model->getAlluser_role(); ?>
+                     <div class="form-group">
+                       <label class="col-sm-12">User Role</label>
+                       <div class="col-sm-12">
+                         <select class="form-control" id="role_id" name="role_id">
+                           <option value="">-pilih-</option>
+                           <?php foreach ($role_id as $j) : ?>
+                             <?php if ($j['role_id'] == $role_id) : ?>
+                               <option value="<?= $j['role_id'] ?>" selected> <?= $j['role_id']; ?></option>
+                             <?php else : ?>
+                               <option value="<?= $j['role_id'] ?>"> <?= $j['role_id']; ?></option>
+                             <?php endif ?>
+                           <?php endforeach; ?>
+                         </select>
+                       </div>
+                     </div>
+                     <!-- <div class="form-group">
+                       <label>User Role</label>
+                       <div>
+                         <select class="form-control" id="role_id" name="role_id">
+                           <option value="">-pilih-</option>
+                           <?php foreach ($role_id as $j) : ?>
+                               <?php if ($j == '1') : ?>
+                                 <option value="<?= $j ?>" selected>Admin</option>
+                               <?php elseif ($j == '2') : ?>
+                                 <option value="<?= $j ?>" selected>Supervisor</option>
+                                <?php elseif ($j == '3') : ?>
+                                 <option value="<?= $j ?>" selected>Leader</option>
+                                <?php elseif ($j == '4') : ?>
+                                 <option value="<?= $j ?>" selected>Pegawai</option>
+                               <?php endif ?>
+                               <?php if ($j == '1') : ?>
+                                 <option value="<?= $j ?>">Admin</option>
+                               <?php elseif ($j == '2') : ?>
+                                 <option value="<?= $j ?>">Supervisor</option>
+                                <?php elseif ($j == '3') : ?>
+                                 <option value="<?= $j ?>">Leader</option>
+                                <?php elseif ($j == '4') : ?>
+                                 <option value="<?= $j ?>">Pegawai</option>
+                               <?php endif ?>
+                           <?php endforeach; ?>
+
+                         </select>
+                       </div> -->
+                     </div>
                      <div class="form-group">
                        <label>Jenis Kelamin</label>
                        <div>
                          <select class="form-control" id="jekel" name="jekel">
                            <option value="">-pilih-</option>
                            <?php foreach ($jekel as $j) : ?>
-                             <?php if ($j == $jekel1) : ?>
                                <?php if ($j == 'L') : ?>
                                  <option value="<?= $j ?>" selected>Laki-Laki</option>
                                <?php else : ?>
                                  <option value="<?= $j ?>" selected>Perempuan</option>
                                <?php endif ?>
-                             <?php else : ?>
                                <?php if ($j == 'L') : ?>
                                  <option value="<?= $j ?>">Laki-Laki</option>
                                <?php else : ?>
                                  <option value="<?= $j ?>">Perempuan</option>
                                <?php endif ?>
-                             <?php endif ?>
                            <?php endforeach; ?>
 
                          </select>

@@ -10,13 +10,20 @@ class Admin_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-	public function getAllDetail()
+	public function getAlluser_role()
 	{
-		$sql = "SELECT * from user where role_id=2";
+		$sql = "SELECT * from user_role";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-	// 
+	public function getAllDetail()
+{
+    $role_ids = [1, 2, 3, 4]; // Define the array of role IDs
+    $sql = "SELECT * from user where role_id IN (". implode(',', $role_ids). ")";
+    $result = $this->db->query($sql);
+    return $result->result_array();
+}
+	
 
 	public function getAllpegawai()
 	{
