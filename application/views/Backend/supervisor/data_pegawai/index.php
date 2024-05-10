@@ -51,6 +51,18 @@
  		</div>
  	<?php endif ?>
  	<div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
+ 		<div class="row border-bottom mb-4">
+ 			<div class="col-sm-8 pt-2">
+ 				<h6 class="mb-4 bc-header"><?= $title ?></h6>
+ 			</div>
+ 			<!-- <?php if ($absen['id_pegawai'] == 'peg') : ?>
+ 				<div class="col-sm-4 text-right pb-3">
+ 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Sakit</button>
+ 				</div>
+ 			<?php endif ?> -->
+
+ 		</div>
+
  		<form action="absen-harian" method="post">
  			<div class="row ">
 
@@ -106,12 +118,13 @@
  				<thead>
  					<tr>
  						<th>No</th>
-                        <th>ID PEGAWAI</th>
+ 						<th>NAMA</th>
  						<th>JENIS</th>
  						<th>TGL/WAKTU AWAL</th>
  						<th>TGL/WAKTU AKHIR</th>
  						<th>KETERANGAN</th>
  						<th>SURAT</th>
+ 						<th>STATUS</th>
  					</tr>
  				</thead>
  				<tbody>
@@ -120,12 +133,13 @@
 						foreach ($absensi as $b) : ?>
  						<tr>
  							<td><?= $no++ ?></td>
-                            <td><?= $b['id_pegawai']; ?></td>
+ 							<td><?= $b['pegawai'][0]['nama_pegawai']; ?></td>
  							<td><?= $b['jenis']; ?></td>
  							<td><?= $b['tanggal_awal']; ?></td>
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : "Diizinkan"; ?></td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -133,82 +147,71 @@
  			</table>
  		</div>
 
- 		<script>
- 			
+ 		<!-- modal -->
+ 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+ 			<div class="modal-dialog modal-lg">
+ 				<div class="modal-content">
+ 					<div class="modal-header text-center">
+ 						<h5 class="modal-title text-secondary"><strong>Ajukan Cuti</strong></h5>
+ 						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+ 					</div>
+ 					<div class="modal-body text-justify ">
+ 						<?php echo form_open_multipart('leader/izin-pegawai'); ?>
+ 						<div class="card-body">
+ 							<div class="row">
+ 								<div class="col-md-6">
+ 									<input type="hidden" name="id_peg" class="form-control " value="<?= $pegawai['id_pegawai'] ?>" required>
+ 									<div class="form-group">
+ 										<label>Jenis Izin</label>
+ 										<div>
+ 											<select class="form-control" id="jenisizin" name="jenisizin">
+ 												<option value="">-pilih-</option>
+ 												<option value="4">Izin Sakit</option>
+ 												<option value="5">Izin Tidak Masuk</option>
+ 											</select>
+ 										</div>
+ 									</div>
+ 									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
+ 										<label class="">Upload Surat Keterangan Sakit</label>
+ 										<div class="">
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
+ 										</div>
+ 									</div>
+ 									<div class="form-group">
+ 										<label>Tanggal Izin</label>
+ 										<div>
+ 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class="datepicker form-control mb-3" id="datepicker">
+ 										</div>
+ 										<div>
+ 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class="datepicker form-control" id="datepicker">
+ 										</div>
+ 									</div>
+ 									<div class="form-group">
+ 										<label>Keterangan</label>
+ 										<div>
+ 											<input type="text" name="penjelasan" class="form-control " value="">
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<div class="col-md-6">
+ 									<div class="col-md-12 ">
+ 										Ket.<br>
+ 										-Silahkan pilih jenis izin anda*<br>
+ 										-upload bukti keterangan dokter untuk "Izin Sakit"*<br>
+ 										-Silahkan isi keterangan alasan<br>
+ 									</div>
+ 								</div>
+ 							</div>
 
- 			// var x = document.getElementById("demo");
- 			getLocation();
+ 						</div>
+ 						<!-- /.card-body -->
+ 						<div class="modal-footer">
+ 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+ 							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
+ 						</div>
+ 						</form>
+ 					</div>
 
- 			function getLocation() {
- 				if (navigator.geolocation) {
- 					navigator.geolocation.getCurrentPosition(showPosition);
- 				} else {
- 					alert("Tidak support browser");
- 				}
- 			}
-
- 			function showPosition(position) {
- 				//  x.innerHTML = "Latitude:" + position.coords.latitude +
- 				//      "<br>Longitude: " + position.coords.longitude;
- 				$('#lat').val(position.coords.latitude);
- 				$('#long').val(position.coords.longitude);
- 				$('#lat_pul').val(position.coords.latitude);
- 				$('#long_pul').val(position.coords.longitude);
- 				$('#lat_lem').val(position.coords.latitude);
- 				$('#long_lem').val(position.coords.longitude);
- 			}
- 		</script>
- 		<script type="text/javascript">
- 			var serverClock = jQuery("#jamServer");
- 			if (serverClock.length > 0) {
- 				showServerTime(serverClock, serverClock.text());
- 			}
-
- 			function showServerTime(obj, time) {
- 				var parts = time.split(":"),
- 					newTime = new Date();
-
- 				newTime.setHours(parseInt(parts[0], 10));
- 				newTime.setMinutes(parseInt(parts[1], 10));
- 				newTime.setSeconds(parseInt(parts[2], 10));
-
- 				var timeDifference = new Date().getTime() - newTime.getTime();
-
- 				var methods = {
- 					displayTime: function() {
- 						var now = new Date(new Date().getTime() - timeDifference);
- 						obj.text([
- 							methods.leadZeros(now.getHours(), 2),
- 							methods.leadZeros(now.getMinutes(), 2),
- 							methods.leadZeros(now.getSeconds(), 2)
- 						].join(":"));
- 						setTimeout(methods.displayTime, 500);
- 					},
-
- 					leadZeros: function(time, width) {
- 						while (String(time).length < width) {
- 							time = "0" + time;
- 						}
- 						return time;
- 					}
- 				}
- 				methods.displayTime();
- 			}
- 		</script>
-
- 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
- 		<script type='text/javascript'>
- 			$(window).load(function() {
- 				$("#jenisizin").change(function() {
- 					// console.log($("#instansi option:selected").val());
- 					if ($("#jenisizin option:selected").val() == '') {
- 						$('#suratsakit').prop('hidden', 'true');
-
- 					} else if ($("#jenisizin option:selected").val() == '4') {
- 						$('#suratsakit').prop('hidden', false);
- 					} else if ($("#jenisizin option:selected").val() == '5') {
- 						$('#suratsakit').prop('hidden', 'true');
- 					}
- 				});
- 			});
- 		</script>
+ 				</div>
+ 			</div>
+ 		</div>

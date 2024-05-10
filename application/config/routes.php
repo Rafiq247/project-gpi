@@ -120,8 +120,8 @@
     $route['admin/hapus-payrol/(:any)'] = 'admin/hapusPayrol/$1';
 
     //Data Karyawan
-    $route['admin/absen-pegawai'] = 'supervisor/data_pegawai';
-    $route['admin/absen-pegawai'] = 'supervisor/data_leader';
+    $route['admin/absen-pegawai'] = 'admin/data_pegawai';
+    $route['admin/absen-pegawai'] = 'admin/data_leader';
 
     $route['admin/akumulasi-gaji'] = 'admin/akumulasi_gaji';
     $route['admin/simpan-gaji'] = 'admin/simpan_gaji';
