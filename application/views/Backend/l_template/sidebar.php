@@ -40,6 +40,14 @@
              </ul>
            </li>
            <li class="parent">
+             <a href="#" onclick="toggle_menu('konfirmasi'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
+               <span class="none">Konfirmasi Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+             </a>
+             <ul class="children" id="konfirmasi">
+               <li class="child"><a href="<?= base_url() ?>leader/konfirmasi_pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Absen Pegawai</a></li>
+             </ul>
+           </li>
+           <li class="parent">
              <a href="#" onclick="toggle_menu('tunjangan'); return false" class=""><i class="fa  fa-credit-card mr-3"> </i>
                <span class="none">Gaji & Bonus<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>

@@ -357,10 +357,10 @@ class leader extends CI_Controller
 
 			$this->db->insert('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Masuk Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('leader/absen-harian');
 		} else {
 			$this->session->set_flashdata('s_absenggl', 'Absen Gagal, Anda Terlalu Jauh Dari Kantor');
-			redirect('pegawai/absen-harian');
+			redirect('leader/absen-harian');
 		}
 	}
 
@@ -411,7 +411,7 @@ class leader extends CI_Controller
 			$this->db->where('id_presents', $id_presents);
 			$this->db->update('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Masuk Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('leader/absen-harian');
 		} else {
 			echo 'Anda Terlalu Jauh Dari Kantor';
 		}
@@ -461,7 +461,7 @@ class leader extends CI_Controller
 			$this->db->where('id_presents', $id_presents);
 			$this->db->update('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Lembur Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('leader/absen-harian');
 		} else {
 			echo 'Anda Terlalu Jauh Dari Kantor';
 		}
@@ -528,7 +528,7 @@ class leader extends CI_Controller
 
 		$this->db->insert('izin', $data);
 		$this->session->set_flashdata('flash', 'Izin Anda Akan Diproses');
-		redirect('pegawai/absen-harian');
+		redirect('leader/absen-harian');
 	}
 
 
@@ -858,6 +858,118 @@ class leader extends CI_Controller
 
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
-		$this->load->view('backend/admin/laporan/cetak', $data);
+		$this->load->view('backend/leader/laporan/cetak', $data);
+	}
+
+	public function konfirmasi_pegawai()
+	{
+		$data['title'] = 'Tampil Konfirmasi';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzin();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/l_template/header', $data);
+		$this->load->view('backend/l_template/topbar', $data);
+		$this->load->view('backend/l_template/sidebar', $data);
+		$this->load->view('backend/leader/konfirmasi_pegawai/index', $data);
+		$this->load->view('backend/l_template/footer');
+	}
+
+	public function konfirmasi_izin_pegawai($id)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 1,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Absen Masuk Berhasil Dikonfirmasi');
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_pulang($id)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 2,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Absen Pulang Berhasil Dikonfirmasi');
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_lembur($id, $id_peg)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$lembur = $this->Admin_model->getPegawaiByLemburTanggal($id_peg);
+		$id_lembur = $lembur['id_lembur'];
+		// var_dump($id_lembur);
+		// die;
+		$data = [
+			"status" => 3,
+			"id_lembur" => $id_lembur,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->Admin_model->InsertTbLembur($id_peg);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_izin_sakit($id)
+	{
+
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$data = [
+			"status" => 4,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('leader/tampil-konfirmasi');
+	}
+	public function konfirmasi_absen_izin_tdkmsk($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 5,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function izinStatusAcc($id)
+	{
+		$data = array(
+			"acc" => "1"
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function izinStatusDenied($id)
+	{
+		$data = array(
+			"acc" => "0"
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('leader/tampil-konfirmasi');
 	}
 }

@@ -28,7 +28,7 @@
              </div>
              <div class="col-sm-4 text-right pb-3">
                  <button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Tambah</button>
-                 <!-- <a target="_blank" class="btn btn-round btn-danger" href="<?= base_url('admin/cetak-jadwal') ?>"><i class="fa fa-plus"></i> Report</a> -->
+                 <!-- <a target="_blank" class="btn btn-round btn-danger" href="<?= base_url('leader/cetak-jadwal') ?>"><i class="fa fa-plus"></i> Report</a> -->
              </div>
 
 
@@ -66,7 +66,7 @@
                              <td><?= $b['no_hp']; ?></td>
                              <td width="120px">
                                  <div class="row">
-                                     <a href="<?= base_url('admin/detail-pegawai') ?>/<?= $b['id_pegawai']; ?>" class="ml-2">
+                                     <a href="<?= base_url('leader/detail-pegawai') ?>/<?= $b['id_pegawai']; ?>" class="ml-2">
                                          <button type="button" class="btn btn-theme">
                                              <i class="fa fa-eye"></i>
                                          </button>
@@ -76,7 +76,7 @@
                                              <i class="fa fa-pencil-square-o"></i>
                                          </button>
                                      </a>
-                                     <a href="<?= base_url('admin/hapus-pegawai') ?>/<?= $b['id_pegawai']; ?>/<?= $b['id_user']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+                                     <a href="<?= base_url('leader/hapus-pegawai') ?>/<?= $b['id_pegawai']; ?>/<?= $b['id_user']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
                                          <button type="button" class="btn btn-danger">
                                              <i class="fa fa-trash"></i>
                                          </button>
@@ -110,7 +110,7 @@
                          <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                      </div>
                      <div class="modal-body text-justify ">
-                         <?php echo form_open_multipart('admin/tambah-pegawai'); ?>
+                         <?php echo form_open_multipart('leader/tambah-pegawai'); ?>
                          <div class="card-body">
                              <div class="row">
                                  <div class="col-md-6">
@@ -257,7 +257,7 @@
                              <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                          </div>
                          <div class="modal-body text-justify">
-                             <?php echo form_open_multipart('admin/edit-pegawai'); ?>
+                             <?php echo form_open_multipart('leader/edit-pegawai'); ?>
                              <div class="card-body">
                                  <div class="row">
                                      <div class="col-md-6">

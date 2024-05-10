@@ -19,8 +19,8 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
-		$data['konfirmasi_absen'] = $this->supervisor_model->konfirmasiAbsenById($data['supervisor']['id']);
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['konfirmasi_absen'] = $this->supervisor_model->konfirmasiAbsenById($data['user']['id']);
 
 
 
@@ -36,7 +36,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$this->load->view('backend/s_template/header', $data);
 		$this->load->view('backend/s_template/topbar', $data);
@@ -49,7 +49,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$this->load->view('backend/s_template/header', $data);
 		$this->load->view('backend/s_template/topbar', $data);
@@ -62,7 +62,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Edit Profil';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$nama = $this->input->post('nama', true);
 
 
@@ -97,7 +97,7 @@ class supervisor extends CI_Controller
 
 			];
 			$this->db->where('id', $id);
-			$this->db->update('supervisor', $data1);
+			$this->db->update('user', $data1);
 
 
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
@@ -114,7 +114,7 @@ class supervisor extends CI_Controller
 
 			];
 			$this->db->where('id', $id);
-			$this->db->update('supervisor', $data1);
+			$this->db->update('user', $data1);
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 			redirect('pegawai');
 		}
@@ -124,17 +124,17 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Edit Password';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$password_lama = $this->input->post('password_lama', true);
 		$password_baru = $this->input->post('password_baru', true);
 		$password_baru1 = $this->input->post('password_baru1', true);
-		if (password_verify($password_lama, $data['supervisor']['password'])) {
+		if (password_verify($password_lama, $data['user']['password'])) {
 			if ($password_baru == $password_baru1) {
 				$data = [
 					"password" => password_hash($password_baru, PASSWORD_DEFAULT),
 				];
 				$this->db->where('id', $id);
-				$this->db->update('supervisor', $data);
+				$this->db->update('user', $data);
 				$this->session->set_flashdata('flash', 'Password Berhasil Diubah!');
 				redirect('pegawai');
 			} else {
@@ -151,11 +151,11 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
-		$data['pegawai'] = $this->supervisor_model->PegawaiById($data['supervisor']['id']);
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['pegawai'] = $this->supervisor_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->supervisor_model->izinById($data['pegawai']['id_pegawai']);
 
-		$isi = $this->supervisor_model->AbsenByStatusId($data['supervisor']['id']);
+		$isi = $this->supervisor_model->AbsenByStatusId($data['user']['id']);
 
 		if ($isi) {
 			$data['absen'] = $isi;
@@ -173,8 +173,8 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Konfirmasi Absen';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
-		$data['konfirmasi_absen'] = $this->supervisor_model->konfirmasiAbsenById($data['supervisor']['id']);
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['konfirmasi_absen'] = $this->supervisor_model->konfirmasiAbsenById($data['user']['id']);
 
 		$this->load->view('backend/s_template/header', $data);
 		$this->load->view('backend/s_template/topbar', $data);
@@ -193,19 +193,19 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Absen Bulanan';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
 		$data['thnselected'] = $thn;
-		$data['pegawai'] = $this->db->get_where('tb_pegawai', ['id_user' => $data['supervisor']['id']])->row_array();
+		$data['pegawai'] = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
 		$id_peg = $data['pegawai']['id_pegawai'];
-		// $data['petugas'] = $this->db->get_where('supervisor')->result_array();
+		// $data['petugas'] = $this->db->get_where('user')->result_array();
 		// 
 
 		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
 		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
-		$data['pegawai'] = $this->db->get_where('tb_pegawai', ['id_user' => $data['supervisor']['id']])->row_array();
+		$data['pegawai'] = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
 		$isi = $this->Admin_model->getAllpegawaiByid($id_peg);
 		if ($isi == null) {
 			$data['detail_pegawai']['nama_pegawai'] = '';
@@ -305,7 +305,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Detail Absensi';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['detail_absensi'] = $this->Admin_model->getDetailAbsen($id);
 
 		$this->load->view('backend/s_template/header', $data);
@@ -319,7 +319,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$lat = $this->input->post('lat', true);
 		$long = $this->input->post('long', true);
@@ -371,7 +371,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$lat = $this->input->post('lat', true);
 		$long = $this->input->post('long', true);
@@ -423,7 +423,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$lat = $this->input->post('lat', true);
 		$long = $this->input->post('long', true);
@@ -494,7 +494,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		// mengambil data supervisor berdasarkan email yang ada di session
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
@@ -539,9 +539,9 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Cetak Payrol Bulanan';
 
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$userData = $this->db->get_where('tb_pegawai', ['id_user' => $data['supervisor']['id']])->row_array();
+		$userData = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
 
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -862,5 +862,117 @@ class supervisor extends CI_Controller
 		$data['blnnya'] = $bln;
 		$data['thn'] = $thn;
 		$this->load->view('backend/admin/laporan/cetak', $data);
+	}
+
+	public function konfirmasi_leader()
+	{
+		$data['title'] = 'Tampil Konfirmasi';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzin();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/s_template/header', $data);
+		$this->load->view('backend/s_template/topbar', $data);
+		$this->load->view('backend/s_template/sidebar', $data);
+		$this->load->view('backend/supervisor/konfirmasi_leader/index', $data);
+		$this->load->view('backend/s_template/footer');
+	}
+
+	public function konfirmasi_izin_leader($id)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 1,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Absen Masuk Berhasil Dikonfirmasi');
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_pulang($id)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 2,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Absen Pulang Berhasil Dikonfirmasi');
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_lembur($id, $id_peg)
+	{
+		$data['title'] = 'Lembur Hari Ini';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$lembur = $this->Admin_model->getPegawaiByLemburTanggal($id_peg);
+		$id_lembur = $lembur['id_lembur'];
+		// var_dump($id_lembur);
+		// die;
+		$data = [
+			"status" => 3,
+			"id_lembur" => $id_lembur,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->Admin_model->InsertTbLembur($id_peg);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function konfirmasi_absen_izin_sakit($id)
+	{
+
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$data = [
+			"status" => 4,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('supervisor/tampil-konfirmasi');
+	}
+	public function konfirmasi_absen_izin_tdkmsk($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 5,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function izinStatusAcc($id)
+	{
+		$data = array(
+			"acc" => "1"
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function izinStatusDenied($id)
+	{
+		$data = array(
+			"acc" => "0"
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi');
 	}
 }
