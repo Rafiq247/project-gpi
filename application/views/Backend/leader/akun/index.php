@@ -61,14 +61,18 @@
                                  <?php endif ?>
                              </td>
                              <td>
-                                 <?php if ($b['role_id'] == 1) : ?>
+                                <?php if ($b['role_id'] == 1) : ?>
                                      Super Admin
-                                 <?php else : ?>
-                                     Pegawai
+                                 <?php elseif ($b['role_id'] == 2) : ?>
+                                     Supervisor
+                                 <?php elseif ($b['role_id'] == 3) : ?>
+                                     Leader
+                                 <?php elseif ($b['role_id'] == 4) : ?>
+                                     Karyawan
                                  <?php endif ?>
                              </td>
                              <td>
-                                 <a href="<?= base_url('leader/reset-password') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Mereset Password?');" class="ml-1 mr-1">
+                                 <a href="<?= base_url('admin/reset-password') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Mereset Password?');" class="ml-1 mr-1">
                                      <button type="button" class="btn btn-primary">
                                          <i class="fa fa-repeat"> Reset Password</i>
                                      </button>

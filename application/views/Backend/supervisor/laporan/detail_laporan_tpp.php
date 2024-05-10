@@ -73,11 +73,12 @@
              <h6 class="mb-4 bc-header"><?= $title ?></h6>
            </div>
            <div class="col-sm-4 text-right pb-3">
-             <a target="_blank" href="<?= base_url(); ?>supervisor/cetak-payrol-pegawai/<?= $id_pegawai; ?>/<?php echo $blnselected  ?>/<?php echo $thnselected  ?>" class="ml-0">
+             <a target="_blank" href="<?= base_url(); ?>pegawai/cetak-payrol-pegawai/<?= $id_pegawai; ?>/<?php echo $blnselected  ?>/<?php echo $thnselected  ?>" class="ml-0">
                <button type="button" class="btn btn-danger">
                  <i class="fa fa-print"></i>
                </button>
              </a>
+
            </div>
          </div>
          <div class="text-center mb-3">

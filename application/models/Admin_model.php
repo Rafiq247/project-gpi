@@ -23,8 +23,7 @@ class Admin_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-		
-
+	
 	public function getAllpegawai()
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";

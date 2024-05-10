@@ -3,19 +3,19 @@
 
 class Auth_model extends CI_model
 {
-    public function getAlljabatan()
-    {
-        $sql = "SELECT * from jabatan";
-        $result = $this->db->query($sql);
-        return $result->result_array();
-    }
+    // public function getAlljabatan()
+    // {
+    //     $sql = "SELECT * from jabatan";
+    //     $result = $this->db->query($sql);
+    //     return $result->result_array();
+    // }
 
-    public function getAllpegawai()
-    {
-        $sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
-        $result = $this->db->query($sql);
-        return $result->result_array();
-    }
+    // public function getAllpegawai()
+    // {
+    //     $sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
+    //     $result = $this->db->query($sql);
+    //     return $result->result_array();
+    // }
 
     public function getUserByEmail($email)
     {
@@ -63,18 +63,4 @@ class Auth_model extends CI_model
         $this->db->update('user');
     }
 
-    // public function getAuthRegister()
-    // {
-    //     $data = [
-    //         'id_user' => $this->input->post('id_user'),
-    //         'id_pegawai' => $this->input->post('id_pegawai'),
-    //         'nama_pegawai' => $this->input->post('nama_pegawai'),
-    //         'email' => $this->input->post('email'),
-    //         'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
-    //         'role_id' => 2,
-    //         'is_active' => 1,
-    //         'date_created' => time()
-    //     ];
-    //     $this->db->insert('user', $data);
-    // }
 }

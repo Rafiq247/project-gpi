@@ -78,6 +78,7 @@
                  <i class="fa fa-print"></i>
                </button>
              </a>
+
            </div>
          </div>
          <div class="text-center mb-3">

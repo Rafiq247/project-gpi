@@ -20,12 +20,7 @@
                         <tr>
                             <th width="">Id Pegawai</th>
                             <td><?= $detail_pegawai['id_pegawai'] ?></td>
-                            <td rowspan="5" width="350px">
-                                <img src="<?php echo base_url() . '/gambar/pegawai/' . $detail_pegawai['foto']; ?>" class="card-img mx-auto d-block" style="width: 120px; height: 140px;">
-                                <a href="<?php echo base_url() . '/gambar/pegawai/' . $detail_pegawai['foto']; ?>" target="_blank">
-                                    <center>Foto</center>
-                                </a>
-                            </td>
+                            <td rowspan="5"><?= $detail_pegawai['foto'] ?></td>
                         </tr>
                         <tr>
                             <th>Nama Lengkap</th>
@@ -59,12 +54,7 @@
                         <tr>
                             <th>Agama</th>
                             <td><?= $detail_pegawai['agama'] ?></td>
-                            <td rowspan="5">
-                                <img src="<?php echo base_url() . '/gambar/pegawai/' . $detail_pegawai['ktp']; ?>" class="card-img mx-auto d-block" style="width: 290px; height: 140px;">
-                                <a href="<?php echo base_url() . '/gambar/pegawai/' . $detail_pegawai['ktp']; ?>" target="_blank">
-                                    <center>Kartu Tanda Penduduk</center>
-                                </a>
-                            </td>
+                            <td rowspan="5"><?= $detail_pegawai['ktp'] ?></td>
                         </tr>
                         <tr>
                             <th>Jabatan</th>
