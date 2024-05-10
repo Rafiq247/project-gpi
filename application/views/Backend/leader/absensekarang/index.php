@@ -154,7 +154,7 @@
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
- 						<?php echo form_open_multipart('leader/izin-pegawai'); ?>
+ 						<?php echo form_open_multipart('leader/izin-leader'); ?>
  						<div class="card-body">
  							<div class="row">
  								<div class="col-md-6">

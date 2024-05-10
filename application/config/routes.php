@@ -119,7 +119,9 @@
     $route['admin/cetak-payrol-pegawai/(:any)'] = 'admin/cetak_payrol_pegawai/$1';
     $route['admin/hapus-payrol/(:any)'] = 'admin/hapusPayrol/$1';
 
-
+    //Data Karyawan
+    $route['admin/absen-pegawai'] = 'supervisor/data_pegawai';
+    $route['admin/absen-pegawai'] = 'supervisor/data_leader';
 
     $route['admin/akumulasi-gaji'] = 'admin/akumulasi_gaji';
     $route['admin/simpan-gaji'] = 'admin/simpan_gaji';
@@ -147,6 +149,7 @@
 
     // Supervisor Konfirmasi izin
     $route['supervisor/tampil-konfirmasi'] = 'supervisor/konfirmasi_leader';
+    $route['supervisor/absen-pegawai'] = 'supervisor/data_pegawai';
     // $route['supervisor/konfirmasi-absen/(:any)'] = 'supervisor/konfirmasi_absen/$1';
     // $route['supervisor/konfirmasi-absen-pulang/(:any)'] = 'supervisor/konfirmasi_absen_pulang/$1';
     // $route['supervisor/konfirmasi-absen-lembur/(:any)/(:any)'] = 'supervisor/konfirmasi_absen_lembur/$1/$2';

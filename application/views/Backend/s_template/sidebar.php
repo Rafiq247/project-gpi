@@ -31,7 +31,7 @@
            </li>
            <li class="parent">
              <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
-               <span class="none">Data Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+               <span class="none">Izin Absen<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="absensi">
                <li class="child"><a href="<?= base_url() ?>supervisor/absen-harian" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Ambil Izin</a></li>
@@ -41,10 +41,11 @@
            </li>
            <li class="parent">
              <a href="#" onclick="toggle_menu('konfirmasi'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
-               <span class="none">Konfirmasi Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+               <span class="none">Data Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="konfirmasi">
-               <li class="child"><a href="<?= base_url() ?>supervisor/konfirmasi_leader" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Absen Pegawai</a></li>
+               <li class="child"><a href="<?= base_url() ?>supervisor/konfirmasi_leader" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Absen Leader</a></li>
+               <li class="child"><a href="<?= base_url() ?>supervisor/data_pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Pegawai</a></li>
              </ul>
            </li>
            <li class="parent">

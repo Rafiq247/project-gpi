@@ -58,6 +58,15 @@
              </ul>
            </li>
            <li class="parent">
+             <a href="#" onclick="toggle_menu('karyawan'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
+               <span class="none">Data Karyawan<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+             </a>
+             <ul class="children" id="karyawan">
+               <li class="child"><a href="<?= base_url() ?>admin/data_leader" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Leader</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/data_pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Pegawai</a></li>
+             </ul>
+           </li>
+           <li class="parent">
              <a href="#" onclick="toggle_menu('tunjangan'); return false" class=""><i class="fa fa-credit-card mr-3"> </i>
                <span class="none">Tunjangan Pegawai<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>

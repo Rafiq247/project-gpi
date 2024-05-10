@@ -570,6 +570,47 @@ class Admin extends CI_Controller
 		redirect('admin/tambah-lembur');
 	}
 
+	// public function data_pegawai()
+	// {
+	// 	$data['title'] = 'Data Pegawai Izin';
+	// 	// mengambil data user berdasarkan email yang ada di session
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	// 	// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+	// 	$data['absensi'] = $this->Admin_model->getIzinDataPegawai();
+	// 	foreach ($data['absensi'] as $key => $value) {
+	// 		$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+	// 	}
+
+
+	// 	// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+	// 	// return;
+	// 	$this->load->view('backend/template/header', $data);
+	// 	$this->load->view('backend/template/topbar', $data);
+	// 	$this->load->view('backend/template/sidebar', $data);
+	// 	$this->load->view('backend/admin/data_pegawai/index', $data);
+	// 	$this->load->view('backend/template/footer');
+	// }
+
+	public function data_leader()
+	{
+		$data['title'] = 'Data Pegawai Izin';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzinDataLeader();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/data_leader/leader', $data);
+		$this->load->view('backend/template/footer');
+	}
 
 	public function tampil_konfirmasi()
 	{

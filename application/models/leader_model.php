@@ -17,6 +17,30 @@ class leader_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
+
+	public function getPegawaiById($id)
+	{
+		$sql = "SELECT * FROM `db_kepegawaian`.`tb_pegawai` WHERE `id_pegawai` = '$id'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPegawaiByLemburTanggal()
+	{
+		$tgl_skrng = date('Y-m-d');
+		$sql = "SELECT tb_lembur.* from tb_lembur,tb_presents where tb_lembur.id_pegawai=tb_presents.id_pegawai and tb_presents.tanggal='$tgl_skrng'";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+	public function InsertTbLembur($id_peg)
+	{
+		$tgl_skrng = date('Y-m-d');
+		$sql = "UPDATE tb_lembur SET status = 1 WHERE date ='$tgl_skrng' and id_pegawai='$id_peg'";
+		$result = $this->db->query($sql);
+		return $result;
+	}
+	
 	public function AbsenByStatusId($id_user)
 	{
 		$tgl_skrng = date('Y-m-d');
@@ -65,6 +89,13 @@ class leader_model extends CI_model
 	public function getIzin()
 	{
 		$sql = "SELECT * FROM `izin`";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinPegawai()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 4";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}

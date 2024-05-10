@@ -166,6 +166,7 @@ class leader extends CI_Controller
 		$this->load->view('backend/leader/absensekarang/index', $data);
 		$this->load->view('backend/l_template/footer');
 	}
+
 	public function konfirmasi_absen()
 	{
 		$data['title'] = 'Konfirmasi Absen';
@@ -520,6 +521,7 @@ class leader extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
+			"role_id" => 3,
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
@@ -861,15 +863,16 @@ class leader extends CI_Controller
 		$this->load->view('backend/leader/laporan/cetak', $data);
 	}
 
+	// Konfirmasi Izin Pegawai
 	public function konfirmasi_pegawai()
 	{
-		$data['title'] = 'Tampil Konfirmasi';
+		$data['title'] = 'Konfirmasi Izin Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
-		$data['absensi'] = $this->Admin_model->getIzin();
+		$data['absensi'] = $this->leader_model->getIzinPegawai();
 		foreach ($data['absensi'] as $key => $value) {
-			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+			$data['absensi'][$key]['pegawai'] = $this->leader_model->getPegawaiById($value['id_pegawai']);
 		}
 
 
@@ -912,7 +915,7 @@ class leader extends CI_Controller
 	{
 		$data['title'] = 'Lembur Hari Ini';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$lembur = $this->Admin_model->getPegawaiByLemburTanggal($id_peg);
+		$lembur = $this->leader_model->getPegawaiByLemburTanggal($id_peg);
 		$id_lembur = $lembur['id_lembur'];
 		// var_dump($id_lembur);
 		// die;
@@ -922,7 +925,7 @@ class leader extends CI_Controller
 		];
 		$this->db->where('id_presents', $id);
 		$this->db->update('tb_presents', $data);
-		$this->Admin_model->InsertTbLembur($id_peg);
+		$this->leader_model->InsertTbLembur($id_peg);
 		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
 		redirect('leader/tampil-konfirmasi');
 	}

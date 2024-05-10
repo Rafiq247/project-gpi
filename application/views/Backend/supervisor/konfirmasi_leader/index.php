@@ -145,11 +145,11 @@
  								<?php
 									if ($b['acc'] == 0) {
 									?>
- 									<a class="btn btn-theme ml-1" href="<?= base_url('leader/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
+ 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
  								<?php
 									} else {
 									?>
- 									<a class="btn btn-danger ml-1" href="<?= base_url('leader/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
+ 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
  								<?php
 									}
 									?>

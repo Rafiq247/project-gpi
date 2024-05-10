@@ -498,6 +498,7 @@ class pegawai extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
+		$role_id = $this->input->post('role_id', true);
 		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
 		$keterangan = $this->input->post('penjelasan', true);
 
@@ -523,6 +524,7 @@ class pegawai extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
+			"role_id" => 4,
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,

@@ -17,6 +17,30 @@ class supervisor_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
+
+	public function getPegawaiById($id)
+	{
+		$sql = "SELECT * FROM `db_kepegawaian`.`tb_pegawai` WHERE `id_pegawai` = '$id'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPegawaiByLemburTanggal()
+	{
+		$tgl_skrng = date('Y-m-d');
+		$sql = "SELECT tb_lembur.* from tb_lembur,tb_presents where tb_lembur.id_pegawai=tb_presents.id_pegawai and tb_presents.tanggal='$tgl_skrng'";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+	public function InsertTbLembur($id_peg)
+	{
+		$tgl_skrng = date('Y-m-d');
+		$sql = "UPDATE tb_lembur SET status = 1 WHERE date ='$tgl_skrng' and id_pegawai='$id_peg'";
+		$result = $this->db->query($sql);
+		return $result;
+	}
+	
 	public function AbsenByStatusId($id_user)
 	{
 		$tgl_skrng = date('Y-m-d');
@@ -58,6 +82,65 @@ class supervisor_model extends CI_model
 	public function izinById($id)
 	{
 		$sql = "SELECT * FROM `izin` WHERE `izin`.`id_pegawai` = '$id'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinLeader()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 3";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function totalIzinById($id)
+	{
+		$sql = "SELECT * FROM `izin` WHERE `izin`.`id_pegawai` = '$id'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getAllLemburPegawai($tgl1, $tgl2)
+	{
+
+		// $sql = "SELECT DISTINCT tb_pegawai.nama_pegawai, jabatan.jabatan as namjab,
+		//             (select COUNT(keterangan) from tb_presents where keterangan='3') as jumlem,
+		//             (select COUNT(keterangan) from tb_presents where keterangan='2') as masuk,
+		//             (select COUNT(keterangan) from tb_presents where keterangan='4') as sakit,
+		//             (select COUNT(keterangan) from tb_presents where keterangan='5') as izin
+		//              from tb_presents,jabatan, tb_pegawai  where tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan 
+		//             and tb_presents.tanggal between '$tgl1' and '$tgl2' GROUP BY tb_presents.id_pegawai;
+		//     ";
+
+		$sql = "SELECT DISTINCT tb_pegawai.nama_pegawai, jabatan.jabatan as namjab,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '3') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS jumlem,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '2') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS masuk,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '4') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS sakit,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '5') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS izin
+    from tb_presents,jabatan, tb_pegawai  where tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan 
+    and tb_presents.tanggal between '$tgl1' and '$tgl2' GROUP BY tb_presents.id_pegawai";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getAllLemburPegawaiById($tgl1, $tgl2, $id_peg)
+	{
+		// nanti edit select COUNT(keterangan) from tb_presents where keterangan='3' and tanggal between '$tgl1' and '$tgl2' and id_pegawai='$id_peg';
+		$sql = "SELECT DISTINCT tb_pegawai.nama_pegawai, jabatan.jabatan as namjab,
+                (SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '3') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS jumlem,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '2') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS masuk,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '4') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS sakit,
+		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '5') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS izin
+                 from tb_presents,jabatan, tb_pegawai  where tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan 
+                and tb_presents.tanggal between '$tgl1' and '$tgl2' and tb_presents.id_pegawai='$id_peg';
+        ";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+	public function getIzinDataPegawai()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 4";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}

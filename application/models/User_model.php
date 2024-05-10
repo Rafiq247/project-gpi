@@ -17,6 +17,7 @@ class User_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
+	
 	public function AbsenByStatusId($id_user)
 	{
 		$tgl_skrng = date('Y-m-d');

@@ -141,7 +141,21 @@ class Admin_model extends CI_model
 
 	public function getIzin()
 	{
-		$sql = "SELECT * FROM `izin`";
+		$sql = "SELECT * FROM izin WHERE role_id = 2";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinDataPegawai()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 4";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinDataLeader()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 3";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}

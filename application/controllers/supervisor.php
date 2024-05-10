@@ -360,10 +360,10 @@ class supervisor extends CI_Controller
 
 			$this->db->insert('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Masuk Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('supervisor/absen-harian');
 		} else {
 			$this->session->set_flashdata('s_absenggl', 'Absen Gagal, Anda Terlalu Jauh Dari Kantor');
-			redirect('pegawai/absen-harian');
+			redirect('supervisor/absen-harian');
 		}
 	}
 
@@ -414,7 +414,7 @@ class supervisor extends CI_Controller
 			$this->db->where('id_presents', $id_presents);
 			$this->db->update('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Masuk Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('supervisor/absen-harian');
 		} else {
 			echo 'Anda Terlalu Jauh Dari Kantor';
 		}
@@ -464,7 +464,7 @@ class supervisor extends CI_Controller
 			$this->db->where('id_presents', $id_presents);
 			$this->db->update('tb_presents', $data);
 			$this->session->set_flashdata('flash', 'Absen Lembur Anda Berhasil Masuk');
-			redirect('pegawai/absen-harian');
+			redirect('supervisor/absen-harian');
 		} else {
 			echo 'Anda Terlalu Jauh Dari Kantor';
 		}
@@ -523,6 +523,7 @@ class supervisor extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
+			"role_id" => 2,
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
@@ -531,7 +532,7 @@ class supervisor extends CI_Controller
 
 		$this->db->insert('izin', $data);
 		$this->session->set_flashdata('flash', 'Izin Anda Akan Diproses');
-		redirect('pegawai/absen-harian');
+		redirect('supervisor/absen-harian');
 	}
 
 
@@ -870,9 +871,9 @@ class supervisor extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
-		$data['absensi'] = $this->Admin_model->getIzin();
+		$data['absensi'] = $this->supervisor_model->getIzinLeader();
 		foreach ($data['absensi'] as $key => $value) {
-			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+			$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
 		}
 
 
@@ -915,7 +916,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Lembur Hari Ini';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$lembur = $this->Admin_model->getPegawaiByLemburTanggal($id_peg);
+		$lembur = $this->supervisor_modal->getPegawaiByLemburTanggal($id_peg);
 		$id_lembur = $lembur['id_lembur'];
 		// var_dump($id_lembur);
 		// die;
@@ -925,7 +926,7 @@ class supervisor extends CI_Controller
 		];
 		$this->db->where('id_presents', $id);
 		$this->db->update('tb_presents', $data);
-		$this->Admin_model->InsertTbLembur($id_peg);
+		$this->leader_modal->InsertTbLembur($id_peg);
 		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
 		redirect('supervisor/tampil-konfirmasi');
 	}
@@ -974,5 +975,26 @@ class supervisor extends CI_Controller
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function data_pegawai()
+	{
+		$data['title'] = 'Data Pegawai Izin';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->supervisor_model->getIzinDataPegawai();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/s_template/header', $data);
+		$this->load->view('backend/s_template/topbar', $data);
+		$this->load->view('backend/s_template/sidebar', $data);
+		$this->load->view('backend/supervisor/data_pegawai/index', $data);
+		$this->load->view('backend/s_template/footer');
 	}
 }
