@@ -16,6 +16,7 @@ class Admin_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+	
 	public function getAllDetail()
 	{
 		$role_ids = [1, 2, 3, 4]; // Define the array of role IDs

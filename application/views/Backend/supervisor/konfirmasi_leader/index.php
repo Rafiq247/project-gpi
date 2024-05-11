@@ -130,7 +130,7 @@
  				</thead>
  				<tbody>
  					<?php $no = 1; ?>
- 					<?php
+ 					<?php if (isset($absensi) && is_array($absensi))
 						foreach ($absensi as $b) : ?>
  						<tr>
  							<td><?= $no++ ?></td>

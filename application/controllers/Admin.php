@@ -84,6 +84,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/jabatan/index', $data);
 		$this->load->view('backend/template/footer');
 	}
+	
 	public function tambah_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -91,11 +92,13 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
 		$salary = $this->input->post('salary', true);
 		$bonus = $this->input->post('bonus', true);
 		$overtime = $salary / 173;
 		$data = [
 			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
@@ -235,7 +238,7 @@ class Admin extends CI_Controller
 			"email" => $email,
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
-			'role_id' => $role_id,
+			"role_id" => $role_id,
 			'is_active' => 1,
 			'date_created' => time(),
 			'temp' => $temp

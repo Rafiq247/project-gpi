@@ -57,7 +57,7 @@
  			</div>
  			<?php if ($absen['id_pegawai'] == 'peg') : ?>
  				<div class="col-sm-4 text-right pb-3">
- 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Sakit</button>
+ 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Izin</button>
  				</div>
  			<?php endif ?>
 
@@ -166,6 +166,7 @@
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
+												 <option value="6">Izin Cuti</option>
  											</select>
  										</div>
  									</div>
@@ -290,6 +291,8 @@
  					} else if ($("#jenisizin option:selected").val() == '4') {
  						$('#suratsakit').prop('hidden', false);
  					} else if ($("#jenisizin option:selected").val() == '5') {
+ 						$('#suratsakit').prop('hidden', 'true');
+ 					} else if ($("#jenisizin option:selected").val() == '6') {
  						$('#suratsakit').prop('hidden', 'true');
  					}
  				});

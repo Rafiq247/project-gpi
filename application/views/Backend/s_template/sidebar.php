@@ -30,6 +30,14 @@
              </ul>
            </li>
            <li class="parent">
+             <a href="" onclick="toggle_menu('datamaster'); return false" class=""><i class="fa fa-book mr-3"> </i>
+               <span class="none">Data Karyawan<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+             </a>
+             <ul class="children" id="datamaster">
+               <li class="child"><a href="<?= base_url() ?>supervisor/pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Pegawai</a></li>
+             </ul>
+           </li>
+           <li class="parent">
              <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
                <span class="none">Izin Absen<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>

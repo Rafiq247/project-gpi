@@ -498,8 +498,7 @@ class pegawai extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$role_id = $this->input->post('role_id', true);
-		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
+		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');		
 		$keterangan = $this->input->post('penjelasan', true);
 
 
@@ -524,7 +523,6 @@ class pegawai extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
-			"role_id" => 4,
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
@@ -655,12 +653,15 @@ class pegawai extends CI_Controller
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti +=1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -681,6 +682,7 @@ class pegawai extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -696,13 +698,16 @@ class pegawai extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti +=1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -723,6 +728,7 @@ class pegawai extends CI_Controller
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];

@@ -158,6 +158,13 @@
     $route['supervisor/acc-izin/(:any)'] = 'supervisor/izinStatusAcc/$1';
     $route['supervisor/hapus-izin/(:any)'] = 'supervisor/izinStatusDenied/$1';
 
+    // Data Pegawai
+    $route['supervisor/pegawai'] = 'supervisor/pegawai';
+    // $route['supervisor/tambah-pegawai'] = 'supervisor/tambah_pegawai';
+    // $route['supervisor/edit-pegawai'] = 'supervisor/edit_pegawai';
+    // $route['supervisor/hapus-pegawai/(:any)/(:any)'] = 'supervisor/hapus_pegawai/$1/$2';
+    $route['supervisor/detail-pegawai/(:any)'] = 'supervisor/detail_pegawai/$1';
+
     // Route Leader
     $route['leader/edit-profil/(:any)'] = 'leader/edit_profil/$1';
     $route['leader/edit-password/(:any)'] = 'leader/edit_password/$1';

@@ -865,26 +865,65 @@ class supervisor extends CI_Controller
 		$this->load->view('backend/admin/laporan/cetak', $data);
 	}
 
+	// public function konfirmasi_leader()
+	// {	
+	// 	$data['title'] = 'Tampil Konfirmasi';
+	// 	// mengambil data user berdasarkan email yang ada di session
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	// 	// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+	// 	// $id_jabatan = $data['user']['id_jabatan'];
+	// 	// $data['absensi'] = $this->supervisor_model->getIzinLeader($id_jabatan);
+	// 	$id_jabatan = $data['user']['id_jabatan'];
+	// 	$data['absensi'] = $this->supervisor_model->getIzinLeader($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90);
+	// 	foreach ($data['absensi'] as $key => $value) {
+	// 		$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
+	// 	}
+
+
+	// 	// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+	// 	// return;
+	// 	$this->load->view('backend/s_template/header', $data);
+	// 	$this->load->view('backend/s_template/topbar', $data);
+	// 	$this->load->view('backend/s_template/sidebar', $data);
+	// 	$this->load->view('backend/supervisor/konfirmasi_leader/index', $data);
+	// 	$this->load->view('backend/s_template/footer');
+	// }
+
+	// public function konfirmasi_leader()
+	// {
+	// 	$data['title'] = 'Tampil Konfirmasi';
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	// 	$id_jabatan = $data['user']['id_jabatan'];
+	// 	$data['absensi'] = $this->supervisor_model->getIzinLeader($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90);
+	// 	foreach ($data['absensi'] as $key => $value) {
+	// 		$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
+	// 		$this->checkData($data['absensi'][$key]['pegawai'][0]);
+	// 	}
+	// 	$this->load->view('backend/s_template/header', $data);
+	// 	$this->load->view('backend/s_template/topbar', $data);
+	// 	$this->load->view('backend/s_template/sidebar', $data);
+	// 	$this->load->view('backend/supervisor/konfirmasi_leader/index', $data);
+	// 	$this->load->view('backend/s_template/footer');
+	// }
+
 	public function konfirmasi_leader()
 	{
 		$data['title'] = 'Tampil Konfirmasi';
-		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
-		$data['absensi'] = $this->supervisor_model->getIzinLeader();
-		foreach ($data['absensi'] as $key => $value) {
-			$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
+		if (isset($data['user']['id_jabatan'])) {
+			$id_jabatan = $data['user']['id_jabatan'];
+			$data['absensi'] = $this->supervisor_model->getIzinLeader($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90);
+			foreach ($data['absensi'] as $key => $value) {
+				$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id']);
+				$this->checkData($data['absensi'][$key]['pegawai'][0]);
+			}
 		}
-
-
-		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
-		// return;
 		$this->load->view('backend/s_template/header', $data);
 		$this->load->view('backend/s_template/topbar', $data);
 		$this->load->view('backend/s_template/sidebar', $data);
 		$this->load->view('backend/supervisor/konfirmasi_leader/index', $data);
 		$this->load->view('backend/s_template/footer');
-	}
+		}
 
 	public function konfirmasi_izin_leader($id)
 	{
@@ -995,6 +1034,43 @@ class supervisor extends CI_Controller
 		$this->load->view('backend/s_template/topbar', $data);
 		$this->load->view('backend/s_template/sidebar', $data);
 		$this->load->view('backend/supervisor/data_pegawai/index', $data);
+		$this->load->view('backend/s_template/footer');
+	}
+
+	public function pegawai()
+	{
+		$data['title'] = 'Data Pegawai';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		if (isset($data['user']['id_jabatan'])) {
+			$id_jabatan = $data['user']['id_jabatan'];
+			$data['pegawai'] = $this->supervisor_model->getAllpegawai($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90);
+			foreach ($data['pegawai'] as $key => $value) {
+				$data['pegawai'][$key]['pegawai'] = $this->supervisor_model->getAlljabatan($value['id_pegawai']);
+				$this->checkData($data['pegawai'][$key]['jabatan'][0]);
+			}
+		}
+		$data['jekel'] = ['L', 'P'];
+		$data['stapeg'] = [1, 0];
+		$data['agama'] = ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Budha', 'Khonghucu'];
+		$this->load->view('backend/s_template/header', $data);
+		$this->load->view('backend/s_template/topbar', $data);
+		$this->load->view('backend/s_template/sidebar', $data);
+		$this->load->view('backend/supervisor/pegawai/index', $data);
+		$this->load->view('backend/s_template/footer');
+	}
+	
+	public function detail_pegawai($id)
+	{
+		$data['title'] = 'Data Pegawai';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['detail_pegawai'] = $this->supervisor_model->getDetailpegawai($id);
+
+		$this->load->view('backend/s_template/header', $data);
+		$this->load->view('backend/s_template/topbar', $data);
+		$this->load->view('backend/s_template/sidebar', $data);
+		$this->load->view('backend/supervisor/pegawai/index', $data);
 		$this->load->view('backend/s_template/footer');
 	}
 }

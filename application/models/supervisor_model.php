@@ -11,6 +11,45 @@ class supervisor_model extends CI_model
 		return $result->result_array();
 	}
 
+	// Data Pegawai
+
+	// public function getAllpegawai($id_jabatan = null)
+	// {
+	// 	if (!is_null($id_jabatan)) {
+	// 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+	// 	} else {
+	// 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
+	// 	}
+	// 	$result = $this->db->query($sql);
+	// 	return $result->result_array();
+	// }
+
+	public function getAllpegawai($id_jabatan = null)
+	{
+		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
+		if (!is_null($id_jabatan)) {
+			$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+		}
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+
+	public function getDetailpegawai($id)
+	{
+		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan and tb_pegawai.id_pegawai='$id'";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+	public function getAlljabatan()
+	{
+		$sql = "SELECT * from jabatan";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+	//End Data Pegawai
+
 	public function PegawaiById($id)
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai,jabatan  where tb_pegawai.jabatan=jabatan.id_jabatan and tb_pegawai.id_user='$id'";
@@ -24,6 +63,13 @@ class supervisor_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	// public function getPegawaiById($id_pegawai)
+	// {
+	// 	$this->db->where('id_pegawai', $id_pegawai);
+	// 	$query = $this->db->get('tb_pegawai');
+	// 	return $query->row_array();
+	// }
 
 	public function getPegawaiByLemburTanggal()
 	{
@@ -86,9 +132,31 @@ class supervisor_model extends CI_model
 		return $result->result_array();
 	}
 
-	public function getIzinLeader()
+	// public function getIzinLeader()
+	// {
+	// 	$sql = "SELECT * FROM izin WHERE role_id = 3";
+	// 	$result = $this->db->query($sql);
+	// 	return $result->result_array();
+	// }
+
+	// public function getIzinLeader($id_jabatan = null)
+	// {
+	// 	$sql = "SELECT * FROM izin 
+	// 	JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai 
+	// 	WHERE role_id = 3";
+	// 	if (!is_null($id_jabatan)) {
+	// 		$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+	// 	}
+	// 	$result = $this->db->query($sql);
+	// 	return $result->result_array();
+	// }
+
+	public function getIzinLeader($id_jabatan = null)
 	{
 		$sql = "SELECT * FROM izin WHERE role_id = 3";
+		if (!is_null($id_jabatan)) {
+			$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
