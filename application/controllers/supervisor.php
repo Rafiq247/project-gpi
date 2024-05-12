@@ -152,11 +152,11 @@ class supervisor extends CI_Controller
 		$data['title'] = 'Dashboard';
 		$months = (int)$this->supervisor_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
-		$data['pegawai_month'] = $months;		
+		$data['pegawai_month'] = $months;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->supervisor_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->supervisor_model->izinById($data['pegawai']['id_pegawai']);
-
+		
 		$isi = $this->supervisor_model->AbsenByStatusId($data['user']['id']);
 
 		if ($isi) {
@@ -500,7 +500,7 @@ class supervisor extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
+		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');	
 		$keterangan = $this->input->post('penjelasan', true);
 
 
