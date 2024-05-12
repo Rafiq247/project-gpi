@@ -181,6 +181,6 @@ class leader_model extends CI_model
 		$date1 = date_create($result->tanggal_masuk);
 		$date2 = date_create();
 		$diff = date_diff($date1, $date2);
-		return $diff->format("%m");
+		return $diff->format("%a");
 	}
 }

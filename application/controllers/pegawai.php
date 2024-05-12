@@ -153,6 +153,7 @@ class pegawai extends CI_Controller
 		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
 		$data['pegawai_month'] = $months;
+		// var_dump($months);exit;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->User_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->User_model->izinById($data['pegawai']['id_pegawai']);
