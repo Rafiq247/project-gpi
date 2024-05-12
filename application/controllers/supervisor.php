@@ -525,7 +525,7 @@ class supervisor extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
-			"role_id" => 2,
+			"role_id" => $this->session->userdata('role_id'),
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,

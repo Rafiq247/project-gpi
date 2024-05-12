@@ -522,9 +522,9 @@ class leader extends CI_Controller
 		$data = [
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
-			"role_id" => 3,
 			"keterangan" => $keterangan,
 			"tanggal_awal" => $tglAwal,
+			"role_id" => $this->session->userdata('role_id'),
 			"tanggal_akhir" => $tglAkhir,
 			"acc" => false,
 		];

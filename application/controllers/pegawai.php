@@ -527,6 +527,7 @@ class pegawai extends CI_Controller
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
 			"keterangan" => $keterangan,
+			"role_id" => $this->session->userdata('role_id'),
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
 			"acc" => false,
