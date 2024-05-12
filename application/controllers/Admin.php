@@ -75,8 +75,8 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['jabatan'] = $this->Admin_model->getAlljabatan();
 		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime'], 2, ',', '.');
-			$data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
+			// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 		}
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -108,6 +108,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/jabatan');
 	}
+
 	public function edit_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -131,6 +132,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
 	}
+	
 	public function hapus_jabatan($id)
 	{
 		$this->db->where('id_jabatan', $id);
@@ -991,6 +993,18 @@ class Admin extends CI_Controller
 		redirect('admin/tampil-konfirmasi');
 	}
 
+	public function konfirmasi_absen_izin_cuti($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 6,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('admin/tampil-konfirmasi');
+	}
+
 	//data absen
 	public function absen_bulanan()
 	{
@@ -1250,12 +1264,15 @@ class Admin extends CI_Controller
 					$valueTotalIzin = 0;
 					$sakit = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti += 1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -1276,6 +1293,7 @@ class Admin extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1292,12 +1310,15 @@ class Admin extends CI_Controller
 								$sakit = 0;
 								$valueTotalIzin = 0;
 								$izin = 0;
+								$cuti = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti += 1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -1318,6 +1339,7 @@ class Admin extends CI_Controller
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1500,12 +1522,15 @@ class Admin extends CI_Controller
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti += 1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -1526,6 +1551,7 @@ class Admin extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1541,13 +1567,16 @@ class Admin extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti += 1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -1568,6 +1597,7 @@ class Admin extends CI_Controller
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1579,7 +1609,7 @@ class Admin extends CI_Controller
 			}
 		}
 		// $this->checkData($data['gaji'][$date]);
-		// // 
+		// 
 		foreach ($data['gaji'] as $key => $value) {
 			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
 			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {

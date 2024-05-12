@@ -150,7 +150,9 @@ class pegawai extends CI_Controller
 	public function absen_harian()
 	{
 		$data['title'] = 'Dashboard';
+		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
+		$data['pegawai_month'] = $months;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->User_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->User_model->izinById($data['pegawai']['id_pegawai']);
@@ -163,6 +165,7 @@ class pegawai extends CI_Controller
 			$data['absen']['keterangan'] = "";
 			$data['absen']['id_pegawai'] = "peg";
 		}
+		
 		$this->load->view('backend/f_template/header', $data);
 		$this->load->view('backend/f_template/topbar', $data);
 		$this->load->view('backend/f_template/sidebar', $data);
@@ -675,7 +678,7 @@ class pegawai extends CI_Controller
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => ($jabatan['salary'] - (50000 * $valueTotalIzin)),
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
@@ -721,7 +724,7 @@ class pegawai extends CI_Controller
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => ($jabatan['salary'] - (50000 * $valueTotalIzin)),
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,

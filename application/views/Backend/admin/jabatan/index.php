@@ -56,7 +56,7 @@
  							<td><?= $no++ ?></td>
  							<td><?= $b['jabatan']; ?></td>
  							<td><?= rupiah($b['salary']); ?></td>
- 							<td><?= $b['bonus']; ?></td>
+ 							<td><?= rupiah($b['bonus']); ?></td>
  							<td><?= $b['overtime']; ?></td>
  							<td>
  								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>

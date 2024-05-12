@@ -28,12 +28,11 @@ class supervisor_model extends CI_model
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
 		if (!is_null($id_jabatan)) {
-			$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
 		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-
 
 	public function getDetailpegawai($id)
 	{
@@ -56,20 +55,6 @@ class supervisor_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
-
-	public function getPegawaiById($id)
-	{
-		$sql = "SELECT * FROM `db_kepegawaian`.`tb_pegawai` WHERE `id_pegawai` = '$id'";
-		$result = $this->db->query($sql);
-		return $result->result_array();
-	}
-
-	// public function getPegawaiById($id_pegawai)
-	// {
-	// 	$this->db->where('id_pegawai', $id_pegawai);
-	// 	$query = $this->db->get('tb_pegawai');
-	// 	return $query->row_array();
-	// }
 
 	public function getPegawaiByLemburTanggal()
 	{
@@ -132,31 +117,19 @@ class supervisor_model extends CI_model
 		return $result->result_array();
 	}
 
-	// public function getIzinLeader()
-	// {
-	// 	$sql = "SELECT * FROM izin WHERE role_id = 3";
-	// 	$result = $this->db->query($sql);
-	// 	return $result->result_array();
-	// }
-
-	// public function getIzinLeader($id_jabatan = null)
-	// {
-	// 	$sql = "SELECT * FROM izin 
-	// 	JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai 
-	// 	WHERE role_id = 3";
-	// 	if (!is_null($id_jabatan)) {
-	// 		$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
-	// 	}
-	// 	$result = $this->db->query($sql);
-	// 	return $result->result_array();
-	// }
-
 	public function getIzinLeader($id_jabatan = null)
 	{
-		$sql = "SELECT * FROM izin WHERE role_id = 3";
+		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 3";
 		if (!is_null($id_jabatan)) {
-			$sql.= " AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
 		}
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPegawaiById($id)
+	{
+		$sql = "SELECT * FROM `db_kepegawaian`.`tb_pegawai` WHERE `id_pegawai` = '$id'";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -170,15 +143,6 @@ class supervisor_model extends CI_model
 
 	public function getAllLemburPegawai($tgl1, $tgl2)
 	{
-
-		// $sql = "SELECT DISTINCT tb_pegawai.nama_pegawai, jabatan.jabatan as namjab,
-		//             (select COUNT(keterangan) from tb_presents where keterangan='3') as jumlem,
-		//             (select COUNT(keterangan) from tb_presents where keterangan='2') as masuk,
-		//             (select COUNT(keterangan) from tb_presents where keterangan='4') as sakit,
-		//             (select COUNT(keterangan) from tb_presents where keterangan='5') as izin
-		//              from tb_presents,jabatan, tb_pegawai  where tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan 
-		//             and tb_presents.tanggal between '$tgl1' and '$tgl2' GROUP BY tb_presents.id_pegawai;
-		//     ";
 
 		$sql = "SELECT DISTINCT tb_pegawai.nama_pegawai, jabatan.jabatan as namjab,
 		(SELECT COUNT(keterangan) FROM tb_presents WHERE (keterangan = '3') AND (tb_presents.id_pegawai= tb_pegawai.id_pegawai and tb_pegawai.jabatan=jabatan.id_jabatan) AND (tanggal between '$tgl1' and '$tgl2')) AS jumlem,
@@ -206,10 +170,24 @@ class supervisor_model extends CI_model
 		return $result->row_array();
 	}
 
-	public function getIzinDataPegawai()
+	public function getIzinDataPegawai($id_jabatan = null)
 	{
-		$sql = "SELECT * FROM izin WHERE role_id = 4";
+		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 4";
+		if (!is_null($id_jabatan)) {
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
+	}
+
+	public function getPegawaiTotalMonth($id_user)
+	{
+		// $sql = ;
+		$result_q = $this->db->query("SELECT * FROM `tb_pegawai` WHERE id_user = ?", [$id_user]);
+		$result =  $result_q->row();
+		$date1 = date_create($result->tanggal_masuk);
+		$date2 = date_create();
+		$diff = date_diff($date1, $date2);
+		return $diff->format("%m");
 	}
 }

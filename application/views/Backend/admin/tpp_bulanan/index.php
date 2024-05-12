@@ -83,6 +83,7 @@
  								<th>TIDAK HADIR</th>
  								<th>Izin</th>
  								<th>sakit</th>
+								<th>Cuti</th>
  								<th>Pengurangan</th>
  								<th>GAJI BERSIH</th>
  								<th>AKSI</th>
@@ -108,6 +109,7 @@
  										<td><?= $b['tidak_hadir']; ?></td>
  										<td><?= $b['izin']; ?></td>
  										<td><?= $b['sakit']; ?></td>
+										 <td><?= $b['cuti']; ?></td>
  										<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
  										<td><?php echo 'Rp ' . number_format($b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'], 2, ',', '.'); ?></td>
  										<td>
@@ -124,6 +126,7 @@
  												<input type="hidden" name="hadir" value="<?= $b['hadir']; ?>">
  												<input type="hidden" name="tidak_hadir" value="<?= $b['tidak_hadir']; ?>">
  												<input type="hidden" name="sakit" value="<?= $b['sakit']; ?>">
+												<input type="hidden" name="cuti" value="<?= $b['cuti']; ?>">
  												<input type="hidden" name="pengurangan" value="<?= $b['pengurangan']; ?>">
  												<input type="hidden" name="gaji_bersih" value="<?= $b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus']; ?>">
  												<button type="submit" class="btn btn-primary btn-flat" id="simpan">Tambah Data</button>

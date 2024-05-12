@@ -11,6 +11,31 @@ class leader_model extends CI_model
 		return $result->result_array();
 	}
 
+	public function getAllpegawai($id_jabatan = null)
+	{
+		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
+		if (!is_null($id_jabatan)) {
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+		}
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getAlljabatan()
+	{
+		$sql = "SELECT * from jabatan";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getDetailpegawai($id)
+	{
+		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan and tb_pegawai.id_pegawai='$id'";
+		$result = $this->db->query($sql);
+		return $result->row_array();
+	}
+
+
 	public function PegawaiById($id)
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai,jabatan  where tb_pegawai.jabatan=jabatan.id_jabatan and tb_pegawai.id_user='$id'";
@@ -93,9 +118,12 @@ class leader_model extends CI_model
 		return $result->result_array();
 	}
 
-	public function getIzinPegawai()
+	public function getIzinPegawai($id_jabatan = null)
 	{
-		$sql = "SELECT * FROM izin WHERE role_id = 4";
+		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 4";
+		if (!is_null($id_jabatan)) {
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -143,5 +171,16 @@ class leader_model extends CI_model
         ";
 		$result = $this->db->query($sql);
 		return $result->row_array();
+	}
+
+	public function getPegawaiTotalMonth($id_user)
+	{
+		// $sql = ;
+		$result_q = $this->db->query("SELECT * FROM `tb_pegawai` WHERE id_user = ?", [$id_user]);
+		$result =  $result_q->row();
+		$date1 = date_create($result->tanggal_masuk);
+		$date2 = date_create();
+		$diff = date_diff($date1, $date2);
+		return $diff->format("%m");
 	}
 }

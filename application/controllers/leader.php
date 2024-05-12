@@ -147,8 +147,9 @@ class leader extends CI_Controller
 	public function absen_harian()
 	{
 		$data['title'] = 'Dashboard';
-		// mengambil data leader berdasarkan email yang ada di session
-		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$months = (int)$this->leader_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		// mengambil data user berdasarkan email yang ada di session
+		$data['pegawai_month'] = $months;		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->leader_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->leader_model->izinById($data['pegawai']['id_pegawai']);
 
@@ -866,18 +867,18 @@ class leader extends CI_Controller
 	// Konfirmasi Izin Pegawai
 	public function konfirmasi_pegawai()
 	{
-		$data['title'] = 'Konfirmasi Izin Pegawai';
-		// mengambil data user berdasarkan email yang ada di session
-		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
-		$data['absensi'] = $this->leader_model->getIzinPegawai();
-		foreach ($data['absensi'] as $key => $value) {
-			$data['absensi'][$key]['pegawai'] = $this->leader_model->getPegawaiById($value['id_pegawai']);
+		$data['title'] = 'Tampil Konfirmasi';
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		if (isset($data['user']['jabatan'])) {
+			$id_jabatan = $data['user']['jabatan'];
+			$data['absensi'] = $this->leader_model->getIzinPegawai($id_jabatan);
+			foreach ($data['absensi'] as $key => $value) {
+				$data['absensi'][$key]['pegawai'] = $this->leader_model->getPegawaiById($value['id_pegawai']);
+				// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+			}
 		}
 
-
-		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
-		// return;
 		$this->load->view('backend/l_template/header', $data);
 		$this->load->view('backend/l_template/topbar', $data);
 		$this->load->view('backend/l_template/sidebar', $data);
@@ -974,5 +975,45 @@ class leader extends CI_Controller
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function pegawai()
+	{
+		$data['title'] = 'Data Pegawai';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		if (isset($data['user']['jabatan'])) {
+			$id_jabatan = $data['user']['jabatan'];
+			$data['pegawai'] = $this->leader_model->getAllpegawai($id_jabatan);
+			// var_dump($data['pegawai']); exit;
+			foreach ($data['pegawai'] as $key => $value) {
+				$data['pegawai'][$key]['pegawai'] = $this->leader_model->getAlljabatan($value['id_pegawai']);
+				// $this->checkData($data['pegawai'][$key]['jabatan'][0]);
+			}
+		}
+		$data['jekel'] = ['L', 'P'];
+		$data['stapeg'] = [1, 0];
+		$data['agama'] = ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Budha', 'Khonghucu'];
+		$this->load->view('backend/l_template/header', $data);
+		$this->load->view('backend/l_template/topbar', $data);
+		$this->load->view('backend/l_template/sidebar', $data);
+		$this->load->view('backend/leader/pegawai/index', $data);
+		$this->load->view('backend/l_template/footer');
+	}
+	
+	public function detail_pegawai($id)
+	{
+		$data['title'] = 'Data Pegawai';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['detail_pegawai'] = $this->leader_model->getDetailpegawai($id);
+		// echo json_encode($data['detail_pegawai']); exit;
+
+		$this->load->view('backend/l_template/header', $data);
+		$this->load->view('backend/l_template/topbar', $data);
+		$this->load->view('backend/l_template/sidebar', $data);
+		$this->load->view('backend/leader/pegawai/detail', $data);
+		$this->load->view('backend/l_template/footer');
 	}
 }

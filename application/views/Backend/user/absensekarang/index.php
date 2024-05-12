@@ -166,7 +166,9 @@
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
+												<?php if($pegawai_month >= 12): ?>
 												 <option value="6">Izin Cuti</option>
+												<?php endif;  ?>
  											</select>
  										</div>
  									</div>

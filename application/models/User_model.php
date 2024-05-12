@@ -17,7 +17,7 @@ class User_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
-	
+
 	public function AbsenByStatusId($id_user)
 	{
 		$tgl_skrng = date('Y-m-d');
@@ -61,5 +61,16 @@ class User_model extends CI_model
 		$sql = "SELECT * FROM `izin` WHERE `izin`.`id_pegawai` = '$id'";
 		$result = $this->db->query($sql);
 		return $result->result_array();
+	}
+
+	public function getPegawaiTotalMonth($id_user)
+	{
+		// $sql = ;
+		$result_q = $this->db->query("SELECT * FROM `tb_pegawai` WHERE id_user = ?", [$id_user]);
+		$result =  $result_q->row();
+		$date1 = date_create($result->tanggal_masuk);
+		$date2 = date_create();
+		$diff = date_diff($date1, $date2);
+		return $diff->format("%m");
 	}
 }

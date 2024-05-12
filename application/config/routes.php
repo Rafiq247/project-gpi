@@ -81,6 +81,7 @@
     $route['admin/konfirmasi-absen-lembur/(:any)/(:any)'] = 'admin/konfirmasi_absen_lembur/$1/$2';
     $route['admin/konfirmasi-absen-izinsakit/(:any)'] = 'admin/konfirmasi_absen_izin_sakit/$1';
     $route['admin/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'admin/konfirmasi_absen_izin_tdkmsk/$1';
+    $route['admin/konfirmasi-absen-izincuti/(:any)'] = 'admin/konfirmasi_absen_izin_cuti/$1';
     $route['admin/acc-izin/(:any)'] = 'admin/izinStatusAcc/$1';
     $route['admin/hapus-izin/(:any)'] = 'admin/izinStatusDenied/$1';
 
@@ -189,6 +190,13 @@
     // $route['leader/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'leader/konfirmasi_absen_izin_tdkmsk/$1';
     $route['leader/acc-izin/(:any)'] = 'leader/izinStatusAcc/$1';
     $route['leader/hapus-izin/(:any)'] = 'leader/izinStatusDenied/$1';
+
+    // Data Pegawai
+    $route['leader/pegawai'] = 'leader/pegawai';
+    // $route['leader/tambah-pegawai'] = 'leader/tambah_pegawai';
+    // $route['leader/edit-pegawai'] = 'leader/edit_pegawai';
+    // $route['leader/hapus-pegawai/(:any)/(:any)'] = 'leader/hapus_pegawai/$1/$2';
+    $route['leader/detail-pegawai/(:any)'] = 'leader/detail_pegawai/$1';
 
     // Pegwai
     $route['pegawai/edit-profil/(:any)'] = 'pegawai/edit_profil/$1';
