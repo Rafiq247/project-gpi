@@ -151,8 +151,11 @@ class pegawai extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id')); 
 		// mengambil data user berdasarkan email yang ada di session
+		
 		$data['pegawai_month'] = $months;
+		$data['used_cuti'] = $used_cuti;
 		// var_dump($months);exit;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->User_model->PegawaiById($data['user']['id']);
@@ -173,6 +176,7 @@ class pegawai extends CI_Controller
 		$this->load->view('backend/user/absensekarang/index', $data);
 		$this->load->view('backend/f_template/footer');
 	}
+
 	public function konfirmasi_absen()
 	{
 		$data['title'] = 'Konfirmasi Absen';
@@ -505,8 +509,8 @@ class pegawai extends CI_Controller
 		$keterangan = $this->input->post('penjelasan', true);
 
 
-		$tglAwal = $this->input->post('tgl_awal', true);
-		$tglAkhir = $this->input->post('tgl_akhir', true);
+		$tglAwal = date('Y/m/d', strtotime($this->input->post('tgl_awal', true)));
+		$tglAkhir = date('Y/m/d', strtotime($this->input->post('tgl_akhir', true)));
 
 		$upload_image = $_FILES['suratsakit']['name'];
 		if ($upload_image) {

@@ -190,4 +190,19 @@ class supervisor_model extends CI_model
 		$diff = date_diff($date1, $date2);
 		return $diff->format("%a");
 	}
+
+	public function getIdPegawaiByIdUser($id_user)
+	{
+		$result_q = $this->db->query("SELECT * FROM `tb_pegawai` WHERE id_user = ?", [$id_user]);
+		$result =  $result_q->row();
+		return $result->id_pegawai;
+	}
+	
+	public function getUsedCuti(string $id_user)
+	{
+		$idPegawai = $this->getIdPegawaiByIdUser($id_user);
+		$result_q = $this->db->query("SELECT id, id_pegawai, SUM(DATEDIFF(tanggal_akhir, tanggal_awal) + 1) AS jumlah_hari FROM `izin` where id_pegawai= ? and jenis = 'cuti' and YEAR(tanggal_awal) = YEAR(CURRENT_DATE()) AND YEAR(tanggal_akhir) = YEAR(CURRENT_DATE()) and acc = 1;", [$idPegawai]);
+		$result =  $result_q->row();
+		return $result->jumlah_hari;
+	}
 }

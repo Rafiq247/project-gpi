@@ -84,6 +84,7 @@
     $route['admin/konfirmasi-absen-izincuti/(:any)'] = 'admin/konfirmasi_absen_izin_cuti/$1';
     $route['admin/acc-izin/(:any)'] = 'admin/izinStatusAcc/$1';
     $route['admin/hapus-izin/(:any)'] = 'admin/izinStatusDenied/$1';
+    $route['admin/tolak-izin/(:any)'] = 'admin/izinStatusDelete/$1';
 
 
     $route['admin/tampil-input'] = 'admin/tampilInput';
@@ -158,6 +159,7 @@
     // $route['supervisor/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'supervisor/konfirmasi_absen_izin_tdkmsk/$1';
     $route['supervisor/acc-izin/(:any)'] = 'supervisor/izinStatusAcc/$1';
     $route['supervisor/hapus-izin/(:any)'] = 'supervisor/izinStatusDenied/$1';
+    $route['supervisor/tolak-izin/(:any)'] = 'supervisor/izinStatusDelete/$1';
 
     // Data Pegawai
     $route['supervisor/pegawai'] = 'supervisor/pegawai';
@@ -190,6 +192,7 @@
     // $route['leader/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'leader/konfirmasi_absen_izin_tdkmsk/$1';
     $route['leader/acc-izin/(:any)'] = 'leader/izinStatusAcc/$1';
     $route['leader/hapus-izin/(:any)'] = 'leader/izinStatusDenied/$1';
+    $route['leader/tolak-izin/(:any)'] = 'leader/izinStatusDelete/$1';
 
     // Data Pegawai
     $route['leader/pegawai'] = 'leader/pegawai';

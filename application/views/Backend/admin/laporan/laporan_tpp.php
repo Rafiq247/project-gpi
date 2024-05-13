@@ -148,6 +148,7 @@
  								<th>TIDAK HADIR</th>
  								<th>IZIN</th>
  								<th>SAKIT</th>
+								<th>CUTI</th>
  								<th>Pengurangan</th>
  								<th>GAJI BERSIH</th>
  								<th>AKSI</th>
@@ -173,6 +174,7 @@
  									<td><?= $b['tidak_hadir']; ?> Hari</td>
  									<td><?= $b['izin']; ?> Hari</td>
  									<td><?= $b['sakit']; ?> Hari</td>
+									<td><?= $b['cuti']; ?> Hari</td>
  									<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
  									<td><?php echo 'Rp ' . number_format($b['gaji_bersih'], 2, ',', '.'); ?></td>
  									<td width="20px">

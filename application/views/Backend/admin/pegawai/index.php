@@ -289,10 +289,10 @@
                       <select class="form-control" id="role_id" name="role_id">
                         <option value="">-pilih-</option>
                         <?php foreach ($role_id as $j) :?>
-                          <?php if ($j['role_id'] == $role_id) :?>
-                            <option value="<?= $j['role_id']?>" selected> <?= $j['role_id'];?></option>
+                          <?php if ($j['id'] == $role_id) :?>
+                            <option value="<?= $j['id']?>" selected> <?= $j['role'];?></option>
                           <?php else :?>
-                            <option value="<?= $j['role_id']?>"> <?= $j['role_id'];?></option>
+                            <option value="<?= $j['id']?>"> <?= $j['role'];?></option>
                           <?php endif?>
                         <?php endforeach;?>
                       </select>

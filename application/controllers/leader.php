@@ -148,8 +148,11 @@ class leader extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		$months = (int)$this->leader_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		$used_cuti = (int)$this->leader_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
-		$data['pegawai_month'] = $months;		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['used_cuti'] = $used_cuti;
+		$data['pegawai_month'] = $months;		
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->leader_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->leader_model->izinById($data['pegawai']['id_pegawai']);
 
@@ -497,12 +500,12 @@ class leader extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
+		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');	
 		$keterangan = $this->input->post('penjelasan', true);
 
 
-		$tglAwal = $this->input->post('tgl_awal', true);
-		$tglAkhir = $this->input->post('tgl_akhir', true);
+		$tglAwal = date('Y/m/d', strtotime($this->input->post('tgl_awal', true)));
+		$tglAkhir = date('Y/m/d', strtotime($this->input->post('tgl_akhir', true)));
 
 		$upload_image = $_FILES['suratsakit']['name'];
 		if ($upload_image) {
@@ -959,8 +962,10 @@ class leader extends CI_Controller
 
 	public function izinStatusAcc($id)
 	{
+		// anuan get jabatan
 		$data = array(
-			"acc" => "1"
+			"acc" => "1",
+			"acc_by"=> $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -969,8 +974,23 @@ class leader extends CI_Controller
 
 	public function izinStatusDenied($id)
 	{
+
 		$data = array(
-			"acc" => "0"
+			"acc" => "0",
+			"acc_by"=> null,
+			"penolakan" => null
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('leader/tampil-konfirmasi');
+	}
+
+	public function izinStatusDelete($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak, 
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);

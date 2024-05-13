@@ -151,7 +151,9 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		$months = (int)$this->supervisor_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		$used_cuti = (int)$this->supervisor_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
+		$data['used_cuti'] = $used_cuti;
 		$data['pegawai_month'] = $months;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->supervisor_model->PegawaiById($data['user']['id']);
@@ -504,8 +506,8 @@ class supervisor extends CI_Controller
 		$keterangan = $this->input->post('penjelasan', true);
 
 
-		$tglAwal = $this->input->post('tgl_awal', true);
-		$tglAkhir = $this->input->post('tgl_akhir', true);
+		$tglAwal = date('Y/m/d', strtotime($this->input->post('tgl_awal', true)));
+		$tglAkhir = date('Y/m/d', strtotime($this->input->post('tgl_akhir', true)));
 
 		$upload_image = $_FILES['suratsakit']['name'];
 		if ($upload_image) {
@@ -806,7 +808,7 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'detail Laporan Payrol Bulanan';
 
-		$data['supervisor'] = $this->db->get_where('supervisor', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$data['pegawai'] = $this->Admin_model->getAllpegawai();
 		$data['blnselected'] = $bln;
@@ -960,8 +962,10 @@ class supervisor extends CI_Controller
 
 	public function izinStatusAcc($id)
 	{
+		// anuan get jabatan
 		$data = array(
-			"acc" => "1"
+			"acc" => "1",
+			"acc_by"=> $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -970,8 +974,23 @@ class supervisor extends CI_Controller
 
 	public function izinStatusDenied($id)
 	{
+
 		$data = array(
-			"acc" => "0"
+			"acc" => "0",
+			"acc_by"=> null,
+			"penolakan" => null
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function izinStatusDelete($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak, 
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);

@@ -128,10 +128,10 @@
  						<th>AKSI</th>
  					</tr>
  				</thead>
- 				<tbody>
+ 				<tbody id="table_data">
  					<?php $no = 1; ?>
- 					<?php
-						foreach ($absensi as $b) : ?>
+ 					<?php if (isset($absensi) && is_array($absensi))
+							foreach ($absensi as $b) : ?>
  						<tr>
  							<td><?= $no++ ?></td>
  							<td><?= $b['pegawai'][0]['nama_pegawai']; ?></td>
@@ -140,19 +140,24 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : "Diizinkan"; ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Leader $b[acc_by]"   : $b["penolakan"]) ?></td>
  							<td>
  								<?php
 									if ($b['acc'] == 0) {
 									?>
  									<a class="btn btn-theme ml-1" href="<?= base_url('leader/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
+									 <a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
+
  								<?php
-									} else {
+									} 
+
+									if ($b['acc'] == 1 || $b['acc'] == 2) {
 									?>
  									<a class="btn btn-danger ml-1" href="<?= base_url('leader/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
  								<?php
 									}
 									?>
+
  							</td>
  						</tr>
  					<?php endforeach ?>
@@ -170,7 +175,7 @@
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
- 						<?php echo form_open_multipart('leader/izin-pegawai'); ?>
+ 						<?php echo form_open_multipart('pegawai/izin-pegawai'); ?>
  						<div class="card-body">
  							<div class="row">
  								<div class="col-md-6">
@@ -229,3 +234,15 @@
  				</div>
  			</div>
  		</div>
+ 		<script>
+ 			$(document).ready(function() {
+ 				$("#table_data").on("click", ".trigger-tolak", function() {
+ 					const keterangan = prompt("Keterangan Tolak");
+ 					if (!keterangan) return;
+ 					const idIzin = $(this).data("id-izin");
+ 					const targetUrl = `<?= base_url('leader/tolak-izin') ?>/${idIzin}?keterangan=` + keterangan;
+ 					console.log(targetUrl);
+ 					window.location.href = targetUrl;
+ 				})
+ 			});
+ 		</script>

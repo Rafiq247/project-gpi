@@ -1685,6 +1685,7 @@ class Admin extends CI_Controller
 			'jam_lembur' => $this->input->post('jam_lembur'),
 			'lembur' => $this->input->post('lembur'),
 			'izin' => $this->input->post('izin'),
+			'cuti' => $this->input->post('cuti'),
 			'hadir' => $this->input->post('hadir'),
 			'tidak_hadir' => $this->input->post('tidak_hadir'),
 			'pengurangan' => $this->input->post('pengurangan'),
@@ -1831,8 +1832,10 @@ class Admin extends CI_Controller
 
 	public function izinStatusAcc($id)
 	{
+		// anuan get jabatan
 		$data = array(
-			"acc" => "1"
+			"acc" => "1",
+			"acc_by"=> $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1841,13 +1844,29 @@ class Admin extends CI_Controller
 
 	public function izinStatusDenied($id)
 	{
+
 		$data = array(
-			"acc" => "0"
+			"acc" => "0",
+			"acc_by"=> null,
+			"penolakan" => null
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('admin/tampil-konfirmasi');
 	}
+
+	public function izinStatusDelete($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak, 
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi');
+	}
+
 
 	public function edit_gaji()
 	{
@@ -1881,7 +1900,7 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'Cetak Payrol Bulanan';
 
-		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->select('email, name')->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
