@@ -266,7 +266,7 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header text-center">
-               <h5 class="modal-title text-secondary"><strong> Edit Bus</strong></h5>
+               <h5 class="modal-title text-secondary"><strong>Edit Pegawai</strong></h5>
                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
              </div>
              <div class="modal-body text-justify">
@@ -274,31 +274,24 @@
                <div class="card-body">
                  <div class="row">
                    <div class="col-md-6">
-                     <input type="hidden" name="id_pegawai" class="form-control " value="<?= $id_pegawai ?>">
-                     <input type="hidden" name="id_user" class="form-control " value="<?= $id_user1 ?>">
+                     <input type="hidden" name="id_pegawai" class="form-control" value="<?= $id_pegawai ?>">
+                     <input type="hidden" name="id_user" class="form-control" value="<?= $id_user1 ?>">
                      <div class="form-group">
                        <label>Nama</label>
                        <div>
-                         <input type="text" name="nama_pegawai" class="form-control " value="<?= $nama_pegawai ?>">
+                         <input type="text" name="nama_pegawai" class="form-control" value="<?= $nama_pegawai ?>">
                        </div>
                      </div>
-                     <?php $role_id = $this->Admin_model->getAlluser_role(); ?>
                      <div class="form-group">
-                    <label class="col-sm-12">User Role</label>
-                    <div class="col-sm-12">
-                      <select class="form-control" id="role_id" name="role_id">
-                        <option value="">-pilih-</option>
-                        <?php foreach ($role_id as $j) :?>
-                          <?php if ($j['id'] == $role_id) :?>
-                            <option value="<?= $j['id']?>" selected> <?= $j['role'];?></option>
-                          <?php else :?>
-                            <option value="<?= $j['id']?>"> <?= $j['role'];?></option>
-                          <?php endif?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                     
+                       <label>User Role</label>
+                       <div>
+                         <select class="form-control" id="role_id" name="role_id">
+                           <option value="">-pilih-</option>
+                           <?php foreach ($role_id as $j) : ?>
+                             <option value="<?= $j['id'] ?>" <?= ($j['id'] == $role_id) ? 'selected' : '' ?>><?= $j['role']; ?></option>
+                           <?php endforeach; ?>
+                         </select>
+                       </div>
                      </div>
                      <div class="form-group">
                        <label>Jenis Kelamin</label>
@@ -306,26 +299,15 @@
                          <select class="form-control" id="jekel" name="jekel">
                            <option value="">-pilih-</option>
                            <?php foreach ($jekel as $j) : ?>
-                               <?php if ($j == 'L') : ?>
-                                 <option value="<?= $j ?>" selected>Laki-Laki</option>
-                               <?php else : ?>
-                                 <option value="<?= $j ?>" selected>Perempuan</option>
-                               <?php endif ?>
-                               <?php if ($j == 'L') : ?>
-                                 <option value="<?= $j ?>">Laki-Laki</option>
-                               <?php else : ?>
-                                 <option value="<?= $j ?>">Perempuan</option>
-                               <?php endif ?>
+                             <option value="<?= $j ?>" <?= ($j == $jekel_selected) ? 'selected' : '' ?>><?= ($j == 'L') ? 'Laki-Laki' : 'Perempuan' ?></option>
                            <?php endforeach; ?>
-
                          </select>
                        </div>
                      </div>
-
                      <div class="form-group">
                        <label>Pendidikan</label>
                        <div>
-                         <input type="text" name="pendidikan" class="form-control " value="<?= $pendidikan ?>">
+                         <input type="text" name="pendidikan" class="form-control" value="<?= $pendidikan ?>">
                        </div>
                      </div>
                      <div class="form-group">
@@ -333,38 +315,19 @@
                        <div>
                          <select class="form-control" id="status_pegawai" name="status_pegawai" required>
                            <option value="">-pilih-</option>
-                           <?php foreach ($stapeg as $jk) : ?>
-                             <?php if ($jk == $status_kepegawaian) : ?>
-                               <?php if ($jk == '1') : ?>
-                                 <option value="1" selected>Aktif</option>
-                               <?php else : ?>
-                                 <option value="0" selected>Tidak Aktif</option>
-                               <?php endif ?>
-                             <?php else : ?>
-                               <?php if ($jk == '1') : ?>
-                                 <option value="1">Aktif</option>
-                               <?php else : ?>
-                                 <option value="0">Tidak Aktif</option>
-                               <?php endif ?>
-                             <?php endif; ?>
-                           <?php endforeach; ?>
-
+                           <option value="1" <?= ($status_kepegawaian == '1') ? 'selected' : '' ?>>Aktif</option>
+                           <option value="0" <?= ($status_kepegawaian == '0') ? 'selected' : '' ?>>Tidak Aktif</option>
                          </select>
                        </div>
                      </div>
                      <div class="form-group">
-                       <label class="">KTP</label>
-                       <div class="">
+                       <label>KTP</label>
+                       <div>
                          <input type="file" name="userfilektp" class="form-control" id="userfilektp" value="<?= $ktp ?>">
                        </div>
                      </div>
-                     <div class="form-group">
-                       <label class="">Foto</label>
-                       <div class="">
-                         <input type="file" name="userfilefoto" class="form-control" id="userfilefoto" value="<?= $foto ?>">
-                       </div>
-                     </div>
                    </div>
+
                    <div class="col-md-6">
                      <div class="form-group">
                        <label class="col-sm-12">Agama</label>
@@ -372,28 +335,18 @@
                          <select class="form-control" id="agama" name="agama">
                            <option value="">-pilih-</option>
                            <?php foreach ($agama as $agm) : ?>
-                             <?php if ($agm == $agama1) : ?>
-                               <option value="<?= $agm ?>" selected><?= $agm ?></option>
-                             <?php else : ?>
-                               <option value="<?= $agm ?>"><?= $agm ?></option>
-                             <?php endif ?>
+                             <option value="<?= $agm ?>" <?= ($agm == $agama1) ? 'selected' : '' ?>><?= $agm ?></option>
                            <?php endforeach; ?>
-
                          </select>
                        </div>
                      </div>
-                     <?php $jabatan = $this->Admin_model->getAlljabatan(); ?>
                      <div class="form-group">
                        <label class="col-sm-12">Jabatan</label>
                        <div class="col-sm-12">
                          <select class="form-control" id="jabatan" name="jabatan">
                            <option value="">-pilih-</option>
                            <?php foreach ($jabatan as $j) : ?>
-                             <?php if ($j['id_jabatan'] == $idjabatan) : ?>
-                               <option value="<?= $j['id_jabatan'] ?>" selected> <?= $j['jabatan']; ?></option>
-                             <?php else : ?>
-                               <option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
-                             <?php endif ?>
+                             <option value="<?= $j['id_jabatan'] ?>" <?= ($j['id_jabatan'] == $idjabatan) ? 'selected' : '' ?>><?= $j['jabatan']; ?></option>
                            <?php endforeach; ?>
                          </select>
                        </div>
@@ -401,35 +354,39 @@
                      <div class="form-group">
                        <label class="col-sm-12">No.Hp</label>
                        <div class="col-sm-12">
-                         <input type="text" name="nohp" class="form-control " value="<?= $no_hp ?>" required>
+                         <input type="text" name="nohp" class="form-control" value="<?= $no_hp ?>" required>
                        </div>
                      </div>
                      <div class="form-group">
                        <label class="col-sm-12">Alamat</label>
                        <div class="col-sm-12">
-                         <input type="text" name="alamat" class="form-control " value="<?= $alamat ?>" required>
+                         <input type="text" name="alamat" class="form-control" value="<?= $alamat ?>" required>
                        </div>
                      </div>
                      <div class="form-group">
                        <label class="col-sm-12">Tanggal Masuk</label>
                        <div class="col-sm-12">
-                         <input type="date" name="tgl_msk" class="form-control " value="<?= $tanggal_masuk ?>" required>
+                         <input type="date" name="tgl_msk" class="form-control" value="<?= $tanggal_masuk ?>" required>
                        </div>
                      </div>
-
+                     <div class="form-group">
+                       <label class="col-sm-12">Foto</label>
+                       <div class="col-sm-12">
+                         <input type="file" name="userfilefoto" class="form-control" id="userfilefoto" value="<?= $foto ?>">
+                       </div>
+                     </div>
                    </div>
                  </div>
-
                </div>
-               <!-- /.card-body -->
                <div class="modal-footer">
                  <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
                  <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
                </div>
                </form>
              </div>
-
            </div>
          </div>
        </div>
-     <?php endforeach; ?>
+
+   </div>
+ <?php endforeach; ?>

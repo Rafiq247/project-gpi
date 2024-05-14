@@ -1900,7 +1900,7 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'Cetak Payrol Bulanan';
 
-		$data['user'] = $this->db->select('email, name')->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;
