@@ -236,7 +236,7 @@ class Admin extends CI_Controller
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
 			'role_id' => $role_id,
-			'is_active' => 1,
+			'is_active' => 0,
 			'date_created' => time(),
 			'temp' => $temp
 
@@ -244,7 +244,7 @@ class Admin extends CI_Controller
 
 		$this->db->insert('user', $data1);
 
-		
+
 		$data = [
 			"id_pegawai" => $id_pegawai,
 			"id_user" => $id_user,
@@ -294,38 +294,86 @@ class Admin extends CI_Controller
 		];
 
 		$emailContent = "
-        <!DOCTYPE html>
-        <html lang='en'>
-        <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>Verify Your Account</title>
-        </head>
-        <body style='font-family: Arial, sans-serif;'>
-          <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-            <tr>
-              <td align='center'>
-                <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
-                  <tr>
-                    <td align='center'>
-                      <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
-                      <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
-                      <table border='0' cellspacing='0' cellpadding='0'>
-                        <tr>
-                          <td align='center'>
-                            <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-        ";
+		<!DOCTYPE html>
+		<html lang='en'>
+		<head>
+			<meta charset='UTF-8'>
+			<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+			<title>Verify Your Email Address</title>
+			<style>
+				body {
+					font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+					margin: 0;
+					padding: 0;
+					background-color: #f5f5f5;
+				}
+				.container {
+					max-width: 600px;
+					margin: 0 auto;
+					padding: 20px;
+					border-radius: 8px;
+					background-color: #fff;
+					box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+				}
+				.header {
+					text-align: center;
+					padding: 20px 0;
+				}
+				.header h1 {
+					font-size: 28px;
+					color: #333;
+					margin-bottom: 0;
+				}
+				.header p {
+					font-size: 16px;
+					color: #666;
+					margin-top: 0;
+				}
+				.content {
+					text-align: center;
+					padding: 20px 0;
+				}
+				.content h2 {
+					font-size: 24px;
+					color: #333;
+					margin-bottom: 20px;
+				}
+				.content p {
+					font-size: 16px;
+					color: #666;
+					margin-bottom: 20px;
+				}
+				.footer {
+					text-align: center;
+					padding: 20px 0;
+					border-top: 1px solid #eee;
+				}
+				.footer p {
+					font-size: 14px;
+					color: #666;
+					margin-bottom: 0;
+				}
+			</style>
+		</head>
+		<body>
+			<div class='container'>
+				<div class='header'>
+					<h1>Global Printpack Indonesia</h1>
+					<p>Verify Your Email Address</p>
+				</div>
+				<div class='content'>
+					<h2>Hi there!</h2>
+					<p>To complete your registration, please click the button below to verify your email address:</p>
+					<a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Verify Email Address</a>
+				</div>
+				<div class='footer'>
+					<p>The HATARA Team</p>
+					<p>The JakTech Squad Team</p>
+				</div>
+			</div>
+		</body>
+		</html>
+		";
 
 		$this->load->library('email', $config);
 		$this->email->initialize($config);
@@ -478,7 +526,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 		redirect('admin/pegawai');
 	}
-	
+
 	public function hapus_pegawai($id, $id_user)
 	{
 		$this->db->where('id_pegawai', $id);
