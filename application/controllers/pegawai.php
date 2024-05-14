@@ -150,7 +150,13 @@ class pegawai extends CI_Controller
 	public function absen_harian()
 	{
 		$data['title'] = 'Dashboard';
+		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id')); 
 		// mengambil data user berdasarkan email yang ada di session
+		
+		$data['pegawai_month'] = $months;
+		$data['used_cuti'] = $used_cuti;
+		// var_dump($months);exit;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->User_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->User_model->izinById($data['pegawai']['id_pegawai']);
@@ -163,12 +169,14 @@ class pegawai extends CI_Controller
 			$data['absen']['keterangan'] = "";
 			$data['absen']['id_pegawai'] = "peg";
 		}
+		
 		$this->load->view('backend/f_template/header', $data);
 		$this->load->view('backend/f_template/topbar', $data);
 		$this->load->view('backend/f_template/sidebar', $data);
 		$this->load->view('backend/user/absensekarang/index', $data);
 		$this->load->view('backend/f_template/footer');
 	}
+
 	public function konfirmasi_absen()
 	{
 		$data['title'] = 'Konfirmasi Absen';
@@ -495,15 +503,14 @@ class pegawai extends CI_Controller
 		$data['title'] = 'Dashboard';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
+		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');		
 		$keterangan = $this->input->post('penjelasan', true);
 
 
-		$tglAwal = $this->input->post('tgl_awal', true);
-		$tglAkhir = $this->input->post('tgl_akhir', true);
+		$tglAwal = date('Y/m/d', strtotime($this->input->post('tgl_awal', true)));
+		$tglAkhir = date('Y/m/d', strtotime($this->input->post('tgl_akhir', true)));
 
 		$upload_image = $_FILES['suratsakit']['name'];
 		if ($upload_image) {
@@ -524,6 +531,7 @@ class pegawai extends CI_Controller
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
 			"keterangan" => $keterangan,
+			"role_id" => $this->session->userdata('role_id'),
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
 			"acc" => false,
@@ -653,12 +661,15 @@ class pegawai extends CI_Controller
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti +=1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -672,13 +683,14 @@ class pegawai extends CI_Controller
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => ($jabatan['salary'] - (50000 * $valueTotalIzin)),
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -694,13 +706,16 @@ class pegawai extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti +=1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -714,13 +729,14 @@ class pegawai extends CI_Controller
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => ($jabatan['salary'] - (50000 * $valueTotalIzin)),
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];

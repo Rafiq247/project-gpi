@@ -57,7 +57,7 @@
  			</div>
  			<?php if ($absen['id_pegawai'] == 'peg') : ?>
  				<div class="col-sm-4 text-right pb-3">
- 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Sakit</button>
+ 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Izin</button>
  				</div>
  			<?php endif ?>
 
@@ -137,7 +137,7 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : "Diizinkan"; ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Leader $b[acc_by]"   : $b["penolakan"]) ?></td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -166,6 +166,9 @@
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
+ 												<?php if ($pegawai_month >= 365) : ?>
+ 													<option value="6">Izin Cuti</option>
+ 												<?php endif;  ?>
  											</select>
  										</div>
  									</div>
@@ -178,10 +181,10 @@
  									<div class="form-group">
  										<label>Tanggal Izin</label>
  										<div>
- 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class="datepicker form-control mb-3" id="datepicker">
+ 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal">
  										</div>
  										<div>
- 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class="datepicker form-control" id="datepicker">
+ 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir">
  										</div>
  									</div>
  									<div class="form-group">
@@ -194,9 +197,13 @@
  								<div class="col-md-6">
  									<div class="col-md-12 ">
  										Ket.<br>
- 										-Silahkan pilih jenis izin anda*<br>
- 										-upload bukti keterangan dokter untuk "Izin Sakit"*<br>
- 										-Silahkan isi keterangan alasan<br>
+ 										- Silahkan pilih jenis izin anda*<br>
+ 										- Upload bukti keterangan dokter untuk "Izin Sakit"*<br>
+ 										- Silahkan isi keterangan alasan<br>
+ 										<?php if ($pegawai_month >= 365) : ?>
+											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
+ 												<?php endif;  ?>
+										
  									</div>
  								</div>
  							</div>
@@ -217,8 +224,6 @@
 
 
  		<script>
- 			
-
  			// var x = document.getElementById("demo");
  			getLocation();
 
@@ -282,7 +287,33 @@
  		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  		<script type='text/javascript'>
  			$(window).load(function() {
+ 				const MAX_CUTI = <?= 12 - $used_cuti ?>;
+
+ 				function onTglAwalChanged(event) {
+ 					var newDate = new Date(event.date)
+ 					newDate.setDate(newDate.getDate() + (MAX_CUTI - 1))
+ 					checkout.datepicker("setStartDate", event.date);
+ 					checkout.datepicker("setEndDate", newDate);
+ 				}
+
+				//  $( "#datepicker_tgl_awal, #datepicker_tgl_akhir" ).datepicker({
+				// 	dateFormat: "yy-mm-dd",
+				// 	onClose: function(selectedDate, inst) {
+				// 		if (inst.id == "datepicker_tgl_awal") {
+				// 			$( "#datepicker_tgl_akhir" ).datepicker("option", "minDate", selectedDate);
+				// 		} else if (inst.id == "datepicker_tgl_akhir") {
+				// 			$( "#datepicker_tgl_awal" ).datepicker("option", "maxDate", selectedDate);
+				// 		}
+				// 	}
+				// });
+
+
+ 				var checkout = $('#datepicker_tgl_akhir').datepicker();
+ 				var checkin = $('#datepicker_tgl_awal').datepicker();
+
  				$("#jenisizin").change(function() {
+ 					$("#datepicker_tgl_awal,#datepicker_tgl_akhir").val("");
+ 					checkin.off('changeDate', onTglAwalChanged);
  					// console.log($("#instansi option:selected").val());
  					if ($("#jenisizin option:selected").val() == '') {
  						$('#suratsakit').prop('hidden', 'true');
@@ -291,7 +322,12 @@
  						$('#suratsakit').prop('hidden', false);
  					} else if ($("#jenisizin option:selected").val() == '5') {
  						$('#suratsakit').prop('hidden', 'true');
+ 					} else if ($("#jenisizin option:selected").val() == '6') {
+ 						$('#suratsakit').prop('hidden', 'true');
+ 						checkin.on('changeDate', onTglAwalChanged);
  					}
  				});
+
+
  			});
  		</script>

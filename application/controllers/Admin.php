@@ -75,8 +75,8 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['jabatan'] = $this->Admin_model->getAlljabatan();
 		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime'], 2, ',', '.');
-			$data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
+			// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 		}
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -84,6 +84,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/jabatan/index', $data);
 		$this->load->view('backend/template/footer');
 	}
+
 	public function tambah_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -91,11 +92,13 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
 		$salary = $this->input->post('salary', true);
 		$bonus = $this->input->post('bonus', true);
 		$overtime = $salary / 173;
 		$data = [
 			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
@@ -105,6 +108,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/jabatan');
 	}
+
 	public function edit_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -128,6 +132,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
 	}
+
 	public function hapus_jabatan($id)
 	{
 		$this->db->where('id_jabatan', $id);
@@ -235,8 +240,8 @@ class Admin extends CI_Controller
 			"email" => $email,
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
-			'role_id' => $role_id,
-			'is_active' => 0,
+			"role_id" => $role_id,
+			'is_active' => 1,
 			'date_created' => time(),
 			'temp' => $temp
 
@@ -294,86 +299,38 @@ class Admin extends CI_Controller
 		];
 
 		$emailContent = "
-		<!DOCTYPE html>
-		<html lang='en'>
-		<head>
-			<meta charset='UTF-8'>
-			<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-			<title>Verify Your Email Address</title>
-			<style>
-				body {
-					font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-					margin: 0;
-					padding: 0;
-					background-color: #f5f5f5;
-				}
-				.container {
-					max-width: 600px;
-					margin: 0 auto;
-					padding: 20px;
-					border-radius: 8px;
-					background-color: #fff;
-					box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-				}
-				.header {
-					text-align: center;
-					padding: 20px 0;
-				}
-				.header h1 {
-					font-size: 28px;
-					color: #333;
-					margin-bottom: 0;
-				}
-				.header p {
-					font-size: 16px;
-					color: #666;
-					margin-top: 0;
-				}
-				.content {
-					text-align: center;
-					padding: 20px 0;
-				}
-				.content h2 {
-					font-size: 24px;
-					color: #333;
-					margin-bottom: 20px;
-				}
-				.content p {
-					font-size: 16px;
-					color: #666;
-					margin-bottom: 20px;
-				}
-				.footer {
-					text-align: center;
-					padding: 20px 0;
-					border-top: 1px solid #eee;
-				}
-				.footer p {
-					font-size: 14px;
-					color: #666;
-					margin-bottom: 0;
-				}
-			</style>
-		</head>
-		<body>
-			<div class='container'>
-				<div class='header'>
-					<h1>Global Printpack Indonesia</h1>
-					<p>Verify Your Email Address</p>
-				</div>
-				<div class='content'>
-					<h2>Hi there!</h2>
-					<p>To complete your registration, please click the button below to verify your email address:</p>
-					<a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Verify Email Address</a>
-				</div>
-				<div class='footer'>
-					<p>The HATARA Team</p>
-					<p>The JakTech Squad Team</p>
-				</div>
-			</div>
-		</body>
-		</html>
-		";
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Verify Your Account</title>
+        </head>
+        <body style='font-family: Arial, sans-serif;'>
+          <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+            <tr>
+              <td align='center'>
+                <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
+                  <tr>
+                    <td align='center'>
+                      <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
+                      <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
+                      <table border='0' cellspacing='0' cellpadding='0'>
+                        <tr>
+                          <td align='center'>
+                            <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+        ";
 
 		$this->load->library('email', $config);
 		$this->email->initialize($config);
@@ -618,6 +575,47 @@ class Admin extends CI_Controller
 		redirect('admin/tambah-lembur');
 	}
 
+	public function data_pegawai()
+	{
+		$data['title'] = 'Data Pegawai Izin';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzinDataPegawai();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/data_pegawai/index', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function data_leader()
+	{
+		$data['title'] = 'Data Pegawai Izin';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzinDataLeader();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/data_leader/leader', $data);
+		$this->load->view('backend/template/footer');
+	}
 
 	public function tampil_konfirmasi()
 	{
@@ -995,6 +993,18 @@ class Admin extends CI_Controller
 		redirect('admin/tampil-konfirmasi');
 	}
 
+	public function konfirmasi_absen_izin_cuti($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 6,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('admin/tampil-konfirmasi');
+	}
+
 	//data absen
 	public function absen_bulanan()
 	{
@@ -1254,12 +1264,15 @@ class Admin extends CI_Controller
 					$valueTotalIzin = 0;
 					$sakit = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti += 1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -1280,6 +1293,7 @@ class Admin extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1296,12 +1310,15 @@ class Admin extends CI_Controller
 								$sakit = 0;
 								$valueTotalIzin = 0;
 								$izin = 0;
+								$cuti = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti += 1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -1322,6 +1339,7 @@ class Admin extends CI_Controller
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1504,12 +1522,15 @@ class Admin extends CI_Controller
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+							} else {
+								$cuti += 1;
 							}
 							$valueTotalIzin += 1;
 						}
@@ -1530,6 +1551,7 @@ class Admin extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1545,13 +1567,16 @@ class Admin extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+										} else {
+											$cuti += 1;
 										}
 										$valueTotalIzin += 1;
 									}
@@ -1572,6 +1597,7 @@ class Admin extends CI_Controller
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1583,7 +1609,7 @@ class Admin extends CI_Controller
 			}
 		}
 		// $this->checkData($data['gaji'][$date]);
-		// // 
+		// 
 		foreach ($data['gaji'] as $key => $value) {
 			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
 			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {
@@ -1659,6 +1685,7 @@ class Admin extends CI_Controller
 			'jam_lembur' => $this->input->post('jam_lembur'),
 			'lembur' => $this->input->post('lembur'),
 			'izin' => $this->input->post('izin'),
+			'cuti' => $this->input->post('cuti'),
 			'hadir' => $this->input->post('hadir'),
 			'tidak_hadir' => $this->input->post('tidak_hadir'),
 			'pengurangan' => $this->input->post('pengurangan'),
@@ -1805,8 +1832,10 @@ class Admin extends CI_Controller
 
 	public function izinStatusAcc($id)
 	{
+		// anuan get jabatan
 		$data = array(
-			"acc" => "1"
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1815,13 +1844,29 @@ class Admin extends CI_Controller
 
 	public function izinStatusDenied($id)
 	{
+
 		$data = array(
-			"acc" => "0"
+			"acc" => "0",
+			"acc_by" => null,
+			"penolakan" => null
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('admin/tampil-konfirmasi');
 	}
+
+	public function izinStatusDelete($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi');
+	}
+
 
 	public function edit_gaji()
 	{
@@ -1855,7 +1900,7 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'Cetak Payrol Bulanan';
 
-		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->select('email, name')->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;

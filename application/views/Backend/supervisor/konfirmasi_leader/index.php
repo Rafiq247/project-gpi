@@ -140,12 +140,12 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh HRD $b[acc_by]"   : $b["penolakan"]) ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Supervisor $b[acc_by]"   : $b["penolakan"]) ?></td>
  							<td>
  								<?php
 									if ($b['acc'] == 0) {
 									?>
- 									<a class="btn btn-theme ml-1" href="<?= base_url('admin/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
+ 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
 									 <a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
 
  								<?php
@@ -153,7 +153,7 @@
 
 									if ($b['acc'] == 1 || $b['acc'] == 2) {
 									?>
- 									<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
+ 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
  								<?php
 									}
 									?>
@@ -240,7 +240,7 @@
  					const keterangan = prompt("Keterangan Tolak");
  					if (!keterangan) return;
  					const idIzin = $(this).data("id-izin");
- 					const targetUrl = `<?= base_url('admin/tolak-izin') ?>/${idIzin}?keterangan=` + keterangan;
+ 					const targetUrl = `<?= base_url('supervisor/tolak-izin') ?>/${idIzin}?keterangan=` + keterangan;
  					console.log(targetUrl);
  					window.location.href = targetUrl;
  				})

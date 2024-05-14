@@ -127,7 +127,7 @@
                      <label>User Role</label>
                      <div>
                        <select class="form-control" id="role_id" name="role_id">
-                         <option value="">-pilih-</option>
+                         <option value="">- Pilih -</option>
                          <option value="1">Admin</option>
                          <option value="2">Supervisor</option>
                          <option value="3">Leader</option>
@@ -284,48 +284,21 @@
                      </div>
                      <?php $role_id = $this->Admin_model->getAlluser_role(); ?>
                      <div class="form-group">
-                       <label class="col-sm-12">User Role</label>
-                       <div class="col-sm-12">
-                         <select class="form-control" id="role_id" name="role_id">
-                           <option value="">-pilih-</option>
-                           <?php foreach ($role_id as $j) : ?>
-                             <?php if ($j['role_id'] == $role_id) : ?>
-                               <option value="<?= $j['role_id'] ?>" selected> <?= $j['role_id']; ?></option>
-                             <?php else : ?>
-                               <option value="<?= $j['role_id'] ?>"> <?= $j['role_id']; ?></option>
-                             <?php endif ?>
-                           <?php endforeach; ?>
-                         </select>
-                       </div>
-                     </div>
-                     <!-- <div class="form-group">
-                       <label>User Role</label>
-                       <div>
-                         <select class="form-control" id="role_id" name="role_id">
-                           <option value="">-pilih-</option>
-                           <?php foreach ($role_id as $j) : ?>
-                               <?php if ($j == '1') : ?>
-                                 <option value="<?= $j ?>" selected>Admin</option>
-                               <?php elseif ($j == '2') : ?>
-                                 <option value="<?= $j ?>" selected>Supervisor</option>
-                                <?php elseif ($j == '3') : ?>
-                                 <option value="<?= $j ?>" selected>Leader</option>
-                                <?php elseif ($j == '4') : ?>
-                                 <option value="<?= $j ?>" selected>Pegawai</option>
-                               <?php endif ?>
-                               <?php if ($j == '1') : ?>
-                                 <option value="<?= $j ?>">Admin</option>
-                               <?php elseif ($j == '2') : ?>
-                                 <option value="<?= $j ?>">Supervisor</option>
-                                <?php elseif ($j == '3') : ?>
-                                 <option value="<?= $j ?>">Leader</option>
-                                <?php elseif ($j == '4') : ?>
-                                 <option value="<?= $j ?>">Pegawai</option>
-                               <?php endif ?>
-                           <?php endforeach; ?>
-
-                         </select>
-                       </div> -->
+                    <label class="col-sm-12">User Role</label>
+                    <div class="col-sm-12">
+                      <select class="form-control" id="role_id" name="role_id">
+                        <option value="">-pilih-</option>
+                        <?php foreach ($role_id as $j) :?>
+                          <?php if ($j['id'] == $role_id) :?>
+                            <option value="<?= $j['id']?>" selected> <?= $j['role'];?></option>
+                          <?php else :?>
+                            <option value="<?= $j['id']?>"> <?= $j['role'];?></option>
+                          <?php endif?>
+                        <?php endforeach;?>
+                      </select>
+                    </div>
+                  </div>
+                     
                      </div>
                      <div class="form-group">
                        <label>Jenis Kelamin</label>

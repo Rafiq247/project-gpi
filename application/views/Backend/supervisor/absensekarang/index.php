@@ -137,7 +137,7 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : "Diizinkan"; ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh HRD $b[acc_by]"   : $b["penolakan"]) ?></td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -154,7 +154,7 @@
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
- 						<?php echo form_open_multipart('pegawai/izin-pegawai'); ?>
+ 						<?php echo form_open_multipart('supervisor/izin-supervisor'); ?>
  						<div class="card-body">
  							<div class="row">
  								<div class="col-md-6">
@@ -166,6 +166,9 @@
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
+												<?php if($pegawai_month >= 365): ?>
+												 <option value="6">Izin Cuti</option>
+												<?php endif;  ?>
  											</select>
  										</div>
  									</div>
@@ -197,6 +200,9 @@
  										-Silahkan pilih jenis izin anda*<br>
  										-upload bukti keterangan dokter untuk "Izin Sakit"*<br>
  										-Silahkan isi keterangan alasan<br>
+										 <?php if ($pegawai_month >= 365) : ?>
+											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
+ 												<?php endif;  ?>
  									</div>
  								</div>
  							</div>
@@ -282,7 +288,21 @@
  		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  		<script type='text/javascript'>
  			$(window).load(function() {
+ 				const MAX_CUTI = <?= 12 - $used_cuti ?>;
+
+ 				function onTglAwalChanged(event) {
+ 					var newDate = new Date(event.date)
+ 					newDate.setDate(newDate.getDate() + (MAX_CUTI - 1))
+ 					checkout.datepicker("setStartDate", event.date);
+ 					checkout.datepicker("setEndDate", newDate);
+ 				}
+
+ 				var checkout = $('#datepicker_tgl_akhir').datepicker();
+ 				var checkin = $('#datepicker_tgl_awal').datepicker();
+
  				$("#jenisizin").change(function() {
+ 					$("#datepicker_tgl_awal,#datepicker_tgl_akhir").val("");
+ 					checkin.off('changeDate', onTglAwalChanged);
  					// console.log($("#instansi option:selected").val());
  					if ($("#jenisizin option:selected").val() == '') {
  						$('#suratsakit').prop('hidden', 'true');
@@ -291,6 +311,9 @@
  						$('#suratsakit').prop('hidden', false);
  					} else if ($("#jenisizin option:selected").val() == '5') {
  						$('#suratsakit').prop('hidden', 'true');
+ 					} else if ($("#jenisizin option:selected").val() == '6') {
+ 						$('#suratsakit').prop('hidden', 'true');
+ 						checkin.on('changeDate', onTglAwalChanged);
  					}
  				});
  			});

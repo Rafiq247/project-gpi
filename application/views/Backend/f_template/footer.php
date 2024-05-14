@@ -77,7 +77,9 @@
 	$('.datepicker').datepicker({
 		format: 'yyyy-mm-dd',
 		todayHighlight: true,
-		autoclose: true
+		autoclose: true,
+		// startDate: new Date(),
+		// endDate: new Date(new Date().setDate(new Date().getDate() + 12)),
 	});
 </script>
 </body>

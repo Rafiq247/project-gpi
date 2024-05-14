@@ -56,7 +56,7 @@
  							<td><?= $no++ ?></td>
  							<td><?= $b['jabatan']; ?></td>
  							<td><?= rupiah($b['salary']); ?></td>
- 							<td><?= $b['bonus']; ?></td>
+ 							<td><?= rupiah($b['bonus']); ?></td>
  							<td><?= $b['overtime']; ?></td>
  							<td>
  								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>
@@ -82,28 +82,75 @@
  						<form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-jabatan' ?>" method="post" enctype="multipart/form-data">
 
  							<div class="modal-body">
-
  								<div class="form-group">
-
- 									<label class="col-sm-12">Jabatan</label>
- 									<div class="col-sm-12">
- 										<input type="text" name="jabatan" class="form-control " required>
- 									</div>
+ 									<label class="col-sm-12">Jabatan</label>	
+									<select class="form-control" id="id_jabatan" name="id_jabatan" required>
+										<option value="">- Pilih Jabatan -</option>
+										<option value="1">Supervisor HRD-GA</option>
+										<option value="2">Supervisor Printing</option>
+										<option value="3">Supervisor QC</option>
+										<option value="4">Supervisor Maintenance</option>
+										<option value="5">Supervisor PPIC</option>
+										<option value="6">Supervisor Laminasi</option>
+										<option value="7">Supervisor Slitting</option>
+										<option value="8">Supervisor Marketing</option>
+										<option value="9">Supervisor Purchasing</option>
+										<option value="10">Supervisor Accounting</option>
+										<option value="11">Leader HRD-GA</option>
+										<option value="12">Pegawai HRD-GA</option>
+										<option value="21">Leader Printing</option>
+										<option value="22">Pegawai Printing</option>
+										<option value="23">Helper Printing</option>
+										<option value="31">Leader Qc</option>
+										<option value="32">Pegawai QC</option>
+										<option value="33">Inspector Inspec</option>
+										<option value="34">Inspector Incoming</option>
+										<option value="35">Inspector Proses</option>
+										<option value="36">Inspector Outgoing</option>
+										<option value="41">Leader Maintanence</option>
+										<option value="42">Pegawai Maintenance</option>
+										<option value="43">Operator Maintenance</option>
+										<option value="51">Leader PPIC</option>
+										<option value="52">Pegawai PPIC</option>
+										<option value="53">Pegawai FG</option>
+										<option value="55">Pegawai RM</option>
+										<option value="56">Helper FG</option>
+										<option value="57">Helper RM</option>
+										<option value="61">Leader Extru</option>
+										<option value="62">Leader Dry</option>
+										<option value="63">Leader Blow</option>
+										<option value="64">Operator Extru</option>
+										<option value="65">Operator Dry</option>
+										<option value="66">Operator Blow</option>
+										<option value="67">Helper Extru</option>
+										<option value="68">Helper Dry</option>
+										<option value="69">Helper Blow</option>
+										<option value="71">Leader Slitting</option>
+										<option value="72">Leader Bag Making</option>
+										<option value="73">Pegawai Slitting</option>
+										<option value="74">Operator Slitting</option>
+										<option value="75">Operator Bag Making</option>
+										<option value="76">Helper Slitting</option>
+										<option value="77">Helper Bag Making</option>
+										<option value="81">Leader Marketing</option>
+										<option value="82">Pegawai Marketing</option>
+										<option value="83">Sales</option>
+										<option value="91">Leader Purchasing</option>
+										<option value="92">Pegawai Purchasing</option>
+										<option value="101">Leader Accounting</option>
+										<option value="102">Pegawai Accounting</option>
+									</select>
  								</div>
  								<div class="form-group">
 
  									<label class="col-sm-12">Gaji/hari</label>
- 									<div class="col-sm-12">
  										<input type="text" name="salary" class="form-control" required>
- 									</div>
  								</div>
 
  								<div class="form-group">
 
  									<label class="col-sm-12">Netto Insentif</label>
- 									<div class="col-sm-12">
  										<input type="text" name="bonus" class="form-control" required>
- 									</div>
  								</div>
  							</div>
  							<div class="modal-footer">
@@ -145,7 +192,7 @@
 
  										<label class="col-sm-12">Jabatan</label>
  										<div class="col-sm-12">
- 											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " required>
+ 											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " readonly>
  										</div>
  									</div>
  									<div class="form-group">
