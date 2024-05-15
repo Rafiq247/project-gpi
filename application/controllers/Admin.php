@@ -101,7 +101,7 @@ class Admin extends CI_Controller
 			->get()
 			->row_array();		
 		if ($cek_data) {
-			$this->session->set_flashdata('flash', 'Data sudah ada');
+			$this->session->set_flashdata('flash', 'Jabatan Tersebut Sudah Tersedia');
 			redirect('admin/department');
 			return;
 		}

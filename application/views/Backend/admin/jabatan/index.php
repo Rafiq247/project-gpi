@@ -130,7 +130,7 @@
  				<div class="modal-dialog modal-lg">
  					<div class="modal-content">
  						<div class="modal-header text-center">
- 							<h5 class="modal-title text-secondary"><strong> Edit Jabatan</strong></h5>
+ 							<h5 class="modal-title text-secondary"><strong> Edit Gaji</strong></h5>
  							<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  						</div>
  						<div class="modal-body text-justify">

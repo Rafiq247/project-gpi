@@ -112,7 +112,7 @@
  		<!-- edit modal -->
 
  		<?php foreach ($jabatan as $j) :
-				$id = $j['id_jabatan'];
+				$id_jabatan = $j['id_jabatan'];
 				$jabatan = $j['jabatan'];
 			?>
  			<div class="modal fade bd-example-modal<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -138,7 +138,7 @@
 
                                         <label class="col-sm-12">Id Jabatan</label>
                                         <div class="col-sm-12">
-                                            <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control " readonly>
+                                            <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control ">
                                         </div>
                                     </div>
  								</div>
