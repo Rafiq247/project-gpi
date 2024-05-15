@@ -90,12 +90,12 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
-		$id = $this->input->post('id', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
 		$data = [
 			"jabatan" => $jabatan,
-			"id" => $id,
+			"id_jabatan" => $id_jabatan,
 		];
-		$this->db->insert('jabatan', $data);
+		$this->db->insert('department', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/department');
 	}
@@ -107,22 +107,22 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
-		$id = $this->input->post('id', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
 		$data = [
 			"jabatan" => $jabatan,
-			"id" => $id,
+			"id_jabatan" => $id_jabatan,
 
 		];
-		$this->db->where('id', $id);
-		$this->db->update('jabatan', $data);
+		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->update('department', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/department');
 	}
 
 	public function hapus_department($id)
 	{
-		$this->db->where('id', $id);
-		$this->db->delete('jabatan');
+		$this->db->where('id_jabatan', $id);
+		$this->db->delete('department');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/department');
 	}
@@ -133,6 +133,7 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['jabatan'] = $this->Admin_model->getAlljabatan();
+		$data['department'] = $this->Admin_model->getAllidjabatan();
 		foreach ($data['jabatan'] as $key => $value) {
 			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
 			// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
@@ -149,15 +150,14 @@ class Admin extends CI_Controller
 		$data['title'] = 'Data Jabatan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['jabatan'] = $this->Admin_model->getAlljabatan();
 
 		$jabatan = $this->input->post('jabatan', true);
-		$id_jabatan = $this->input->post('id_jabatan', true);
 		$salary = $this->input->post('salary', true);
 		$bonus = $this->input->post('bonus', true);
 		$overtime = $salary / 173;
 		$data = [
 			"jabatan" => $jabatan,
-			"id_jabatan" => $id_jabatan,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
@@ -174,7 +174,6 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$id_jabatan = $this->input->post('id_jabatan', true);
 		$jabatan = $this->input->post('jabatan', true);
 		$salary = $this->input->post('salary', true);
 		$overtime = $salary / 173;
@@ -186,7 +185,7 @@ class Admin extends CI_Controller
 			"bonus" => $bonus,
 
 		];
-		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->where('jabatan', $jabatan);
 		$this->db->update('jabatan', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
@@ -194,7 +193,7 @@ class Admin extends CI_Controller
 	
 	public function hapus_jabatan($id)
 	{
-		$this->db->where('id_jabatan', $id);
+		$this->db->where('jabatan', $id);
 		$this->db->delete('jabatan');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/jabatan');

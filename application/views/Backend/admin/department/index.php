@@ -42,7 +42,7 @@
  					<tr>
  						<th>#</th>
  						<th>Jabatan</th>
- 						<th>Id_Jabatan</th>
+ 						<th>Id Jabatan</th>
                         <th>Aksi</th>
  					</tr>
  				</thead>
@@ -53,10 +53,10 @@
  						<tr>
  							<td><?= $no++ ?></td>
  							<td><?= $b['jabatan']; ?></td>
- 							<td><?= $b['id']; ?></td>
+ 							<td><?= $b['id_jabatan']; ?></td>
  							<td>
- 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id']; ?>">Edit</a>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+ 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>
+ 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
 
  							</td>
  						</tr>
@@ -75,7 +75,7 @@
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify">
- 						<form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-jabatan' ?>" method="post" enctype="multipart/form-data">
+ 						<form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-department' ?>" method="post" enctype="multipart/form-data">
 
  							<div class="modal-body">
                              <div class="form-group">
@@ -90,7 +90,7 @@
  								<div class="form-group">
 
  									<label class="col-sm-12">Id Jabatan</label>
- 										<input type="text" name="id" class="form-control" required>
+ 										<input type="text" name="id_jabatan" class="form-control" required>
  								</div>
  							<div class="modal-footer">
  								<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -109,7 +109,7 @@
  		<!-- edit modal -->
 
  		<?php foreach ($jabatan as $j) :
-				$id_jabatan = $j['id'];
+				$id = $j['id_jabatan'];
 				$jabatan = $j['jabatan'];
 			?>
  			<div class="modal fade bd-example-modal<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -120,7 +120,7 @@
  							<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  						</div>
  						<div class="modal-body text-justify">
- 							<form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-jabatan' ?>" method="post" enctype="multipart/form-data">
+ 							<form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-department' ?>" method="post" enctype="multipart/form-data">
  								<input type="hidden" name="id" value="<?php echo $id; ?>" />
  								<div class="modal-body">
 
@@ -131,6 +131,13 @@
  											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " readonly>
  										</div>
  									</div>
+                                     <div class="form-group">
+
+                                        <label class="col-sm-12">Id Jabatan</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control " readonly>
+                                        </div>
+                                    </div>
  								</div>
  								<div class="modal-footer">
  									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

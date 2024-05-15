@@ -84,16 +84,12 @@
  							<div class="modal-body">
  								<div class="form-group">
  									<label class="col-sm-12">Jabatan</label>	
-									 <select class="form-control" id="jabatan" name="jabatan">
-                           <option value="">-pilih-</option>
-                           <?php foreach ($jabatan as $j) : ?>
-                             <?php if ($j['id_jabatan'] == $idjabatan) : ?>
-                               <option value="<?= $j['id_jabatan'] ?>" selected> <?= $j['jabatan']; ?></option>
-                             <?php else : ?>
-                               <option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
-                             <?php endif ?>
-                           <?php endforeach; ?>
-                         </select>
+									<select class="form-control" id="jabatan" name="jabatan">
+										<option value="">-pilih-</option>
+										<?php foreach ($jabatan as $j) : ?>
+										<option value="<?= $j['jabatan'] ?>"> <?= $j['jabatan']; ?></option>
+										<?php endforeach; ?>
+									</select>
  								</div>
  								<div class="form-group">
 
