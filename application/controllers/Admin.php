@@ -68,6 +68,65 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/dashboard/sejarah', $data);
 		$this->load->view('backend/template/footer');
 	}
+
+	public function department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['jabatan'] = $this->Admin_model->getAllidjabatan();
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/department/index', $data);
+		$this->load->view('backend/template/footer');
+	}
+	
+	public function tambah_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$jabatan = $this->input->post('jabatan', true);
+		$id = $this->input->post('id', true);
+		$data = [
+			"jabatan" => $jabatan,
+			"id" => $id,
+		];
+		$this->db->insert('jabatan', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/department');
+	}
+
+	public function edit_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$jabatan = $this->input->post('jabatan', true);
+		$id = $this->input->post('id', true);
+		$data = [
+			"jabatan" => $jabatan,
+			"id" => $id,
+
+		];
+		$this->db->where('id', $id);
+		$this->db->update('jabatan', $data);
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/department');
+	}
+
+	public function hapus_department($id)
+	{
+		$this->db->where('id', $id);
+		$this->db->delete('jabatan');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/department');
+	}
+
 	public function jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -460,7 +519,6 @@ class Admin extends CI_Controller
 		$data = [
 
 			"nama_pegawai" => $nama_pegawai,
-			"role_id" => $role_id,
 			"jekel" => $jekel,
 			"pendidikan" => $pendidikan,
 			"status_kepegawaian" => $status_pegawai,
@@ -477,6 +535,7 @@ class Admin extends CI_Controller
 			"name" => $nama_pegawai,
 			"is_active" => $status_pegawai,
 			"image" => $gambar_user,
+			"role_id" => $role_id,
 		];
 		$this->db->where('id', $id_user);
 		$this->db->update('user', $data1);
@@ -1900,7 +1959,7 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'Cetak Payrol Bulanan';
 
-		$data['user'] = $this->db->select('email, name')->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
 		$bln = $this->input->post('bln');
 		$data['blnselected'] = $bln;

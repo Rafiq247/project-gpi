@@ -34,8 +34,9 @@
                <span class="none">Data Master<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="datamaster">
-               <li class="child"><a href="<?= base_url() ?>admin/jabatan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Jabatan</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/jabatan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Gaji</a></li>
                <li class="child"><a href="<?= base_url() ?>admin/pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Pegawai</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/department" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Jabatan</a></li>
              </ul>
            </li>
            <!-- <li class="parent">

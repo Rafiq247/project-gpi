@@ -10,6 +10,14 @@ class Admin_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	public function getAllidjabatan()
+	{
+		$sql = "SELECT * from department";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
 	public function getAlluser_role()
 	{
 		$sql = "SELECT * from user_role";

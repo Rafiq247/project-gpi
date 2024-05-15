@@ -64,6 +64,11 @@
     $route['admin/tambah-jabatan'] = 'admin/tambah_jabatan';
     $route['admin/hapus-jabatan/(:any)'] = 'admin/hapus_jabatan/$1';
     $route['admin/edit-jabatan'] = 'admin/edit_jabatan';
+    // department
+    $route['admin/department'] = 'admin/department';
+    $route['admin/tambah-department'] = 'admin/tambah_department';
+    $route['admin/hapus-department/(:any)'] = 'admin/hapus_department/$1';
+    $route['admin/edit-department'] = 'admin/edit_department';
     // Pegawai
     $route['admin/pegawai'] = 'admin/pegawai';
     $route['admin/tambah-pegawai'] = 'admin/tambah_pegawai';

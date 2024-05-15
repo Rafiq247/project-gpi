@@ -41,11 +41,9 @@
  				<thead>
  					<tr>
  						<th>#</th>
- 						<th>JABATAN</th>
- 						<th>GAJI/HARI</th>
- 						<th>NETTO INSENTIF</th>
- 						<th>LEMBUR/JAM</th>
- 						<th>AKSI</th>
+ 						<th>Jabatan</th>
+ 						<th>Id_Jabatan</th>
+                        <th>Aksi</th>
  					</tr>
  				</thead>
  				<tbody>
@@ -55,12 +53,10 @@
  						<tr>
  							<td><?= $no++ ?></td>
  							<td><?= $b['jabatan']; ?></td>
- 							<td><?= rupiah($b['salary']); ?></td>
- 							<td><?= rupiah($b['bonus']); ?></td>
- 							<td><?= $b['overtime']; ?></td>
+ 							<td><?= $b['id']; ?></td>
  							<td>
- 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-jabatan') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+ 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id']; ?>">Edit</a>
+ 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
 
  							</td>
  						</tr>
@@ -82,31 +78,20 @@
  						<form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-jabatan' ?>" method="post" enctype="multipart/form-data">
 
  							<div class="modal-body">
+                             <div class="form-group">
+                                 Keterangan* <br>
+                                 Jika ingin menambahkan jabatan pastikan id nya sesuai dengan ketentuan di bawah ini <br>
+                                 
+ 								</div>
  								<div class="form-group">
- 									<label class="col-sm-12">Jabatan</label>	
-									 <select class="form-control" id="jabatan" name="jabatan">
-                           <option value="">-pilih-</option>
-                           <?php foreach ($jabatan as $j) : ?>
-                             <?php if ($j['id_jabatan'] == $idjabatan) : ?>
-                               <option value="<?= $j['id_jabatan'] ?>" selected> <?= $j['jabatan']; ?></option>
-                             <?php else : ?>
-                               <option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
-                             <?php endif ?>
-                           <?php endforeach; ?>
-                         </select>
+                                 <label class="col-sm-12">Jabatan</label>
+ 										<input type="text" name="jabatan" class="form-control" required>
  								</div>
  								<div class="form-group">
 
- 									<label class="col-sm-12">Gaji/hari</label>
- 										<input type="text" name="salary" class="form-control" required>
+ 									<label class="col-sm-12">Id Jabatan</label>
+ 										<input type="text" name="id" class="form-control" required>
  								</div>
-
- 								<div class="form-group">
-
- 									<label class="col-sm-12">Netto Insentif</label>
- 										<input type="text" name="bonus" class="form-control" required>
- 								</div>
- 							</div>
  							<div class="modal-footer">
  								<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
  								<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
@@ -124,13 +109,10 @@
  		<!-- edit modal -->
 
  		<?php foreach ($jabatan as $j) :
-				$id_jabatan = $j['id_jabatan'];
+				$id_jabatan = $j['id'];
 				$jabatan = $j['jabatan'];
-				$salary = $j['salary'];
-				$overtime = $j['overtime'];
-				$bonus = $j['bonus'];
 			?>
- 			<div class="modal fade bd-example-modal<?php echo $id_jabatan; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+ 			<div class="modal fade bd-example-modal<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
  				<div class="modal-dialog modal-lg">
  					<div class="modal-content">
  						<div class="modal-header text-center">
@@ -139,7 +121,7 @@
  						</div>
  						<div class="modal-body text-justify">
  							<form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-jabatan' ?>" method="post" enctype="multipart/form-data">
- 								<input type="hidden" name="id_jabatan" value="<?php echo $id_jabatan; ?>" />
+ 								<input type="hidden" name="id" value="<?php echo $id; ?>" />
  								<div class="modal-body">
 
  									<div class="form-group">
@@ -149,23 +131,6 @@
  											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " readonly>
  										</div>
  									</div>
- 									<div class="form-group">
-
- 										<label class="col-sm-12">Gaji/hari</label>
- 										<div class="col-sm-12">
- 											<input type="text" name="salary" value="<?= $salary ?>" class="form-control" required>
- 										</div>
- 									</div>
-
- 									<div class="form-group">
-
- 										<label class="col-sm-12">Netto Insentif</label>
- 										<div class="col-sm-12">
- 											<input type="text" name="bonus" value="<?= $bonus ?>" class="form-control" required>
- 										</div>
- 									</div>
-
-
  								</div>
  								<div class="modal-footer">
  									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
