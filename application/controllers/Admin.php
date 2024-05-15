@@ -93,7 +93,13 @@ class Admin extends CI_Controller
 		$id_jabatan = $this->input->post('id_jabatan', true);
 
 		// Memeriksa apakah data sudah ada di dalam database
-		$cek_data = $this->db->get_where('department', ['jabatan' => $jabatan, 'id_jabatan' => $id_jabatan])->row_array();
+		$cek_data = $this->db
+			->select('*')
+			->from('department')
+			->join('jabatan', 'department.jabatan = jabatan.jabatan')
+			->where('department.jabatan', $jabatan)
+			->get()
+			->row_array();		
 		if ($cek_data) {
 			$this->session->set_flashdata('flash', 'Data sudah ada');
 			redirect('admin/department');
