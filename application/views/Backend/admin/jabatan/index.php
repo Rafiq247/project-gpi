@@ -28,7 +28,7 @@
  				<h6 class="mb-4 bc-header"><?= $title ?></h6>
  			</div>
  			<div class="col-sm-4 text-right pb-3">
- 				<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Tambah</button>
+ 				<!-- <button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Tambah</button> -->
  				<!-- <a target="_blank" class="btn btn-round btn-danger" href="<?= base_url('admin/cetak-jadwal') ?>"><i class="fa fa-plus"></i> Report</a> -->
  			</div>
 
@@ -70,7 +70,7 @@
  			</table>
  		</div>
 
- 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+ 		<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 
  			<div class="modal-dialog modal-lg">
  				<div class="modal-content">
@@ -87,7 +87,7 @@
 									<select class="form-control" id="jabatan" name="jabatan">
 										<option value="">-pilih-</option>
 										<?php foreach ($jabatan as $j) : ?>
-										<option value="<?= $j['jabatan'] ?>"> <?= $j['jabatan']; ?></option>
+										<option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
 										<?php endforeach; ?>
 									</select>
  								</div>
@@ -113,7 +113,7 @@
 
  				</div>
  			</div>
- 		</div>
+ 		</div> -->
 
 
 

@@ -16,7 +16,7 @@ class supervisor_model extends CI_model
 	// public function getAllpegawai($id_jabatan = null)
 	// {
 	// 	if (!is_null($id_jabatan)) {
-	// 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+	// 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan AND tb_pegawai.id_jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90, $id_jabatan + 100, $id_jabatan + 110, $id_jabatan + 120, $id_jabatan + 130, $id_jabatan + 140, $id_jabatan + 150, $id_jabatan + 160, $id_jabatan + 170, $id_jabatan + 180)";
 	// 	} else {
 	// 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
 	// 	}
@@ -28,7 +28,7 @@ class supervisor_model extends CI_model
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
 		if (!is_null($id_jabatan)) {
-			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90, $id_jabatan + 100, $id_jabatan + 110, $id_jabatan + 120, $id_jabatan + 130, $id_jabatan + 140, $id_jabatan + 150, $id_jabatan + 160, $id_jabatan + 170, $id_jabatan + 180)";
 		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
@@ -121,7 +121,7 @@ class supervisor_model extends CI_model
 	{
 		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 3";
 		if (!is_null($id_jabatan)) {
-			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90, $id_jabatan + 100, $id_jabatan + 110, $id_jabatan + 120, $id_jabatan + 130, $id_jabatan + 140, $id_jabatan + 150, $id_jabatan + 160, $id_jabatan + 170, $id_jabatan + 180)";
 		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
@@ -174,7 +174,7 @@ class supervisor_model extends CI_model
 	{
 		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 4";
 		if (!is_null($id_jabatan)) {
-			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90)";
+			$sql.= " AND tb_pegawai.jabatan IN ($id_jabatan, $id_jabatan + 10, $id_jabatan + 20, $id_jabatan + 30, $id_jabatan + 40, $id_jabatan + 50, $id_jabatan + 60, $id_jabatan + 70, $id_jabatan + 80, $id_jabatan + 90, $id_jabatan + 100, $id_jabatan + 110, $id_jabatan + 120, $id_jabatan + 130, $id_jabatan + 140, $id_jabatan + 150, $id_jabatan + 160, $id_jabatan + 170, $id_jabatan + 180)";
 		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
