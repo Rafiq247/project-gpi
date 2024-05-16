@@ -59,7 +59,7 @@
                                     1. Id Jabatan harus penumlahan kelipatan 10 dari Id Jabatan parent <br>
                                     Contoh 1 : Supervisor (devisi A), id = 1 -> Leader (devisi A), = 11 (1+10) -> pegawai (devisi A),id = 21 (1 + 20) <br>
                                     Contoh 2 : Supervisor (devisi B), id = 2 -> Leader (devisi B), = 12 (2+10) -> pegawai (devisi B),id = 22 (2 + 20) <br>
-                                    2. Id Jabatan ataupun
+                                    2. Ketika menginput Id Jabatan ataupun Jabatan tidak bisa Double data
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-12">Jabatan</label>
