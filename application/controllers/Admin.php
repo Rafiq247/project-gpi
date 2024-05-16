@@ -25,7 +25,7 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['hitung_pegawai'] = $this->Admin_model->getAlljabatan();
 		// $data['hitung_absen_hari_ini'] = $this->Admin_model->getAlljabatan();
-		// $data['laporan_absensi'] = $this->Admin_model->getAlljabatan();
+		// $data['laporan_absensi'] = $this->Admin_model->getAlljabatan();f
 		// $data['gaji_pegawai'] = $this->Admin_model->getAlljabatan();
 
 		$this->load->view('backend/template/header', $data);
@@ -68,6 +68,101 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/dashboard/sejarah', $data);
 		$this->load->view('backend/template/footer');
 	}
+<<<<<<< Updated upstream
+=======
+
+	public function department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['jabatan'] = $this->Admin_model->getAllidjabatan();
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/department/index', $data);
+		$this->load->view('backend/template/footer');
+	}
+	
+	public function tambah_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$jabatan = $this->input->post('jabatan', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
+
+		// Memeriksa apakah data sudah ada di dalam database
+		$cek_data = $this->db
+			->select('*')
+			->from('department')
+			->join('jabatan', 'department.jabatan = jabatan.jabatan')
+			->where('department.jabatan', $jabatan)
+			->get()
+			->row_array();		
+		if ($cek_data) {
+			$this->session->set_flashdata('flash', 'Jabatan Tersebut Sudah Tersedia');
+			redirect('admin/department');
+			return;
+		}
+
+		$data = [
+			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
+		];
+
+		$data1 = [
+			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
+		];
+		$this->db->insert('jabatan', $data1);
+		$this->db->insert('department', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/department');
+	}
+
+	public function edit_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$jabatan = $this->input->post('jabatan', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
+		
+		$data = [
+			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
+
+		];
+
+		// $data1 = [
+		// 	"jabatan" => $jabatan,
+		// 	"id_jabatan" => $id_jabatan,
+		// ];
+
+		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->upate('jabatan', $data);
+
+		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->update('department', $data);
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/department');
+	}
+
+	public function hapus_department($id)
+	{
+		$this->db->where('id_jabatan', $id);
+		$this->db->delete('department');
+			// Menghapus data dari tabel jabatan
+		$this->db->where('id_jabatan', $id);
+		$this->db->delete('jabatan');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/department');
+	}
+
+>>>>>>> Stashed changes
 	public function jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -135,6 +230,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/jabatan');
 	}
+
 	public function pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
@@ -172,6 +268,32 @@ class Admin extends CI_Controller
 
 		$id_user = $this->input->post('id_user', true);
 		$id_pegawai = $this->input->post('id_pegawai', true);
+<<<<<<< Updated upstream
+=======
+		$role_id = $this->input->post('role_id', true);
+
+		// if ($role_id == 1) {
+		// 	$jabatan = 0; {
+		// 		$data['jabatan'][] = $this->Admin_model->getJabatanById($jabatan);
+		// 	}
+		// } else if ($role_id == 2) {
+		// 	$jabatan = 11;
+		// 	for ($jabatan = 11; $jabatan <= 20; $jabatan++) {
+		// 		$data['jabatan'][] = $this->Admin_model->getJabatanById($jabatan);
+		// 	}
+		// }	else if ($role_id == 3) {
+		// 	$jabatan = 21;
+		// 	for ($jabatan = 21; $jabatan <= 30; $jabatan++) {
+		// 		$data['jabatan'][] = $this->Admin_model->getJabatanById($jabatan);
+		// 	}
+		// }	else if ($role_id == 4) {
+		// 	$jabatan = 31;
+		// 	for ($jabatan = 31; $jabatan <= 180; $jabatan++) {
+		// 		$data['jabatan'][] = $this->Admin_model->getJabatanById($jabatan);
+		// 	}
+		// }
+
+>>>>>>> Stashed changes
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$jekel = $this->input->post('jekel', true);
 		$pendidikan = $this->input->post('pendidikan', true);
@@ -339,7 +461,6 @@ class Admin extends CI_Controller
 			$this->email->message($emailContent);
 		}
 
-
 		if ($this->email->send()) {
 			return true;
 		} else {
@@ -453,6 +574,7 @@ class Admin extends CI_Controller
 
 			"nama_pegawai" => $nama_pegawai,
 			"jekel" => $jekel,
+			"role_id" => $role_id,
 			"pendidikan" => $pendidikan,
 			"status_kepegawaian" => $status_pegawai,
 			"agama" => $agama,
@@ -523,6 +645,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/lembur/lembur', $data);
 		$this->load->view('backend/template/footer');
 	}
+
 	public function simpan_lembur_pegawai()
 	{
 		$data['title'] = 'Lembur Hari Ini';
@@ -539,6 +662,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Data Lembur Berhasil ditambah');
 		redirect('admin/tambah-lembur');
 	}
+
 	public function edit_lembur_pegawai()
 	{
 		$data['title'] = 'Lembur Hari Ini';
@@ -557,6 +681,7 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Data Lembur Berhasil ditambah');
 		redirect('admin/tambah-lembur');
 	}
+
 	public function hapus_lembur_pegawai($id)
 	{
 		$this->db->where('id_lembur', $id);

@@ -178,16 +178,36 @@
                      </div>
                    </div>
                    <div class="form-group">
-                     <label class="col-sm-12">Jabatan</label>
-                     <div class="col-sm-12">
-                       <select class="form-control" id="jabatan" name="jabatan">
-                         <option value="">-pilih-</option>
-                         <?php foreach ($jabatan as $j) : ?>
-                           <option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
-                         <?php endforeach; ?>
-                       </select>
-                     </div>
-                   </div>
+                      <label class="col-sm-12">Jabatan</label>
+                      <div class="col-sm-12">
+                        <select class="form-control" id="jabatan" name="jabatan">
+                          <option value="">- Pilih -</option>
+                          <?php 
+                          if ($role_id == 1) {
+                            $id_jabatan = 0;
+                            $data['id_jabatan'] = $this->Admin_model->getJabatanById($id_jabatan);
+                          } elseif ($role_id == 2) {
+                            for ($id_jabatan = 1; $id_jabatan <= 10; $id_jabatan++) {
+                              $data['id_jabatan'][] = $this->Admin_model->getJabatanById($id_jabatan);
+                              ?>
+                              <option value="<?= $id_jabatan ?>" <?= ($id_jabatan == $idjabatan) ? 'selected' : '' ?>><?= $this->Admin_model->getJabatanById($id_jabatan)['jabatan']; ?></option>
+                            <?php }
+                          } elseif ($role_id == 3) {
+                            for ($id_jabatan = 11; $id_jabatan <= 20; $id_jabatan++) {
+                              $data['id_jabatan'][] = $this->Admin_model->getJabatanById($id_jabatan);
+                              ?>
+                              <option value="<?= $id_jabatan ?>" <?= ($id_jabatan == $idjabatan) ? 'selected' : '' ?>><?= $this->Admin_model->getJabatanById($id_jabatan)['jabatan']; ?></option>
+                            <?php }
+                          } elseif ($role_id == 4) {
+                            for ($id_jabatan = 31; $id_jabatan <= 180; $id_jabatan++) {
+                              $data['id_jabatan'][] = $this->Admin_model->getJabatanById($id_jabatan);
+                              ?>
+                              <option value="<?= $id_jabatan ?>" <?= ($id_jabatan == $idjabatan) ? 'selected' : '' ?>><?= $this->Admin_model->getJabatanById($id_jabatan)['jabatan']; ?></option>
+                            <?php }
+                          } ?>
+                        </select>
+                      </div>
+                    </div>
                    <div class="form-group">
                      <label class="col-sm-12">No.Hp</label>
                      <div class="col-sm-12">
@@ -266,7 +286,27 @@
                      <div class="form-group">
                        <label>Nama</label>
                        <div>
+<<<<<<< Updated upstream
                          <input type="text" name="nama_pegawai" class="form-control " value="<?= $nama_pegawai ?>">
+=======
+                         <input type="text" name="nama_pegawai" class="form-control" value="<?= $nama_pegawai ?>">
+                       </div>
+                     </div>
+                     <?php $role_id = $this->Admin_model->getAlluser_role(); ?>
+                     <div class="form-group">
+                       <label>User Role</label>
+                       <div>
+                       <select class="form-control" id="role_id" name="role_id">
+                        <option value="">- Pilih -</option>
+                        <?php foreach ($role_id as $j) :?>
+                          <?php if ($j['id'] == $role_id) :?>
+                            <option value="<?= $j['id']?>" selected> <?= $j['role'];?></option>
+                          <?php else :?>
+                            <option value="<?= $j['id']?>"> <?= $j['role'];?></option>
+                          <?php endif?>
+                        <?php endforeach;?>
+                      </select>
+>>>>>>> Stashed changes
                        </div>
                      </div>
                      <div class="form-group">
@@ -275,6 +315,7 @@
                          <select class="form-control" id="jekel" name="jekel">
                            <option value="">-pilih-</option>
                            <?php foreach ($jekel as $j) : ?>
+<<<<<<< Updated upstream
                              <?php if ($j == $jekel1) : ?>
                                <?php if ($j == 'L') : ?>
                                  <option value="<?= $j ?>" selected>Laki-Laki</option>
@@ -288,6 +329,21 @@
                                  <option value="<?= $j ?>">Perempuan</option>
                                <?php endif ?>
                              <?php endif ?>
+=======
+                            <?php if ($j == $jekel1) : ?>
+                                                             <?php if ($j == 'L') : ?>
+                                                                 <option value="<?= $j ?>" selected>Laki-Laki</option>
+                                                             <?php else : ?>
+                                                                 <option value="<?= $j ?>" selected>Perempuan</option>
+                                                             <?php endif ?>
+                                                         <?php else : ?>
+                                                             <?php if ($j == 'L') : ?>
+                                                                 <option value="<?= $j ?>">Laki-Laki</option>
+                                                             <?php else : ?>
+                                                                 <option value="<?= $j ?>">Perempuan</option>
+                                                             <?php endif ?>
+                                                         <?php endif ?>
+>>>>>>> Stashed changes
                            <?php endforeach; ?>
 
                          </select>
@@ -324,6 +380,7 @@
                          </select>
                        </div>
                      </div>
+<<<<<<< Updated upstream
                      <div class="form-group">
                        <label class="">KTP</label>
                        <div class="">
@@ -337,6 +394,9 @@
                        </div>
                      </div>
                    </div>
+=======
+
+>>>>>>> Stashed changes
                    <div class="col-md-6">
                      <div class="form-group">
                        <label class="col-sm-12">Agama</label>
@@ -385,10 +445,16 @@
                      <div class="form-group">
                        <label class="col-sm-12">Tanggal Masuk</label>
                        <div class="col-sm-12">
+<<<<<<< Updated upstream
                          <input type="date" name="tgl_msk" class="form-control " value="<?= $tanggal_masuk ?>" required>
                        </div>
                      </div>
 
+=======
+                         <input type="date" name="tgl_msk" class="form-control" value="<?= $tanggal_masuk ?>" required>
+                       </div>
+                     </div>
+>>>>>>> Stashed changes
                    </div>
                  </div>
 
