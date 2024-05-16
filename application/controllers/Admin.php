@@ -90,6 +90,7 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
+		$role_group = $this->input->post('role_group', true);
 		$id_jabatan = $this->input->post('id_jabatan', true);
 
 		// Memeriksa apakah data sudah ada di dalam database
@@ -114,6 +115,7 @@ class Admin extends CI_Controller
 		$data1 = [
 			"jabatan" => $jabatan,
 			"id_jabatan" => $id_jabatan,
+			"role_group" => $role_group
 		];
 		$this->db->insert('jabatan', $data1);
 		$this->db->insert('department', $data);
@@ -135,11 +137,17 @@ class Admin extends CI_Controller
 
 		];
 
-		$this->db->where('id_jabatan', $id_jabatan);
-		$this->db->update('jabatan', $data);
-		
-		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->where('jabatan', $jabatan);
 		$this->db->update('department', $data);
+
+		$data1 = [
+			"jabatan" => $jabatan,
+			"id_jabatan" => $id_jabatan,
+
+		];
+
+		$this->db->where('jabatan', $jabatan);
+		$this->db->update('jabatan', $data1);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/department');
 	}
@@ -208,37 +216,37 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$jabatan = $this->input->post('jabatan', true);
 		$salary = $this->input->post('salary', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
 		$overtime = $salary / 173;
 		$bonus = $this->input->post('bonus', true);
 		$data = [
-			"jabatan" => $jabatan,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
 
 		];
-		$this->db->where('jabatan', $jabatan);
+		$this->db->where('id_jabatan', $id_jabatan);
 		$this->db->update('jabatan', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
 	}
 	
-	public function hapus_jabatan($id)
-	{
-		$this->db->where('jabatan', $id);
-		$this->db->delete('jabatan');
-		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
-		redirect('admin/jabatan');
-	}
+	// public function hapus_jabatan($id)
+	// {
+	// 	$this->db->where('jabatan', $id);
+	// 	$this->db->delete('jabatan');
+	// 	$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+	// 	redirect('admin/jabatan');
+	// }
+
 	public function pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->Admin_model->getAllpegawai();
-		$data['jabatan'] = $this->Admin_model->getAlljabatan();
+		$data['jabatan_all'] = $this->Admin_model->getAlljabatan();
 		$data['jekel'] = ['L', 'P'];
 		$data['stapeg'] = [1, 0];
 		$data['agama'] = ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Budha', 'Khonghucu'];

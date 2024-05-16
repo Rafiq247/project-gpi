@@ -60,7 +60,7 @@
  							<td><?= $b['overtime']; ?></td>
  							<td>
  								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-jabatan') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+ 								<!-- <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-jabatan') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a> -->
 
  							</td>
  						</tr>
@@ -138,13 +138,13 @@
  								<input type="hidden" name="id_jabatan" value="<?php echo $id_jabatan; ?>" />
  								<div class="modal-body">
 
- 									<div class="form-group">
+ 									<!-- <div class="form-group">
 
  										<label class="col-sm-12">Jabatan</label>
  										<div class="col-sm-12">
  											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " readonly>
  										</div>
- 									</div>
+ 									</div> -->
  									<div class="form-group">
 
  										<label class="col-sm-12">Gaji/hari</label>

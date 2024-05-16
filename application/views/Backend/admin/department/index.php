@@ -54,12 +54,21 @@
                         <form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-department' ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    Keterangan* <br>
+                                    Keterangan* -> Id Jabatan Admin = 0 <br>
                                     Jika ingin menambahkan jabatan pastikan id nya sesuai dengan ketentuan di bawah ini untuk memisahkan role yang ada<br>
-                                    1. Id Jabatan harus penumlahan kelipatan 10 dari Id Jabatan parent <br>
-                                    Contoh 1 : Supervisor (devisi A), id = 1 -> Leader (devisi A), = 11 (1+10) -> pegawai (devisi A),id = 21 (1 + 20) <br>
-                                    Contoh 2 : Supervisor (devisi B), id = 2 -> Leader (devisi B), = 12 (2+10) -> pegawai (devisi B),id = 22 (2 + 20) <br>
-                                    2. Ketika menginput Id Jabatan ataupun Jabatan tidak bisa Double data
+                                    1. Id Jabatan untuk 1 - 10 = Supervisor, 11 - 20 = Leader & 21 - 30 = Pegawai <br>
+                                    2. Id Jabatan harus penjumlahan kelipatan 10 dari Id Jabatan parent <br>
+                                    Contoh 1 : Supervisor (devisi A), id = 1 -> Leader (devisi A), = 11 (1+10) -> Pegawai (devisi A),id = 21 (1 + 20) <br>
+                                    Contoh 2 : Supervisor (devisi B), id = 2 -> Leader (devisi B), = 12 (2+10) -> Pegawai (devisi B),id = 22 (2 + 20) <br>
+									3. Untuk Id Jabatan bisa Double data <br>
+									Contoh 1 : Supervisor (devisi A), id = 1 -> Leader (devisi PRINTING A), = 11 (1+10) -> Leader (devisi PRINTING B),id = 11 (1 + 10) <br>
+									Contoh 1 : Supervisor (devisi A), id = 1 -> Pegawai (devisi PRINTING A), = 21 (1+20) -> Pegawai (devisi PRINTING B),id = 11 (1 + 20) <br>
+									4. Dari ketentuan pertama Supervisor per jabatan hanya terdapat 10 jabatan saja, jika ingin ditambahkan maka <br>
+									Kita bisa menggunakan Id Jabatan di atas 40 <br>
+									Id Jabatan untuk 31 - 40 = Supervisor (Jika Jabatan SPV melebih 10 pada ketentuan pertama), 41 - 50 = Leader & 51 - 60 = Pegawai <br>
+									Jika memang masih melebihi juga maka bisa Id Jabatan bisa di isi dari 61 - 70 lalu sisanya mengikuti. <br>
+									5. Jika Jabatan & Role salah Input maka harus di delete terlebih dahulu lalu input kembali <br>
+									6. Hanya Id Jabatan yang bisa di rubah
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-12">Jabatan</label>
@@ -68,6 +77,16 @@
                                 <div class="form-group">
                                     <label class="col-sm-12">Id Jabatan</label>
                                     <input type="text" name="id_jabatan" class="form-control" required>
+                                </div>
+								<div class="form-group">
+                                    <label class="col-sm-12">Role</label>
+									<select class="form-control" id="role_group" name="role_group">
+										<option value="">- Pilih -</option>
+										<option value="1">Admin</option>
+										<option value="2">Supervisor</option>
+										<option value="3">Leader</option>
+										<option value="4">Pegawai</option>
+									</select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -100,7 +119,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-12">Jabatan</label>
                                         <div class="col-sm-12">
-                                            <input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " readonly>
+                                            <input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -108,7 +127,7 @@
                                         <div class="col-sm-12">
                                             <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control ">
                                         </div>
-                                    </div>
+                                    </div>									
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
