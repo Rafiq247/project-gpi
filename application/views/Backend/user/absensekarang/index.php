@@ -296,18 +296,6 @@
  					checkout.datepicker("setEndDate", newDate);
  				}
 
-				//  $( "#datepicker_tgl_awal, #datepicker_tgl_akhir" ).datepicker({
-				// 	dateFormat: "yy-mm-dd",
-				// 	onClose: function(selectedDate, inst) {
-				// 		if (inst.id == "datepicker_tgl_awal") {
-				// 			$( "#datepicker_tgl_akhir" ).datepicker("option", "minDate", selectedDate);
-				// 		} else if (inst.id == "datepicker_tgl_akhir") {
-				// 			$( "#datepicker_tgl_awal" ).datepicker("option", "maxDate", selectedDate);
-				// 		}
-				// 	}
-				// });
-
-
  				var checkout = $('#datepicker_tgl_akhir').datepicker();
  				var checkin = $('#datepicker_tgl_awal').datepicker();
 

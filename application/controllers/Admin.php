@@ -134,6 +134,10 @@ class Admin extends CI_Controller
 			"id_jabatan" => $id_jabatan,
 
 		];
+
+		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->update('jabatan', $data);
+		
 		$this->db->where('id_jabatan', $id_jabatan);
 		$this->db->update('department', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');

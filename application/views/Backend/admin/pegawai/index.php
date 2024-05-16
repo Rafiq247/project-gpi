@@ -282,6 +282,7 @@
                          <input type="text" name="nama_pegawai" class="form-control" value="<?= $nama_pegawai ?>">
                        </div>
                      </div>
+                     <?php $role_id = $this->Admin_model->getAlluser_role(); ?>
                      <div class="form-group">
                        <label>User Role</label>
                        <div>
@@ -296,12 +297,25 @@
                      <div class="form-group">
                        <label>Jenis Kelamin</label>
                        <div>
-                         <select class="form-control" id="jekel" name="jekel">
-                           <option value="">-pilih-</option>
-                           <?php foreach ($jekel as $j) : ?>
-                             <option value="<?= $j ?>" <?= ($j == $jekel_selected) ? 'selected' : '' ?>><?= ($j == 'L') ? 'Laki-Laki' : 'Perempuan' ?></option>
-                           <?php endforeach; ?>
-                         </select>
+                       <select class="form-control" id="status_pegawai" name="status_pegawai" required>
+                                                     <option value="">-pilih-</option>
+                                                     <?php foreach ($stapeg as $jk) : ?>
+                                                         <?php if ($jk == $status_kepegawaian) : ?>
+                                                             <?php if ($jk == '1') : ?>
+                                                                 <option value="1" selected>Aktif</option>
+                                                             <?php else : ?>
+                                                                 <option value="0" selected>Tidak Aktif</option>
+                                                             <?php endif ?>
+                                                         <?php else : ?>
+                                                             <?php if ($jk == '1') : ?>
+                                                                 <option value="1">Aktif</option>
+                                                             <?php else : ?>
+                                                                 <option value="0">Tidak Aktif</option>
+                                                             <?php endif ?>
+                                                         <?php endif; ?>
+                                                     <?php endforeach; ?>
+
+                                                 </select>
                        </div>
                      </div>
                      <div class="form-group">
@@ -318,12 +332,6 @@
                            <option value="1" <?= ($status_kepegawaian == '1') ? 'selected' : '' ?>>Aktif</option>
                            <option value="0" <?= ($status_kepegawaian == '0') ? 'selected' : '' ?>>Tidak Aktif</option>
                          </select>
-                       </div>
-                     </div>
-                     <div class="form-group">
-                       <label>KTP</label>
-                       <div>
-                         <input type="file" name="userfilektp" class="form-control" id="userfilektp" value="<?= $ktp ?>">
                        </div>
                      </div>
                    </div>
@@ -367,12 +375,6 @@
                        <label class="col-sm-12">Tanggal Masuk</label>
                        <div class="col-sm-12">
                          <input type="date" name="tgl_msk" class="form-control" value="<?= $tanggal_masuk ?>" required>
-                       </div>
-                     </div>
-                     <div class="form-group">
-                       <label class="col-sm-12">Foto</label>
-                       <div class="col-sm-12">
-                         <input type="file" name="userfilefoto" class="form-control" id="userfilefoto" value="<?= $foto ?>">
                        </div>
                      </div>
                    </div>

@@ -57,7 +57,7 @@
  			</div>
  			<?php if ($absen['id_pegawai'] == 'peg') : ?>
  				<div class="col-sm-4 text-right pb-3">
- 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Sakit</button>
+ 					<button class="btn btn-round btn-theme" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Ajukan Izin</button>
  				</div>
  			<?php endif ?>
 
@@ -137,7 +137,7 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh HRD $b[acc_by]"   : $b["penolakan"]) ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Leader $b[acc_by]"   : $b["penolakan"]) ?></td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -166,9 +166,9 @@
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
-												<?php if($pegawai_month >= 365): ?>
-												 <option value="6">Izin Cuti</option>
-												<?php endif;  ?>
+ 												<?php if ($pegawai_month >= 365) : ?>
+ 													<option value="6">Izin Cuti</option>
+ 												<?php endif;  ?>
  											</select>
  										</div>
  									</div>
@@ -181,10 +181,10 @@
  									<div class="form-group">
  										<label>Tanggal Izin</label>
  										<div>
- 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class="datepicker form-control mb-3" id="datepicker">
+ 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal">
  										</div>
  										<div>
- 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class="datepicker form-control" id="datepicker">
+ 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir">
  										</div>
  									</div>
  									<div class="form-group">
@@ -197,12 +197,13 @@
  								<div class="col-md-6">
  									<div class="col-md-12 ">
  										Ket.<br>
- 										-Silahkan pilih jenis izin anda*<br>
- 										-upload bukti keterangan dokter untuk "Izin Sakit"*<br>
- 										-Silahkan isi keterangan alasan<br>
-										 <?php if ($pegawai_month >= 365) : ?>
+ 										- Silahkan pilih jenis izin anda*<br>
+ 										- Upload bukti keterangan dokter untuk "Izin Sakit"*<br>
+ 										- Silahkan isi keterangan alasan<br>
+ 										<?php if ($pegawai_month >= 365) : ?>
 											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
  												<?php endif;  ?>
+										
  									</div>
  								</div>
  							</div>
@@ -223,8 +224,6 @@
 
 
  		<script>
- 			
-
  			// var x = document.getElementById("demo");
  			getLocation();
 
@@ -316,5 +315,7 @@
  						checkin.on('changeDate', onTglAwalChanged);
  					}
  				});
+
+
  			});
  		</script>

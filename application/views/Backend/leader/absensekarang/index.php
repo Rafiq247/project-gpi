@@ -137,7 +137,7 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Supervisor $b[acc_by]"   : $b["penolakan"]) ?></td>
+ 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Leader $b[acc_by]"   : $b["penolakan"]) ?></td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -154,7 +154,7 @@
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
- 						<?php echo form_open_multipart('leader/izin-pegawai'); ?>
+ 						<?php echo form_open_multipart('leader/izin-leader'); ?>
  						<div class="card-body">
  							<div class="row">
  								<div class="col-md-6">
