@@ -92,6 +92,9 @@ class Admin extends CI_Controller
 		$jabatan = $this->input->post('jabatan', true);
 		$role_group = $this->input->post('role_group', true);
 		$id_jabatan = $this->input->post('id_jabatan', true);
+		$salary = $this->input->post('salary', true);
+		$overtime = $salary / 173;
+		$bonus = $this->input->post('bonus', true);
 
 		// Memeriksa apakah data sudah ada di dalam database
 		$cek_data = $this->db
@@ -115,7 +118,10 @@ class Admin extends CI_Controller
 		$data1 = [
 			"jabatan" => $jabatan,
 			"id_jabatan" => $id_jabatan,
-			"role_group" => $role_group
+			"role_group" => $role_group,
+			"salary" => $salary,
+			"overtime" => $overtime,
+			"bonus" => $bonus,
 		];
 		$this->db->insert('jabatan', $data1);
 		$this->db->insert('department', $data);
@@ -181,34 +187,34 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/footer');
 	}
 	
-	// public function tambah_jabatan()
-	// {
-	// 	$data['title'] = 'Data Jabatan';
-	// 	// mengambil data user berdasarkan email yang ada di session
-	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	public function tambah_jabatan()
+	{
+		$data['title'] = 'Data Jabatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		
-	// 	$jabatan = $this->input->post('jabatan', true);
-	// 	$id_jabatan = $this->input->post('id_jabatan', true);
-	// 	$salary = $this->input->post('salary', true);
-	// 	$bonus = $this->input->post('bonus', true);
-	// 	$overtime = $salary / 173;
-	// 	$data = [
-	// 		"salary" => $salary,
-	// 		"overtime" => $overtime,
-	// 		"bonus" => $bonus,
+		$jabatan = $this->input->post('jabatan', true);
+		$id_jabatan = $this->input->post('id_jabatan', true);
+		$salary = $this->input->post('salary', true);
+		$bonus = $this->input->post('bonus', true);
+		$overtime = $salary / 173;
+		$data = [
+			"salary" => $salary,
+			"overtime" => $overtime,
+			"bonus" => $bonus,
 
-	// 	];
+		];
 
-	// 	$data1 = [
-	// 		"jabatan" => $this->db->get_where('department', ['jabatan' => $jabatan])->row_array(),
-	// 		// "id_jabatan" => $this->db->get_where('department', ['id_jabatan' => $id_jabatan])->row_array(),
-	// 	];
+		$data1 = [
+			"jabatan" => $this->db->get_where('department', ['jabatan' => $jabatan])->row_array(),
+			// "id_jabatan" => $this->db->get_where('department', ['id_jabatan' => $id_jabatan])->row_array(),
+		];
 
-	// 	$this->db->insert('department', $data1);
-	// 	$this->db->insert('jabatan', $data);
-	// 	$this->session->set_flashdata('flash', 'Berhasil ditambah');
-	// 	redirect('admin/jabatan');
-	// }
+		$this->db->insert('department', $data1);
+		$this->db->insert('jabatan', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/jabatan');
+	}
 
 	public function edit_jabatan()
 	{

@@ -79,6 +79,7 @@
  								<th>BONUS</th>
  								<th>JAM LEMBUR</th>
  								<th>LEMBUR</th>
+								<th>BPJamsostek</th>
  								<th>HADIR</th>
  								<th>TIDAK HADIR</th>
  								<th>Izin</th>
@@ -109,7 +110,7 @@
  										<td><?= $b['tidak_hadir']; ?></td>
  										<td><?= $b['izin']; ?></td>
  										<td><?= $b['sakit']; ?></td>
-										 <td><?= $b['cuti']; ?></td>
+										<td><?= $b['cuti']; ?></td>
  										<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
  										<td><?php echo 'Rp ' . number_format($b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'], 2, ',', '.'); ?></td>
  										<td>

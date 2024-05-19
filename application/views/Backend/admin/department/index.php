@@ -88,6 +88,14 @@
 										<option value="4">Pegawai</option>
 									</select>
                                 </div>
+                                <div class="form-group">
+                                        <label class="col-sm-12">Gaji/hari</label>
+                                            <input type="text" name="salary" class="form-control ">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-12">Netto Insentif</label>
+                                            <input type="text" name="bonus" class="form-control ">
+                                    </div>	
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
@@ -127,7 +135,7 @@
                                         <div class="col-sm-12">
                                             <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control ">
                                         </div>
-                                    </div>									
+                                    </div>								
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

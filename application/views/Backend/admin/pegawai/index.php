@@ -194,9 +194,7 @@
                      <div class="col-sm-12">
                        <select class="form-control" id="jabatan" name="jabatan">
                          <option value="">-pilih-</option>
-                         <?php foreach ($jabatan as $j) : ?>
-                           <option value="<?= $j['id_jabatan'] ?>"> <?= $j['jabatan']; ?></option>
-                         <?php endforeach; ?>
+
                        </select>
                      </div>
                    </div>
@@ -247,7 +245,7 @@
      <?php foreach ($pegawai as $j) :
         $id_pegawai = $j['id_pegawai'];
         $nama_pegawai = $j['nama_pegawai'];
-        $role_id = $j['role_id'];
+        $selected_role_id = $j['role_id'];
         $jekel1 = $j['jekel'];
         $id_user1 = $j['id_user'];
         $pendidikan = $j['pendidikan'];
@@ -286,10 +284,10 @@
                      <div class="form-group">
                        <label>User Role</label>
                        <div>
-                         <select class="form-control" id="role_id" name="role_id">
+                         <select class="form-control" id="role_id_edit" name="role_id">
                            <option value="">-pilih-</option>
                            <?php foreach ($role_id as $j) : ?>
-                             <option value="<?= $j['id'] ?>" <?= ($j['id'] == $role_id) ? 'selected' : '' ?>><?= $j['role']; ?></option>
+                             <option value="<?= $j['id'] ?>" <?= ($j['id'] == $selected_role_id) ? 'selected' : '' ?>><?= $j['role']  ?></option>
                            <?php endforeach; ?>
                          </select>
                        </div>
@@ -297,22 +295,22 @@
                      <div class="form-group">
                        <label>Jenis Kelamin</label>
                        <div>
-                       <select class="form-control" id="status_pegawai" name="status_pegawai" required>
+                       <select class="form-control" id="jekel" name="jekel">
                                                      <option value="">-pilih-</option>
-                                                     <?php foreach ($stapeg as $jk) : ?>
-                                                         <?php if ($jk == $status_kepegawaian) : ?>
-                                                             <?php if ($jk == '1') : ?>
-                                                                 <option value="1" selected>Aktif</option>
+                                                     <?php foreach ($jekel as $j) : ?>
+                                                         <?php if ($j == $jekel1) : ?>
+                                                             <?php if ($j == 'L') : ?>
+                                                                 <option value="<?= $j ?>" selected>Laki-Laki</option>
                                                              <?php else : ?>
-                                                                 <option value="0" selected>Tidak Aktif</option>
+                                                                 <option value="<?= $j ?>" selected>Perempuan</option>
                                                              <?php endif ?>
                                                          <?php else : ?>
-                                                             <?php if ($jk == '1') : ?>
-                                                                 <option value="1">Aktif</option>
+                                                             <?php if ($j == 'L') : ?>
+                                                                 <option value="<?= $j ?>">Laki-Laki</option>
                                                              <?php else : ?>
-                                                                 <option value="0">Tidak Aktif</option>
+                                                                 <option value="<?= $j ?>">Perempuan</option>
                                                              <?php endif ?>
-                                                         <?php endif; ?>
+                                                         <?php endif ?>
                                                      <?php endforeach; ?>
 
                                                  </select>
@@ -351,7 +349,8 @@
                      <div class="form-group">
                        <label class="col-sm-12">Jabatan</label>
                        <div class="col-sm-12">
-                         <select class="form-control" id="jabatan" name="jabatan">
+                         <?php $jabatan = $this->Admin_model->getAlljabatan($selected_role_id); ?>
+                         <select class="form-control" id="jabatan_edit" name="jabatan">
                            <option value="">-pilih-</option>
                            <?php foreach ($jabatan as $j) : ?>
                              <option value="<?= $j['id_jabatan'] ?>" <?= ($j['id_jabatan'] == $idjabatan) ? 'selected' : '' ?>><?= $j['jabatan']; ?></option>
@@ -392,3 +391,53 @@
 
    </div>
  <?php endforeach; ?>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script>
+   $(document).ready(function() {
+     const jabatanList = <?php echo json_encode($jabatan_all); ?>;
+     $('#role_id').on('change', function() { // kalo element id "role_id" event "change", trigger function ini
+
+       const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) // filter seusai yang dipilih
+       const filteredJadiHtml = filteredJabatan.map(function(value) {
+         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
+       }).join("");
+       $("#jabatan").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); 
+     })
+     $('#role_id_edit').on('change', function() { 
+
+      const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) 
+      const filteredJadiHtml = filteredJabatan.map(function(value) {
+        return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
+      }).join("");
+      $("#jabatan_edit").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); 
+    })
+    })
+ </script>
+
+ <!-- <script>
+   $(document).ready(function() {
+     const jabatanList = <?php // echo json_encode($jabatan_all); ?>;
+     $('#role_id').on('change', function() { // kalo element id "role_id" event "change", trigger function ini
+       let jabatanListOption = [];
+       if ($(this).val() == "1") {
+         jabatanListOption = jabatanList;
+       } else {
+         const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) // filter seusai yang dipilih
+         jabatanListOption = filteredJabatan
+
+       }
+       const optionHtml = jabatanListOption.map(function(value) {
+         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
+       }).join("");
+       $("#jabatan").html(`<option value="">-pilih-</option>${optionHtml}`); // set html dropdown jabatan
+     })
+     $('#role_id_edit').on('change', function() { // kalo element id "role_id" event "change", trigger function ini
+
+       const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) // filter seusai yang dipilih
+       const filteredJadiHtml = filteredJabatan.map(function(value) {
+         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
+       }).join("");
+       $("#jabatan_edit").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); // set html dropdown jabatan
+     })
+   })
+ </script> -->

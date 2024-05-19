@@ -62,13 +62,13 @@
                              </td>
                              <td>
                                 <?php if ($b['role_id'] == 1) : ?>
-                                     Super Admin
+                                     Admin
                                  <?php elseif ($b['role_id'] == 2) : ?>
                                      Supervisor
                                  <?php elseif ($b['role_id'] == 3) : ?>
                                      Leader
                                  <?php elseif ($b['role_id'] == 4) : ?>
-                                     Karyawan
+                                     Pegawai
                                  <?php endif ?>
                              </td>
                              <td>

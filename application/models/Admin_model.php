@@ -4,9 +4,12 @@
 class Admin_model extends CI_model
 {
 	// FEBY
-	public function getAlljabatan()
+	public function getAlljabatan($filterRoleGroup = null)
 	{
 		$sql = "SELECT * from jabatan";
+		if ($filterRoleGroup != null) {
+			$sql .= " WHERE role_group = '$filterRoleGroup'";
+		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -18,21 +21,21 @@ class Admin_model extends CI_model
 		return $result->result_array();
 	}
 
-	public function getAlluser_role()
+	public function getAlluser_role($filterRoleGroup = null)
 	{
 		$sql = "SELECT * from user_role";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-	
+
 	public function getAllDetail()
 	{
 		$role_ids = [1, 2, 3, 4]; // Define the array of role IDs
-		$sql = "SELECT * from user where role_id IN (". implode(',', $role_ids). ")";
+		$sql = "SELECT * from user where role_id IN (" . implode(',', $role_ids) . ")";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-	
+
 	public function getAllpegawai()
 	{
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where jabatan.id_jabatan=tb_pegawai.jabatan";
