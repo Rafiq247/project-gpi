@@ -134,6 +134,17 @@
     $route['admin/simpan-gaji'] = 'admin/simpan_gaji';
     $route['admin/edit-gaji'] = 'admin/edit_gaji';
     $route['admin/hapus-gaji/(:any)'] = 'admin/hapus_gaji/$1';
+
+    // BPJS
+    $route['admin/bpjs-kesehatan'] = 'admin/bpjs_kes';
+    $route['admin/hapus-bpjs-kesehatan/(:any)'] = 'admin/delete_bpjs_kes/$1';
+    $route['admin/input-bpjs-kesehatan'] = 'admin/input_bpjs_kes';
+    $route['admin/edit-bpjs-kesehatan'] = 'admin/edit_bpjs_kes';
+
+    $route['admin/bpjs-jamsostek'] = 'admin/bpjs_jamsos';
+    $route['admin/hapus-bpjs-jamsostek/(:any)'] = 'admin/delete_bpjs_jamsos/$1';
+    $route['admin/input-bpjs-jamsostek'] = 'admin/input_bpjs_jamsos';
+    $route['admin/edit-bpjs-jamsostek'] = 'admin/edit_bpjs_jamsos';
     // $route['admin/cetak-absen-lembur/(:any)/(:any)'] = 'admin/cetak_absen_lembur/$1/$2';
 
     // $route['admin/detail-absen/(:any)'] = 'admin/detail_absen/$1';

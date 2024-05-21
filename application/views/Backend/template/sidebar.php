@@ -77,6 +77,15 @@
              </ul>
            </li>
            <li class="parent">
+             <a href="#" onclick="toggle_menu('bpjs'); return false" class=""><i class="fa fa-credit-card mr-3"> </i>
+               <span class="none">BPJS<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+             </a>
+             <ul class="children" id="bpjs">
+               <li class="child"><a href="<?= base_url() ?>admin/bpjs-kesehatan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>BPJS Kesehatan</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/bpjs-jamsostek" class="ml-4"><i class="fa fa-angle-right mr-2"></i>BPJS Jamsostek</a></li>
+             </ul>
+           </li>
+           <li class="parent">
              <a href="#" onclick="toggle_menu('akun'); return false" class=""><i class="fas fa-user-circle mr-3"> </i>
                <span class="none">Data Akun<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>

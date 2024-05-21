@@ -2113,4 +2113,152 @@ class Admin extends CI_Controller
 
 		$this->load->view('backend/admin/laporan/cetak', $data);
 	}
+
+	//BPJS Kesehatan
+	public function bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/bpjs/kesehatan', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function input_bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$name = $this->input->post('name', true);
+		$salary = $this->input->post('salary', true);
+		$no_kartu = $this->input->post('no_kartu', true);
+		$kelas_rawat = $this->input->post('kelas_rawat', true);
+
+		// Memeriksa apakah data sudah ada di dalam database
+		$cek_data = $this->Admin_model->getBpjsKesehatan(); //pengecekan db taro di model
+		if ($cek_data) {
+			$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
+			redirect('admin/bpjs_kes');
+			return;
+		}
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"name" => $name,
+			"salary" => $salary,
+			"no_kartu" => $no_kartu,
+			"kelas_rawat" => $kelas_rawat,
+		];
+		$this->db->insert();
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/bpjs_kes');
+	}
+
+	public function delete_bpjs_kes()
+	{
+		$this->db->where('id_pegawai');
+		$this->db->delete();
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/bpjs_kes');
+	}
+
+	public function edit_bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$name = $this->input->post('name', true);
+		$salary = $this->input->post('salary', true);
+		$no_kartu = $this->input->post('no_kartu', true);
+		$kelas_rawat = $this->input->post('kelas_rawat', true);
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"name" => $name,
+			"salary" => $salary,
+			"no_kartu" => $no_kartu,
+			"kelas_rawat" => $kelas_rawat,
+		];
+		$this->db->where();
+		$this->db->update();
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/bpjs_kes');
+	}
+
+	//BPJS Jamsostek
+	public function bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/bpjs/jamsostek', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function input_bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$name = $this->input->post('name', true);
+		$salary = $this->input->post('salary', true);
+
+		// Memeriksa apakah data sudah ada di dalam database
+		$cek_data = $this->Admin_model->getBpjsKesehatan(); //pengecekan db taro di model
+		if ($cek_data) {
+			$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
+			redirect('admin/bpjs_kes');
+			return;
+		}
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"name" => $name,
+			"salary" => $salary,
+		];
+		$this->db->insert();
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/bpjs_jamsos');
+	}
+
+	public function delete_bpjs_jamsos()
+	{
+		$this->db->where();
+		$this->db->delete();
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/bpjs_jamsos');
+	}
+
+	public function edit_bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$name = $this->input->post('name', true);
+		$salary = $this->input->post('salary', true);
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"name" => $name,
+			"salary" => $salary,
+		];
+		$this->db->where();
+		$this->db->update();
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/bpjs_jamsos');
+	}
 }
