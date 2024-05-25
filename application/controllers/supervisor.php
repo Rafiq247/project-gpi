@@ -668,6 +668,11 @@ class supervisor extends CI_Controller
 							$valueTotalIzin += 1;
 						}
 					}
+					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// check id pegawainya ada gak $pegawai
+					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+						$pengurangan = 0;
+					} 
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
@@ -677,7 +682,7 @@ class supervisor extends CI_Controller
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => $pengurangan,
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
@@ -1025,9 +1030,8 @@ class supervisor extends CI_Controller
 		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		if (isset($data['user']['jabatan'])) {
-			$id_jabatan = $data['user']['jabatan'];
-			$data['pegawai'] = $this->supervisor_model->getAllpegawai($id_jabatan);
-			// var_dump($data['pegawai']); exit;
+			$devisi = $data['user']['jabatan'];
+			$data['pegawai'] = $this->supervisor_model->getAllpegawai($devisi);
 			foreach ($data['pegawai'] as $key => $value) {
 				$data['pegawai'][$key]['pegawai'] = $this->supervisor_model->getAlljabatan($value['id_pegawai']);
 				// $this->checkData($data['pegawai'][$key]['jabatan'][0]);

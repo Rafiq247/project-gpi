@@ -145,6 +145,8 @@
  								<th>JAM LEMBUR</th>
  								<th>LEMBUR</th>
  								<th>HADIR</th>
+								<th>BPJS Jamsostek</th>
+								<th>BPJS Kesehatan</th>
  								<th>TIDAK HADIR</th>
  								<th>IZIN</th>
  								<th>SAKIT</th>
@@ -171,6 +173,8 @@
  									<td><?= $b['jam_lembur']; ?> Jam</td>
  									<td><?php echo 'Rp ' . number_format($b['lembur'], 2, ',', '.'); ?></td>
  									<td><?= $b['hadir']; ?> Hari</td>
+									<td><?php echo 'Rp ' . number_format($b['total_iuran_sos'], 2, ',', '.'); ?></td>
+									<td><?php echo 'Rp ' . number_format($b['total_iuran_kes'], 2, ',', '.'); ?></td>
  									<td><?= $b['tidak_hadir']; ?> Hari</td>
  									<td><?= $b['izin']; ?> Hari</td>
  									<td><?= $b['sakit']; ?> Hari</td>

@@ -42,24 +42,26 @@
                 </thead>
                 <tbody>
                     <?php $no = 1; ?>
-                    <tr>
-                        <td><?= $no++ ?></td>
-                        <td>P-001</td>
-                        <td>Aang Mulyana</td>
-                        <td>Helper Cylinder</td>
-                        <td>Rp. 10.000.000</td>
-                        <td>Rp. 8.000</td>
-                        <td>Rp. 7.000</td>
-                        <td>Rp. 50.000</td>
-                        <td>Rp. 40.000</td>
-                        <td>Rp. 105.000</td>
-                        <td>
-                            <a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target="#editBpjsJamsos">Edit</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-jamsos') ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
-                        </td>
-                    </tr>
+                    <?php foreach ($bpjs_jamsos as $b) : ?>
+                        <tr>
+                            <td><?= $no++ ?></td>
+                            <td><?= $b['id_pegawai']; ?></td>
+                            <td><?= $b['nama_pegawai']; ?></td>
+                            <td><?= $b['jabatan']; ?></td>
+                            <td><?= $b['salary']; ?></td>
+                            <td><?= $b['iuran_jjk']; ?></td>
+                            <td><?= $b['iuran_jkm']; ?></td>
+                            <td><?= $b['iuran_jht_tk']; ?></td>
+                            <td><?= $b['iuran_jht']; ?></td>
+                            <td><?= $b['total_iuran_sos']; ?></td>
+                            <td>
+                                <a href="javascript:void(0)" class="btn btn-theme ml-1 trigger-edit-modal" data-id-sos="<?= $b['id_bpjs_sos'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>" href="">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-jamsostek/'.$b['id_bpjs_sos']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
                 </tbody>
 
             </table>
@@ -74,33 +76,36 @@
                     </div>
                     <div class="modal-body text-justify">
                         <form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-bpjs-jamsostek' ?>" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="id_bpjs_sos" id="modal__id_bpjs_sos">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label class="col-sm-12">ID KARYAWAN</label>
                                         <div class="col-sm-12">
-                                            <select class="form-control" id="id_pegawai" name="id_pegawai">
-                                                <option value="">-pilih-</option>
-                                                <option value="id_pegawai">P-001</option>
+                                            <select class="form-control" id="select__id_pegawai_edit" name="id_pegawai">
+                                            <option>-pilih-</option>
+                                                <?php foreach ($pegawai_list as $pegawai) : ?>
+                                                    <option value="<?= $pegawai['id_pegawai'] ?>"><?= $pegawai['id_pegawai'] ?></option>
+                                                <?php endforeach ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">NAMA KARYAWAN</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Aang Mulyana(BERDASARKAN ID KARYAWAN)" name="name" class="form-control " readonly>
+                                            <input type="text" name="nama_pegawai" id="modal_add_nama_karyawan_edit" class="form-control " readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">DEVISI</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Rp. 5.000.000(BERDASARKAN DATA JABATAN)" name="jabatan" class="form-control " readonly>
+                                            <input type="text" name="jabatan" id="modal_add_jabatan_edit" class="form-control " readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">DATA UPAH</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Rp. 10.000.000(BERDASARKAN GAJI BERSIH TPP)" name="salary" class="form-control " readonly>
+                                            <input type="text" name="salary" id="modal_add_salary_edit" class="form-control " readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -130,28 +135,31 @@
                                     <div class="form-group">
                                         <label class="col-sm-12">ID KARYAWAN</label>
                                         <div class="col-sm-12">
-                                            <select class="form-control" id="id_pegawai" name="id_pegawai">
-                                                <option value="">-pilih-</option>
-                                                <option value="id_pegawai">P-001</option>
+                                            <select class="form-control" id="select__id_pegawai" name="id_pegawai">
+                                                <option>-pilih-</option>
+                                                <?php foreach ($pegawai_list as $pegawai) : ?>
+                                                    <option value="<?= $pegawai['id_pegawai'] ?>"><?= $pegawai['id_pegawai'] ?></option>
+                                                <?php endforeach ?>
+
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">NAMA KARYAWAN</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Aang Mulyana(BERDASARKAN ID KARYAWAN)" name="name" class="form-control " readonly>
+                                            <input type="text" name="nama_pegawai" id="modal_add_nama_karyawan" class="form-control " readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">DEVISI</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Rp. 5.000.000(BERDASARKAN DATA JABATAN)" name="jabatan" class="form-control " readonly>
+                                            <input type="text" name="jabatan" id="modal_add_jabatan" class="form-control " readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">DATA UPAH</label>
                                         <div class="col-sm-12">
-                                            <input type="text" value="Rp. 10.000.000(BERDASARKAN GAJI BERSIH TPP)" name="salary" class="form-control " readonly>
+                                            <input type="text" name="salary" id="modal_add_salary" class="form-control " readonly>
                                         </div>
                                     </div>
 
@@ -168,3 +176,40 @@
 
             </div>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("#select__id_pegawai").on("change", function(){
+                    $.post('<?= base_url('admin/ajax_pegawai') ?>', {
+                        id_pegawai: $(this).val()
+                    }).then(function(response) {
+                        console.log(response);
+                        $("#modal_add_nama_karyawan").val(response.nama_pegawai);
+                        $("#modal_add_jabatan").val(response.jabatan);
+                        $("#modal_add_salary").val(response.salary);
+                    })
+                })
+                $("#select__id_pegawai_edit").on("change", function(){
+                    $.post('<?= base_url('admin/ajax_pegawai') ?>', {
+                        id_pegawai: $(this).val()
+                    }).then(function(response) {
+                        console.log(response);
+                        $("#modal_add_nama_karyawan_edit").val(response.nama_pegawai);
+                        $("#modal_add_jabatan_edit").val(response.jabatan);
+                        $("#modal_add_salary_edit").val(response.salary);
+                    })
+                })
+
+                $(".trigger-edit-modal").on("click", function(){
+                    $("#modal__id_bpjs_sos").val($(this).data("id-sos"));
+                    $("#select__id_pegawai_edit").val($(this).data("id-pegawai")).trigger('change');
+                    $("#editBpjsJamsos").modal("show");
+                })
+                // trigger-edit-modal" data-id-pegawai
+                // data-toggle="modal" data-target="#editBpjsJamsos"
+
+
+            });
+        </script>

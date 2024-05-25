@@ -284,7 +284,7 @@
                      <div class="form-group">
                        <label>User Role</label>
                        <div>
-                         <select class="form-control" id="role_id_edit" name="role_id">
+                         <select class="form-control role-id-edit" data-id-peg="<?= $id_pegawai ?>" name="role_id">
                            <option value="">-pilih-</option>
                            <?php foreach ($role_id as $j) : ?>
                              <option value="<?= $j['id'] ?>" <?= ($j['id'] == $selected_role_id) ? 'selected' : '' ?>><?= $j['role']  ?></option>
@@ -350,7 +350,7 @@
                        <label class="col-sm-12">Jabatan</label>
                        <div class="col-sm-12">
                          <?php $jabatan = $this->Admin_model->getAlljabatan($selected_role_id); ?>
-                         <select class="form-control" id="jabatan_edit" name="jabatan">
+                         <select class="form-control" id="jabatan_edit<?= $id_pegawai ?>" name="jabatan">
                            <option value="">-pilih-</option>
                            <?php foreach ($jabatan as $j) : ?>
                              <option value="<?= $j['id_jabatan'] ?>" <?= ($j['id_jabatan'] == $idjabatan) ? 'selected' : '' ?>><?= $j['jabatan']; ?></option>
@@ -403,41 +403,14 @@
        }).join("");
        $("#jabatan").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); 
      })
-     $('#role_id_edit').on('change', function() { 
-
+     $('.role-id-edit').on('change', function() { 
+      // <select class="form-control role-id-edit" data-id-peg="<?= $id_pegawai ?>" name="role_id">
+      const targetIdPeg = $(this).data("id-peg");
       const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) 
       const filteredJadiHtml = filteredJabatan.map(function(value) {
         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
       }).join("");
-      $("#jabatan_edit").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); 
+      $(`#jabatan_edit${targetIdPeg}`).html(`<option value="">-pilih-</option>${filteredJadiHtml}`); 
     })
     })
  </script>
-
- <!-- <script>
-   $(document).ready(function() {
-     const jabatanList = <?php // echo json_encode($jabatan_all); ?>;
-     $('#role_id').on('change', function() { // kalo element id "role_id" event "change", trigger function ini
-       let jabatanListOption = [];
-       if ($(this).val() == "1") {
-         jabatanListOption = jabatanList;
-       } else {
-         const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) // filter seusai yang dipilih
-         jabatanListOption = filteredJabatan
-
-       }
-       const optionHtml = jabatanListOption.map(function(value) {
-         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
-       }).join("");
-       $("#jabatan").html(`<option value="">-pilih-</option>${optionHtml}`); // set html dropdown jabatan
-     })
-     $('#role_id_edit').on('change', function() { // kalo element id "role_id" event "change", trigger function ini
-
-       const filteredJabatan = jabatanList.filter((value) => value.role_group == $(this).val()) // filter seusai yang dipilih
-       const filteredJadiHtml = filteredJabatan.map(function(value) {
-         return `<option value="${value.id_jabatan}">${value.jabatan}</option>`
-       }).join("");
-       $("#jabatan_edit").html(`<option value="">-pilih-</option>${filteredJadiHtml}`); // set html dropdown jabatan
-     })
-   })
- </script> -->

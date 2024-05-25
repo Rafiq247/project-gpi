@@ -22,8 +22,8 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Jabatan</th>
-                        <th>Id Jabatan</th>
+                        <th>Department</th>
+                        <!-- <th>Id Jabatan</th> -->
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -32,11 +32,11 @@
                     <?php foreach ($jabatan as $b) : ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= $b['jabatan']; ?></td>
-                            <td><?= $b['id_jabatan']; ?></td>
+                            <td><?= $b['devisi']; ?></td>
+                            <!-- <td><?= $b['id_jabatan']; ?></td> -->
                             <td>
-                                <button class="btn btn-theme ml-1" data-toggle="modal" data-target="#editModal<?= $b['id_jabatan']; ?>">Edit</button>
-                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                                <button class="btn btn-theme ml-1" data-toggle="modal" data-target="#editModal<?= $b['id_department']; ?>">Edit</button>
+                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id_department']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -47,13 +47,17 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header text-center">
-                        <h5 class="modal-title text-secondary"><strong> Tambah Jabatan</strong></h5>
+                        <h5 class="modal-title text-secondary"><strong> Tambah Department</strong></h5>
                         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-justify">
                         <form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-department' ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
-                                <div class="form-group">
+                            <div class="form-group">
+                                    <label class="col-sm-12">Department</label>
+                                    <input type="text" name="devisi" class="form-control" required>
+                                </div>
+                                <!-- <div class="form-group">
                                     Keterangan* -> Id Jabatan Admin = 0 <br>
                                     Jika ingin menambahkan jabatan pastikan id nya sesuai dengan ketentuan di bawah ini untuk memisahkan role yang ada<br>
                                     1. Id Jabatan untuk 1 - 10 = Supervisor, 11 - 20 = Leader & 21 - 30 = Pegawai <br>
@@ -69,8 +73,8 @@
 									Jika memang masih melebihi juga maka bisa Id Jabatan bisa di isi dari 61 - 70 lalu sisanya mengikuti. <br>
 									5. Jika Jabatan & Role salah Input maka harus di delete terlebih dahulu lalu input kembali <br>
 									6. Hanya Id Jabatan yang bisa di rubah
-                                </div>
-                                <div class="form-group">
+                                </div> -->
+                                <!-- <div class="form-group">
                                     <label class="col-sm-12">Jabatan</label>
                                     <input type="text" name="jabatan" class="form-control" required>
                                 </div>
@@ -95,7 +99,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-12">Netto Insentif</label>
                                             <input type="text" name="bonus" class="form-control ">
-                                    </div>	
+                                    </div>	 -->
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
@@ -110,10 +114,10 @@
         <!-- Edit Jabatan Modal -->
         <?php foreach ($jabatan as $j) : ?>
             <?php
-            $id_jabatan = $j['id_jabatan'];
-            $jabatan = $j['jabatan'];
+            $id_department = $j['id_department'];
+            $devisi = $j['devisi'];
             ?>
-            <div class="modal fade" id="editModal<?= $id_jabatan; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?= $id_jabatan; ?>" aria-hidden="true">
+            <div class="modal fade" id="editModal<?= $id_department; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?= $id_department; ?>" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header text-center">
@@ -122,9 +126,15 @@
                         </div>
                         <div class="modal-body text-justify">
                             <form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-department' ?>" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="id_jabatan" value="<?php echo $id_jabatan; ?>" />
+                                <input type="hidden" name="id_department" value="<?php echo $id_department; ?>" />
                                 <div class="modal-body">
                                     <div class="form-group">
+                                        <label class="col-sm-12">Department</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" name="devisi" value="<?= $devisi ?>" class="form-control" >
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group">
                                         <label class="col-sm-12">Jabatan</label>
                                         <div class="col-sm-12">
                                             <input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control" readonly>
@@ -135,7 +145,7 @@
                                         <div class="col-sm-12">
                                             <input type="text" name="id_jabatan" value="<?= $id_jabatan ?>" class="form-control ">
                                         </div>
-                                    </div>								
+                                    </div>								 -->
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

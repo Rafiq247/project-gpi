@@ -82,48 +82,19 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/department/index', $data);
 		$this->load->view('backend/template/footer');
 	}
-	
+
+	//Department
 	public function tambah_department()
 	{
 		$data['title'] = 'Data Department';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$jabatan = $this->input->post('jabatan', true);
-		$role_group = $this->input->post('role_group', true);
-		$id_jabatan = $this->input->post('id_jabatan', true);
-		$salary = $this->input->post('salary', true);
-		$overtime = $salary / 173;
-		$bonus = $this->input->post('bonus', true);
-
-		// Memeriksa apakah data sudah ada di dalam database
-		$cek_data = $this->db
-			->select('*')
-			->from('department')
-			->join('jabatan', 'department.jabatan = jabatan.jabatan')
-			->where('department.jabatan', $jabatan)
-			->get()
-			->row_array();		
-		if ($cek_data) {
-			$this->session->set_flashdata('flash', 'Jabatan Tersebut Sudah Tersedia');
-			redirect('admin/department');
-			return;
-		}
-
+		$devisi = $this->input->post('devisi', true);
 		$data = [
-			"jabatan" => $jabatan,
-			"id_jabatan" => $id_jabatan,
-		];
+			"devisi" => $devisi,
 
-		$data1 = [
-			"jabatan" => $jabatan,
-			"id_jabatan" => $id_jabatan,
-			"role_group" => $role_group,
-			"salary" => $salary,
-			"overtime" => $overtime,
-			"bonus" => $bonus,
 		];
-		$this->db->insert('jabatan', $data1);
 		$this->db->insert('department', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/department');
@@ -135,40 +106,114 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$jabatan = $this->input->post('jabatan', true);
-		$id_jabatan = $this->input->post('id_jabatan', true);
+		$id_department = $this->input->post('id_department', true);
+		$devisi = $this->input->post('devisi', true);
 		$data = [
-			"jabatan" => $jabatan,
-			"id_jabatan" => $id_jabatan,
-
+			"devisi" => $devisi,
 		];
 
-		$this->db->where('jabatan', $jabatan);
+		$this->db->where('id_department', $id_department);
 		$this->db->update('department', $data);
-
-		$data1 = [
-			"jabatan" => $jabatan,
-			"id_jabatan" => $id_jabatan,
-
-		];
-
-		$this->db->where('jabatan', $jabatan);
-		$this->db->update('jabatan', $data1);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/department');
 	}
 
-	public function hapus_department($id)
+	public function hapus_department($id_department)
 	{
-		$this->db->where('id_jabatan', $id);
+		$this->db->where('id_department', $id_department);
 		$this->db->delete('department');
-			// Menghapus data dari tabel jabatan
-		$this->db->where('id_jabatan', $id);
-		$this->db->delete('jabatan');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/department');
 	}
 
+	// public function tambah_department()
+	// {
+	// 	$data['title'] = 'Data Department';
+	// 	// mengambil data user berdasarkan email yang ada di session
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+	// 	$jabatan = $this->input->post('jabatan', true);
+	// 	$role_group = $this->input->post('role_group', true);
+	// 	$id_jabatan = $this->input->post('id_jabatan', true);
+	// 	$salary = $this->input->post('salary', true);
+	// 	$overtime = $salary / 173;
+	// 	$bonus = $this->input->post('bonus', true);
+
+	// 	// Memeriksa apakah data sudah ada di dalam database
+	// 	$cek_data = $this->db
+	// 		->select('*')
+	// 		->from('department')
+	// 		->join('jabatan', 'department.jabatan = jabatan.jabatan')
+	// 		->where('department.jabatan', $jabatan)
+	// 		->get()
+	// 		->row_array();
+	// 	if ($cek_data) {
+	// 		$this->session->set_flashdata('flash', 'Jabatan Tersebut Sudah Tersedia');
+	// 		redirect('admin/department');
+	// 		return;
+	// 	}
+
+	// 	$data = [
+	// 		"jabatan" => $jabatan,
+	// 		"id_jabatan" => $id_jabatan,
+	// 	];
+
+	// 	$data1 = [
+	// 		"jabatan" => $jabatan,
+	// 		"id_jabatan" => $id_jabatan,
+	// 		"role_group" => $role_group,
+	// 		"salary" => $salary,
+	// 		"overtime" => $overtime,
+	// 		"bonus" => $bonus,
+	// 	];
+	// 	$this->db->insert('jabatan', $data1);
+	// 	$this->db->insert('department', $data);
+	// 	$this->session->set_flashdata('flash', 'Berhasil ditambah');
+	// 	redirect('admin/department');
+	// }
+
+	// public function edit_department()
+	// {
+	// 	$data['title'] = 'Data Department';
+	// 	// mengambil data user berdasarkan email yang ada di session
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+	// 	$jabatan = $this->input->post('jabatan', true);
+	// 	$id_jabatan = $this->input->post('id_jabatan', true);
+	// 	$data = [
+	// 		"jabatan" => $jabatan,
+	// 		"id_jabatan" => $id_jabatan,
+
+	// 	];
+
+	// 	$this->db->where('jabatan', $jabatan);
+	// 	$this->db->update('department', $data);
+
+	// 	$data1 = [
+	// 		"jabatan" => $jabatan,
+	// 		"id_jabatan" => $id_jabatan,
+
+	// 	];
+
+	// 	$this->db->where('jabatan', $jabatan);
+	// 	$this->db->update('jabatan', $data1);
+	// 	$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+	// 	redirect('admin/department');
+	// }
+
+	// public function hapus_department($id_department)
+	// {
+	// 	$this->db->where('id_jabatan', $id_department);
+	// 	$this->db->delete('department');
+	// 	// Menghapus data dari tabel jabatan
+	// 	$this->db->where('id_jabatan', $id_department);
+	// 	$this->db->delete('jabatan');
+	// 	$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+	// 	redirect('admin/department');
+	// }
+	
+
+	// Jabatan & Sistem Penggajian
 	public function jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -186,31 +231,29 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/jabatan/index', $data);
 		$this->load->view('backend/template/footer');
 	}
-	
+
 	public function tambah_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		
+
 		$jabatan = $this->input->post('jabatan', true);
-		$id_jabatan = $this->input->post('id_jabatan', true);
+		$devisi = $this->input->post('devisi', true);
+		$role_group = $this->input->post('role_group', true);
 		$salary = $this->input->post('salary', true);
 		$bonus = $this->input->post('bonus', true);
 		$overtime = $salary / 173;
 		$data = [
+			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
+			"role_group" => $role_group,
 
 		];
 
-		$data1 = [
-			"jabatan" => $this->db->get_where('department', ['jabatan' => $jabatan])->row_array(),
-			// "id_jabatan" => $this->db->get_where('department', ['id_jabatan' => $id_jabatan])->row_array(),
-		];
-
-		$this->db->insert('department', $data1);
 		$this->db->insert('jabatan', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/jabatan');
@@ -222,14 +265,20 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-		$salary = $this->input->post('salary', true);
 		$id_jabatan = $this->input->post('id_jabatan', true);
+		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->input->post('devisi', true);
+		$role_group = $this->input->post('role_group', true);
+		$salary = $this->input->post('salary', true);
 		$overtime = $salary / 173;
 		$bonus = $this->input->post('bonus', true);
 		$data = [
+			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
+			"role_group" => $role_group,
 
 		];
 		$this->db->where('id_jabatan', $id_jabatan);
@@ -237,15 +286,17 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
 	}
-	
-	// public function hapus_jabatan($id)
-	// {
-	// 	$this->db->where('jabatan', $id);
-	// 	$this->db->delete('jabatan');
-	// 	$this->session->set_flashdata('flash', ' Berhasil Dihapus');
-	// 	redirect('admin/jabatan');
-	// }
 
+	public function hapus_jabatan($id_jabatan)
+	{
+		$this->db->where('id_jabatan', $id_jabatan);
+		$this->db->delete('jabatan');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/jabatan');
+	}
+
+
+	// Pegawai
 	public function pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
@@ -253,6 +304,7 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->Admin_model->getAllpegawai();
 		$data['jabatan_all'] = $this->Admin_model->getAlljabatan();
+		$data['department'] = $this->Admin_model->getAllidjabatan();
 		$data['jekel'] = ['L', 'P'];
 		$data['stapeg'] = [1, 0];
 		$data['agama'] = ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Budha', 'Khonghucu'];
@@ -275,6 +327,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/pegawai/detail', $data);
 		$this->load->view('backend/template/footer');
 	}
+
 	public function tambah_pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
@@ -292,6 +345,7 @@ class Admin extends CI_Controller
 		// $ktp = $this->input->post('ktp', true);
 		$agama = $this->input->post('agama', true);
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->db->from("jabatan")->where('id_jabatan', $jabatan)->join("department", "jabatan.devisi = department.id_department")->get()->row_array()['id_department'];
 		$nohp = $this->input->post('nohp', true);
 		$alamat = $this->input->post('alamat', true);
 		$tgl_msk = $this->input->post('tgl_msk', true);
@@ -355,7 +409,7 @@ class Admin extends CI_Controller
 
 		$this->db->insert('user', $data1);
 
-		
+
 		$data = [
 			"id_pegawai" => $id_pegawai,
 			"id_user" => $id_user,
@@ -366,6 +420,7 @@ class Admin extends CI_Controller
 			"status_kepegawaian" => $status_pegawai,
 			"agama" => $agama,
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"no_hp" => $nohp,
 			"alamat" => $alamat,
 			"tanggal_masuk" => $tgl_msk,
@@ -520,6 +575,10 @@ class Admin extends CI_Controller
 		// $ktp = $this->input->post('ktp', true);
 		$agama = $this->input->post('agama', true);
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->db->from("jabatan")->where('id_jabatan', $jabatan)->join("department", "jabatan.devisi = department.id_department")->get()->row_array()['id_department'];
+		// ;
+		// var_dump($devisi);
+		// exit;
 		$nohp = $this->input->post('nohp', true);
 		$alamat = $this->input->post('alamat', true);
 		$tgl_msk = $this->input->post('tgl_msk', true);
@@ -571,6 +630,8 @@ class Admin extends CI_Controller
 			"status_kepegawaian" => $status_pegawai,
 			"agama" => $agama,
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
+			"role_id" => $role_id,
 			"no_hp" => $nohp,
 			"alamat" => $alamat,
 			"tanggal_masuk" => $tgl_msk
@@ -589,9 +650,11 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 		redirect('admin/pegawai');
 	}
-	
+
 	public function hapus_pegawai($id, $id_user)
 	{
+		// var_dump([$id, $id_user]);
+		// exit;
 		$this->db->where('id_pegawai', $id);
 		$this->db->delete('tb_pegawai');
 		$this->db->where('id', $id_user);
@@ -1365,6 +1428,8 @@ class Admin extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$valueTotalIzin = 0;
@@ -1388,6 +1453,8 @@ class Admin extends CI_Controller
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
@@ -1434,6 +1501,8 @@ class Admin extends CI_Controller
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
@@ -1623,6 +1692,8 @@ class Admin extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$sakit = 0;
@@ -1633,12 +1704,13 @@ class Admin extends CI_Controller
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
+								$valueTotalIzin += 1;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+								$valueTotalIzin += 1;
 							} else {
 								$cuti += 1;
 							}
-							$valueTotalIzin += 1;
 						}
 					}
 					$dataPenggajian = [
@@ -1646,6 +1718,8 @@ class Admin extends CI_Controller
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
@@ -1692,6 +1766,8 @@ class Admin extends CI_Controller
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
@@ -1790,6 +1866,8 @@ class Admin extends CI_Controller
 			'bonus' => $this->input->post('bonus'),
 			'jam_lembur' => $this->input->post('jam_lembur'),
 			'lembur' => $this->input->post('lembur'),
+			'total_iuran_sos' => $this->input->post('total_iuran_sos'), //tambahan
+			'total_iuran_kes' => $this->input->post('total_iuran_kes'), //tambahan
 			'izin' => $this->input->post('izin'),
 			'cuti' => $this->input->post('cuti'),
 			'hadir' => $this->input->post('hadir'),
@@ -1941,7 +2019,7 @@ class Admin extends CI_Controller
 		// anuan get jabatan
 		$data = array(
 			"acc" => "1",
-			"acc_by"=> $this->session->userdata('name'),
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1953,7 +2031,7 @@ class Admin extends CI_Controller
 
 		$data = array(
 			"acc" => "0",
-			"acc_by"=> null,
+			"acc_by" => null,
 			"penolakan" => null
 		);
 		$this->db->where('id', $id);
@@ -1966,7 +2044,7 @@ class Admin extends CI_Controller
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
 			"acc" => "2",
-			"penolakan" => $keteranganTolak, 
+			"penolakan" => $keteranganTolak,
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -2119,6 +2197,12 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'BPJS Kesehatan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['bpjs_kes'] = $this->Admin_model->getBpjs_kes();
+		$this->db->select('*');
+		$this->db->from('tb_pegawai');
+		$query = $this->db->get();
+		$id_pegawai = $query->result_array();
+		$data['pegawai_list'] = $id_pegawai;
 
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -2134,35 +2218,49 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$id_pegawai = $this->input->post('id_pegawai', true);
-		$name = $this->input->post('name', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$salary = $this->input->post('salary', true);
 		$no_kartu = $this->input->post('no_kartu', true);
-		$kelas_rawat = $this->input->post('kelas_rawat', true);
+		$kelas = $this->input->post('kelas', true);
+		$total_salary = $salary;
+		$total_salary_iuran = +$salary;
+		$iuran_4 = $salary * 0.04;
+		$iuran_1 = $salary * 0.01;
+		$total_iuran_kes = $iuran_4 + $iuran_1;
 
 		// Memeriksa apakah data sudah ada di dalam database
-		$cek_data = $this->Admin_model->getBpjsKesehatan(); //pengecekan db taro di model
+		$cek_data = $this->Admin_model->getBpjs_kes();
 		if ($cek_data) {
-			$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
-			redirect('admin/bpjs_kes');
-			return;
+			$id_pegawai_array = array_column($cek_data, 'id_pegawai');
+			if (in_array($id_pegawai, $id_pegawai_array)) {
+				$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
+				redirect('admin/bpjs_kes');
+				return;
+			}
 		}
 
 		$data = [
 			"id_pegawai" => $id_pegawai,
-			"name" => $name,
+			"nama_pegawai" => $nama_pegawai,
 			"salary" => $salary,
 			"no_kartu" => $no_kartu,
-			"kelas_rawat" => $kelas_rawat,
+			"kelas" => $kelas,
+			"total_salary" => $total_salary,
+			"total_salary_iuran" => $total_salary_iuran,
+			"iuran_4" => $iuran_4,
+			"iuran_1" => $iuran_1,
+			"total_iuran_kes" => $total_iuran_kes,
 		];
-		$this->db->insert();
+
+		$this->db->insert('bpjs_kes', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/bpjs_kes');
 	}
 
-	public function delete_bpjs_kes()
+	public function delete_bpjs_kes($id)
 	{
-		$this->db->where('id_pegawai');
-		$this->db->delete();
+		$this->db->where('id_bpjs_kes', $id);
+		$this->db->delete('bpjs_kes');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/bpjs_kes');
 	}
@@ -2173,21 +2271,32 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
+		$id_bpjs_kes = $this->input->post('id_bpjs_kes', true);
 		$id_pegawai = $this->input->post('id_pegawai', true);
-		$name = $this->input->post('name', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$salary = $this->input->post('salary', true);
 		$no_kartu = $this->input->post('no_kartu', true);
-		$kelas_rawat = $this->input->post('kelas_rawat', true);
+		$kelas = $this->input->post('kelas', true);
+		$total_salary = $salary;
+		$total_salary_iuran = +$salary;
+		$iuran_4 = $salary * 0.04;
+		$iuran_1 = $salary * 0.01;
+		$total_iuran_kes = $iuran_4 + $iuran_1;
 
 		$data = [
 			"id_pegawai" => $id_pegawai,
-			"name" => $name,
+			"nama_pegawai" => $nama_pegawai,
 			"salary" => $salary,
 			"no_kartu" => $no_kartu,
-			"kelas_rawat" => $kelas_rawat,
+			"kelas" => $kelas,
+			"total_salary" => $total_salary,
+			"total_salary_iuran" => $total_salary_iuran,
+			"iuran_4" => $iuran_4,
+			"iuran_1" => $iuran_1,
+			"total_iuran_kes" => $total_iuran_kes,
 		];
-		$this->db->where();
-		$this->db->update();
+		$this->db->where('id_bpjs_kes', $id_bpjs_kes);
+		$this->db->update('bpjs_kes', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/bpjs_kes');
 	}
@@ -2197,12 +2306,33 @@ class Admin extends CI_Controller
 	{
 		$data['title'] = 'BPJS Jamsostek';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['bpjs_jamsos'] = $this->Admin_model->getBpjs_jamsos();
+		$this->db->select('*');
+		$this->db->from('tb_pegawai');
+		$query = $this->db->get();
+		$id_pegawai = $query->result_array();
+		$data['pegawai_list'] = $id_pegawai;
 
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
 		$this->load->view('backend/template/sidebar', $data);
 		$this->load->view('backend/admin/bpjs/jamsostek', $data);
 		$this->load->view('backend/template/footer');
+	}
+
+	public function ajax_pegawai()
+	{
+		$this->db->select('tb_pegawai.id_pegawai, tb_pegawai.nama_pegawai, jabatan.jabatan, jabatan.salary');
+		$this->db->from('tb_pegawai');
+		$this->db->where("tb_pegawai.id_pegawai", $this->input->post("id_pegawai"));
+		$this->db->join('jabatan', 'tb_pegawai.jabatan = jabatan.id_jabatan');
+		$query = $this->db->get();
+		$id_pegawai = $query->row();
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode($id_pegawai));
 	}
 
 	public function input_bpjs_jamsos()
@@ -2212,31 +2342,36 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$id_pegawai = $this->input->post('id_pegawai', true);
-		$name = $this->input->post('name', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$jabatan = $this->input->post('jabatan', true);
 		$salary = $this->input->post('salary', true);
-
-		// Memeriksa apakah data sudah ada di dalam database
-		$cek_data = $this->Admin_model->getBpjsKesehatan(); //pengecekan db taro di model
-		if ($cek_data) {
-			$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
-			redirect('admin/bpjs_kes');
-			return;
-		}
+		$iuran_jjk = $salary * 0.0024;
+		$iuran_jkm = $salary * 0.0030;
+		$iuran_jht_tk = $salary * 0.037;
+		$iuran_jht = $salary * 0.037;
+		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
 
 		$data = [
 			"id_pegawai" => $id_pegawai,
-			"name" => $name,
+			"nama_pegawai" => $nama_pegawai,
+			"jabatan" => $jabatan,
 			"salary" => $salary,
+			"iuran_jjk" => $iuran_jjk,
+			"iuran_jkm" => $iuran_jkm,
+			"iuran_jht_tk" => $iuran_jht_tk,
+			"iuran_jht" => $iuran_jht,
+			"total_iuran_sos" => $total_iuran_sos,
 		];
-		$this->db->insert();
+
+		$this->db->insert('bpjs_jamsos', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/bpjs_jamsos');
 	}
 
-	public function delete_bpjs_jamsos()
+	public function delete_bpjs_jamsos($id)
 	{
-		$this->db->where();
-		$this->db->delete();
+		$this->db->where('id_bpjs_sos', $id);
+		$this->db->delete('bpjs_jamsos');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/bpjs_jamsos');
 	}
@@ -2247,17 +2382,31 @@ class Admin extends CI_Controller
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
+		$id_bpjs_sos = $this->input->post('id_bpjs_sos', true);
 		$id_pegawai = $this->input->post('id_pegawai', true);
-		$name = $this->input->post('name', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$jabatan = $this->input->post('jabatan', true);
 		$salary = $this->input->post('salary', true);
+		$iuran_jjk = $salary * 0.0024;
+		$iuran_jkm = $salary * 0.0030;
+		$iuran_jht_tk = $salary * 0.037;
+		$iuran_jht = $salary * 0.037;
+		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
 
 		$data = [
 			"id_pegawai" => $id_pegawai,
-			"name" => $name,
+			"nama_pegawai" => $nama_pegawai,
+			"jabatan" => $jabatan,
 			"salary" => $salary,
+			"iuran_jjk" => $iuran_jjk,
+			"iuran_jkm" => $iuran_jkm,
+			"iuran_jht_tk" => $iuran_jht_tk,
+			"iuran_jht" => $iuran_jht,
+			"total_iuran_sos" => $total_iuran_sos,
 		];
-		$this->db->where();
-		$this->db->update();
+
+		$this->db->where('id_bpjs_sos', $id_bpjs_sos);
+		$this->db->update('bpjs_jamsos', $data);
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/bpjs_jamsos');
 	}

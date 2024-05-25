@@ -79,8 +79,9 @@
  								<th>BONUS</th>
  								<th>JAM LEMBUR</th>
  								<th>LEMBUR</th>
-								<th>BPJamsostek</th>
- 								<th>HADIR</th>
+								<th>HADIR</th>
+								<th>BPJS Jamsostek</th>
+								<th>BPJS Kesehatan</th>
  								<th>TIDAK HADIR</th>
  								<th>Izin</th>
  								<th>sakit</th>
@@ -107,12 +108,14 @@
  										<td><?= $b['jam_lembur']; ?></td>
  										<td><?php echo 'Rp ' . number_format($b['lembur'], 2, ',', '.'); ?></td>
  										<td><?= $b['hadir']; ?></td>
+										<td><?php echo 'Rp ' . number_format($b['total_iuran_sos'], 2, ',', '.'); ?></td>
+										<td><?php echo 'Rp ' . number_format($b['total_iuran_kes'], 2, ',', '.'); ?></td>
  										<td><?= $b['tidak_hadir']; ?></td>
  										<td><?= $b['izin']; ?></td>
  										<td><?= $b['sakit']; ?></td>
 										<td><?= $b['cuti']; ?></td>
  										<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
- 										<td><?php echo 'Rp ' . number_format($b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'], 2, ',', '.'); ?></td>
+ 										<td><?php echo 'Rp ' . number_format($b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'] + $b['total_iuran_sos'] + $b['total_iuran_kes'], 2, ',', '.'); ?></td>
  										<td>
  											<form action="<?= base_url() ?>admin/input-data-tpp" method="post">
  												<input type="hidden" name="id" value="<?= $b['id_pegawai']; ?>">
@@ -123,13 +126,16 @@
  												<input type="hidden" name="bonus" value="<?= $b['bonus']; ?>">
  												<input type="hidden" name="jam_lembur" value="<?= $b['jam_lembur']; ?>">
  												<input type="hidden" name="lembur" value="<?= $b['lembur']; ?>">
+												<input type="hidden" name="total_iuran_sos" value="<?= $b['total_iuran_sos']; ?>">
+												<input type="hidden" name="total_iuran_kes" value="<?= $b['total_iuran_kes']; ?>">
  												<input type="hidden" name="izin" value="<?= $b['izin']; ?>">
  												<input type="hidden" name="hadir" value="<?= $b['hadir']; ?>">
  												<input type="hidden" name="tidak_hadir" value="<?= $b['tidak_hadir']; ?>">
  												<input type="hidden" name="sakit" value="<?= $b['sakit']; ?>">
 												<input type="hidden" name="cuti" value="<?= $b['cuti']; ?>">
  												<input type="hidden" name="pengurangan" value="<?= $b['pengurangan']; ?>">
- 												<input type="hidden" name="gaji_bersih" value="<?= $b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus']; ?>">
+ 												<input type="hidden" name="gaji_bersih" value="<?= $b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'] + $b['total_iuran_sos'] + $b['total_iuran_kes']; ?>">
+
  												<button type="submit" class="btn btn-primary btn-flat" id="simpan">Tambah Data</button>
  											</form>
  										</td>

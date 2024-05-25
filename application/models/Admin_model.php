@@ -370,6 +370,34 @@ class Admin_model extends CI_model
 		$result = $this->db->query($sql);
 		return $result->row_array();
 	}
+
+	public function getBpjs_jamsos_total($pegawai)
+	{
+		$sql = "SELECT * from bpjs_jamsos WHERE id_pegawai = '$pegawai'";
+		$result = $this->db->query($sql);
+		return $result->row()->total_iuran_sos ?? 0;
+	}
+
+	public function getBpjs_kes_total($pegawai)
+	{
+		$sql = "SELECT * from bpjs_kes WHERE id_pegawai = '$pegawai'";
+		$result = $this->db->query($sql);
+		return $result->row()->total_iuran_kes ?? 0;
+	}
+
+	public function getBpjs_jamsos()
+	{
+		$sql = "SELECT * from bpjs_jamsos";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getBpjs_kes()
+	{
+		$sql = "SELECT * from bpjs_kes";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
 }
 
     // febyy tutup

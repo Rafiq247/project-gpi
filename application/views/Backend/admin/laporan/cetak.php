@@ -103,47 +103,47 @@ function nmbulan($angka)
 
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">Gaji Pokok </th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"><?= rupiah($gaji['gaji']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"><?= rupiah($gaji['gaji']) ?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">Pengurangan Gaji Pokok</th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"> - <?= rupiah($gaji['pengurangan']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"> - <?= rupiah($gaji['pengurangan']) ?></th>
 			</tr>
 			<tr height="40px">
 				<th width=300 scope=col style="vertical-align: middle;"></th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"><?= rupiah($gaji['gaji'] - $gaji['pengurangan']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"><?= rupiah($gaji['gaji'] - $gaji['pengurangan']) ?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">Upah Lembur </th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"> + <?= rupiah($gaji['lembur']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"> + <?= rupiah($gaji['lembur']) ?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">Rapel Bonus</th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"> + <?= rupiah($gaji['bonus']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"> + <?= rupiah($gaji['bonus']) ?></th>
 			</tr>
 			<tr height="40px">
 				<th width=300 scope=col style="vertical-align: middle;"></th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"><?= rupiah(($gaji['gaji'] - $gaji['pengurangan']) + $gaji['lembur'] + $gaji['bonus']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"><?= rupiah(($gaji['gaji'] - $gaji['pengurangan']) + $gaji['lembur'] + $gaji['bonus']) ?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">BPJS Ketenagakerjaan </th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"> + <?= rupiah($gaji['total_iuran_sos']) ?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">BPJS Kesehatan</th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"> + <?= rupiah($gaji['total_iuran_kes']) ?></th>
 			</tr>
 			<tr>
-				<th width=300 scope=col style="vertical-align: middle;">BPJS Kes Tamb Kel</th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"></th>
+				<th width=300 scope=col style="vertical-align: middle;">Total Iuran BPJS</th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"><?= rupiah($gaji['total_iuran_sos'] + $gaji['total_iuran_kes'])?></th>
 			</tr>
 			<tr>
 				<th width=300 scope=col style="vertical-align: middle;">PPH</th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"></th>
 			</tr>
 			<tr height="60px">
 				<th width=300 scope=col style="vertical-align: middle;">Total Gaji Bersih Anda </th>
-				<th width=508 scope=col colspan="5" style="vertical-align: middle;"><?= rupiah($gaji['gaji_bersih']) ?></th>
+				<th width=508 scope=col colspan="5" style="vertical-align: middle; text-align: right;"><?= rupiah($gaji['gaji_bersih']) ?></th>
 			</tr>
 		</table> <!-- tutup isi -->
 
