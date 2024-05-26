@@ -653,19 +653,25 @@ class supervisor extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+								$valueTotalIzin += 1;
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+								$valueTotalIzin += 1;
+							} else {
+								$cuti += 1;
 							}
-							$valueTotalIzin += 1;
 						}
 					}
 					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
@@ -678,6 +684,8 @@ class supervisor extends CI_Controller
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
@@ -689,6 +697,7 @@ class supervisor extends CI_Controller
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -704,33 +713,45 @@ class supervisor extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+											$valueTotalIzin += 1;
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+											$valueTotalIzin += 1;
+										} else {
+											$cuti += 1;
 										}
-										$valueTotalIzin += 1;
 									}
 								}
+								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+								// check id pegawai $pegawai
+								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+									$pengurangan = 0;
+								} 
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => $pengurangan,
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];

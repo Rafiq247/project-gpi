@@ -203,7 +203,15 @@
  										<?php if ($pegawai_month >= 365) : ?>
 											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
  												<?php endif;  ?>
-										
+										- <?php 
+												$id_pegawai = is_array($pegawai) ? $pegawai['id_pegawai'] : $pegawai; 
+												$result = $this->db->from("bpjs_kes")->where("id_pegawai", $id_pegawai)->get()->row_array();
+												if(empty($result)) {
+												echo "Anda tidak punya BPJS";
+												} else {
+												echo "Anda punya BPJS";
+												}
+												?>
  									</div>
  								</div>
  							</div>
