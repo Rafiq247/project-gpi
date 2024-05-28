@@ -1440,13 +1440,20 @@ class Admin extends CI_Controller
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
+								$valueTotalIzin += 1;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+								$valueTotalIzin += 1;
 							} else {
 								$cuti += 1;
 							}
-							$valueTotalIzin += 1;
 						}
+					}
+
+					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// check id pegawainya ada gak $pegawai
+					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+						$pengurangan = 0;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
@@ -1459,7 +1466,7 @@ class Admin extends CI_Controller
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => $pengurangan,
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
@@ -1488,13 +1495,20 @@ class Admin extends CI_Controller
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
+											$valueTotalIzin += 1;
 										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+											$valueTotalIzin += 1;
 										} else {
 											$cuti += 1;
 										}
-										$valueTotalIzin += 1;
 									}
+								}
+
+								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+								// check id pegawainya ada gak $pegawai
+								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+									$pengurangan = 0;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
@@ -1507,7 +1521,7 @@ class Admin extends CI_Controller
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => $pengurangan,
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
@@ -1758,12 +1772,13 @@ class Admin extends CI_Controller
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
+											$valueTotalIzin += 1;
 										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+											$valueTotalIzin += 1;
 										} else {
 											$cuti += 1;
 										}
-										$valueTotalIzin += 1;
 									}
 								}
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
