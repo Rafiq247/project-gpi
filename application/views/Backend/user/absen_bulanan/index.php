@@ -167,7 +167,7 @@
  									<td><?php echo substr($b['date'], 11, 9) . " - " . substr($b['date'], 32, 9); ?></td>
  									<td><?= $b['kode_verifikasi']; ?></td>
  									<td><?= $b['overtime']; ?></td>
- 									
+
  								</tr>
  							<?php endforeach ?>
  						</tbody>

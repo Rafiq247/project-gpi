@@ -34,7 +34,7 @@ class supervisor extends CI_Controller
 
 	public function visi_misi()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Visi dan Misi';
 		// mengambil data supervisor berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -47,7 +47,7 @@ class supervisor extends CI_Controller
 
 	public function sejarah()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Sejarah Perusahaan';
 		// mengambil data supervisor berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -58,10 +58,11 @@ class supervisor extends CI_Controller
 		$this->load->view('backend/supervisor/dashboard/sejarah', $data);
 		$this->load->view('backend/s_template/footer');
 	}
+
 	public function edit_profil($id)
 	{
 		$data['title'] = 'Edit Profil';
-		// mengambil data supervisor berdasarkan email yang ada di session
+		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$nama = $this->input->post('nama', true);
 
@@ -101,7 +102,7 @@ class supervisor extends CI_Controller
 
 
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
-			redirect('pegawai');
+			redirect('supervisor');
 		} else {
 			$data = [
 				"nama_pegawai" => $nama,
@@ -116,10 +117,11 @@ class supervisor extends CI_Controller
 			$this->db->where('id', $id);
 			$this->db->update('user', $data1);
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
-			redirect('pegawai');
+			redirect('supervisor');
 		}
 		// 
 	}
+
 	public function edit_password($id)
 	{
 		$data['title'] = 'Edit Password';
@@ -136,14 +138,14 @@ class supervisor extends CI_Controller
 				$this->db->where('id', $id);
 				$this->db->update('user', $data);
 				$this->session->set_flashdata('flash', 'Password Berhasil Diubah!');
-				redirect('pegawai');
+				redirect('supervisor');
 			} else {
 				$this->session->set_flashdata('flash', 'Konfirmasi Password Berbeda!');
-				redirect('pegawai');
+				redirect('supervisor');
 			}
 		} else {
 			$this->session->set_flashdata('flash', 'Password Lama Salah!');
-			redirect('pegawai');
+			redirect('supervisor');
 		}
 	}
 
@@ -158,7 +160,7 @@ class supervisor extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->supervisor_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->supervisor_model->izinById($data['pegawai']['id_pegawai']);
-		
+
 		$isi = $this->supervisor_model->AbsenByStatusId($data['user']['id']);
 
 		if ($isi) {
@@ -502,7 +504,7 @@ class supervisor extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');	
+		$jenis_izin = ($jenis_izin == 4) ? 'Sakit' : (($jenis_izin == 5) ? 'Izin' :  'Cuti');
 		$keterangan = $this->input->post('penjelasan', true);
 
 
@@ -676,9 +678,9 @@ class supervisor extends CI_Controller
 					}
 					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
-					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 						$pengurangan = 0;
-					} 
+					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
@@ -730,9 +732,9 @@ class supervisor extends CI_Controller
 								}
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								// check id pegawai $pegawai
-								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
-								} 
+								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
@@ -991,7 +993,7 @@ class supervisor extends CI_Controller
 		// anuan get jabatan
 		$data = array(
 			"acc" => "1",
-			"acc_by"=> $this->session->userdata('name'),
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1003,7 +1005,7 @@ class supervisor extends CI_Controller
 
 		$data = array(
 			"acc" => "0",
-			"acc_by"=> null,
+			"acc_by" => null,
 			"penolakan" => null
 		);
 		$this->db->where('id', $id);
@@ -1016,7 +1018,7 @@ class supervisor extends CI_Controller
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
 			"acc" => "2",
-			"penolakan" => $keteranganTolak, 
+			"penolakan" => $keteranganTolak,
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1067,7 +1069,7 @@ class supervisor extends CI_Controller
 		$this->load->view('backend/supervisor/pegawai/index', $data);
 		$this->load->view('backend/s_template/footer');
 	}
-	
+
 	public function detail_pegawai($id)
 	{
 		$data['title'] = 'Data Pegawai';

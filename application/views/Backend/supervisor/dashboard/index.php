@@ -150,7 +150,7 @@
            <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
          </div>
          <div class="modal-body text-justify">
-           <form class="form-horizontal" action="<?php echo base_url() . 'pegawai/edit-profil' ?>/<?= $user['id'] ?>" method="post" enctype="multipart/form-data">
+           <form class="form-horizontal" action="<?php echo base_url() . 'supervisor/edit-profil' ?>/<?= $user['id'] ?>" method="post" enctype="multipart/form-data">
              <div class="modal-body">
                <div class="form-group">
                  <label class="col-sm-12">Email</label>
@@ -168,7 +168,7 @@
                  <div class="row">
                    <label class="col-sm-1 ml-3">Photo</label>
                    <div class="col-sm-2 ml-3">
-                     <img src="<?php echo base_url() . '/gambar/pegawai/' . $user['image']; ?>" class="card-img mx-auto d-block" style="width: 120px; height: 140px;">
+                     <img src="<?php echo base_url() . '/gambar/supervisor/' . $user['image']; ?>" class="card-img mx-auto d-block" style="width: 120px; height: 140px;">
                    </div>
                    <div class="col-sm-6 ml-5">
                      <input type="file" name="userfilefoto" class="form-control" id="userfilefoto">
@@ -197,7 +197,7 @@
          </div>
          <div class="modal-body text-justify">
 
-           <form class="form-horizontal" action="<?php echo base_url() . 'pegawai/edit-password' ?>/<?= $user['id'] ?>" method="post" enctype="multipart/form-data">
+           <form class="form-horizontal" action="<?php echo base_url() . 'supervisor/edit-password' ?>/<?= $user['id'] ?>" method="post" enctype="multipart/form-data">
              <div class="modal-body">
                <div class="form-group">
                  <label class="col-sm-12">Password Lama</label>

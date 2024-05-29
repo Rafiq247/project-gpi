@@ -34,7 +34,7 @@ class pegawai extends CI_Controller
 
 	public function visi_misi()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Visi dan Misi';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -47,7 +47,7 @@ class pegawai extends CI_Controller
 
 	public function sejarah()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Sejarah Perusahaan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -58,6 +58,7 @@ class pegawai extends CI_Controller
 		$this->load->view('backend/user/dashboard/sejarah', $data);
 		$this->load->view('backend/f_template/footer');
 	}
+
 	public function edit_profil($id)
 	{
 		$data['title'] = 'Edit Profil';
@@ -120,6 +121,7 @@ class pegawai extends CI_Controller
 		}
 		// 
 	}
+
 	public function edit_password($id)
 	{
 		$data['title'] = 'Edit Password';
@@ -151,9 +153,9 @@ class pegawai extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
-		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id')); 
+		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id'));
 		// mengambil data user berdasarkan email yang ada di session
-		
+
 		$data['pegawai_month'] = $months;
 		$data['used_cuti'] = $used_cuti;
 		// var_dump($months);exit;
@@ -169,7 +171,7 @@ class pegawai extends CI_Controller
 			$data['absen']['keterangan'] = "";
 			$data['absen']['id_pegawai'] = "peg";
 		}
-		
+
 		$this->load->view('backend/f_template/header', $data);
 		$this->load->view('backend/f_template/topbar', $data);
 		$this->load->view('backend/f_template/sidebar', $data);
@@ -505,7 +507,7 @@ class pegawai extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');		
+		$jenis_izin = ($jenis_izin == 4) ? 'Sakit' : (($jenis_izin == 5) ? 'Izin' :  'Cuti');
 		$keterangan = $this->input->post('penjelasan', true);
 
 
@@ -679,9 +681,9 @@ class pegawai extends CI_Controller
 					}
 					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
-					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 						$pengurangan = 0;
-					} 
+					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
@@ -733,9 +735,9 @@ class pegawai extends CI_Controller
 								}
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								// check id pegawainya ada gak $pegawai
-								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
-								} 
+								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],

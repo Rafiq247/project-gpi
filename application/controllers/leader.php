@@ -32,7 +32,7 @@ class leader extends CI_Controller
 
 	public function visi_misi()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Visi dan Misi';
 		// mengambil data leader berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -45,7 +45,7 @@ class leader extends CI_Controller
 
 	public function sejarah()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Sejarah Perusahaan';
 		// mengambil data leader berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -98,7 +98,7 @@ class leader extends CI_Controller
 
 
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
-			redirect('pegawai');
+			redirect('leader');
 		} else {
 			$data = [
 				"nama_pegawai" => $nama,
@@ -113,7 +113,7 @@ class leader extends CI_Controller
 			$this->db->where('id', $id);
 			$this->db->update('user', $data1);
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
-			redirect('pegawai');
+			redirect('leader');
 		}
 		// 
 	}
@@ -133,14 +133,14 @@ class leader extends CI_Controller
 				$this->db->where('id', $id);
 				$this->db->update('user', $data);
 				$this->session->set_flashdata('flash', 'Password Berhasil Diubah!');
-				redirect('pegawai');
+				redirect('leader');
 			} else {
 				$this->session->set_flashdata('flash', 'Konfirmasi Password Berbeda!');
-				redirect('pegawai');
+				redirect('leader');
 			}
 		} else {
 			$this->session->set_flashdata('flash', 'Password Lama Salah!');
-			redirect('pegawai');
+			redirect('leader');
 		}
 	}
 
@@ -151,7 +151,7 @@ class leader extends CI_Controller
 		$used_cuti = (int)$this->leader_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
 		$data['used_cuti'] = $used_cuti;
-		$data['pegawai_month'] = $months;		
+		$data['pegawai_month'] = $months;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->leader_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->leader_model->izinById($data['pegawai']['id_pegawai']);
@@ -500,7 +500,7 @@ class leader extends CI_Controller
 
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = ($jenis_izin == 4)? 'Sakit' : (($jenis_izin == 5)? 'Izin' :  'Cuti');	
+		$jenis_izin = ($jenis_izin == 4) ? 'Sakit' : (($jenis_izin == 5) ? 'Izin' :  'Cuti');
 		$keterangan = $this->input->post('penjelasan', true);
 
 
@@ -673,9 +673,10 @@ class leader extends CI_Controller
 						}
 						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 						// check id pegawainya ada gak $pegawai
-						if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+						if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 							$pengurangan = 0;
-						} 					}
+						}
+					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
@@ -727,9 +728,9 @@ class leader extends CI_Controller
 								}
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								// check id pegawainya ada gak $pegawai
-								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
-								} 
+								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
@@ -988,7 +989,7 @@ class leader extends CI_Controller
 		// anuan get jabatan
 		$data = array(
 			"acc" => "1",
-			"acc_by"=> $this->session->userdata('name'),
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1000,7 +1001,7 @@ class leader extends CI_Controller
 
 		$data = array(
 			"acc" => "0",
-			"acc_by"=> null,
+			"acc_by" => null,
 			"penolakan" => null
 		);
 		$this->db->where('id', $id);
@@ -1013,7 +1014,7 @@ class leader extends CI_Controller
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
 			"acc" => "2",
-			"penolakan" => $keteranganTolak, 
+			"penolakan" => $keteranganTolak,
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1044,7 +1045,7 @@ class leader extends CI_Controller
 		$this->load->view('backend/leader/pegawai/index', $data);
 		$this->load->view('backend/l_template/footer');
 	}
-	
+
 	public function detail_pegawai($id)
 	{
 		$data['title'] = 'Data Pegawai';
