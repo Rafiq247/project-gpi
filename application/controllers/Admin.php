@@ -214,23 +214,45 @@ class Admin extends CI_Controller
 	
 
 	// Jabatan & Sistem Penggajian
+	// public function jabatan()
+	// {
+	// 	$data['title'] = 'Data Jabatan';
+	// 	// mengambil data user berdasarkan email yang ada di session
+	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	// 	$data['jabatan'] = $this->Admin_model->getAlljabatan();
+	// 	$data['department'] = $this->Admin_model->getAllidjabatan();
+	// 	foreach ($data['jabatan'] as $key => $value) {
+	// 		$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
+	// 		// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+	// 	}
+	// 	$this->load->view('backend/template/header', $data);
+	// 	$this->load->view('backend/template/topbar', $data);
+	// 	$this->load->view('backend/template/sidebar', $data);
+	// 	$this->load->view('backend/admin/jabatan/index', $data);
+	// 	$this->load->view('backend/template/footer');
+	// }
+
 	public function jabatan()
-	{
-		$data['title'] = 'Data Jabatan';
-		// mengambil data user berdasarkan email yang ada di session
-		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['jabatan'] = $this->Admin_model->getAlljabatan();
-		$data['department'] = $this->Admin_model->getAllidjabatan();
-		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
-			// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
-		}
-		$this->load->view('backend/template/header', $data);
-		$this->load->view('backend/template/topbar', $data);
-		$this->load->view('backend/template/sidebar', $data);
-		$this->load->view('backend/admin/jabatan/index', $data);
-		$this->load->view('backend/template/footer');
+{
+	$data['title'] = 'Data Jabatan';
+	// mengambil data user berdasarkan email yang ada di session
+	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+	$this->db->select('jabatan.*, department.devisi');
+	$this->db->from('jabatan');
+	$this->db->join('department', 'jabatan.devisi = department.id_department');
+	$query = $this->db->get();
+	$data['jabatan'] = $query->result_array();
+	$data['department'] = $this->Admin_model->getAllidjabatan();
+	foreach ($data['jabatan'] as $key => $value) {
+		$data['jabatan'][$key]['overtime'] = 'Rp '. number_format($data['jabatan'][$key]['overtime']);
+		// $data['jabatan'][$key]['bonus'] = 'Rp '. number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 	}
+	$this->load->view('backend/template/header', $data);
+	$this->load->view('backend/template/topbar', $data);
+	$this->load->view('backend/template/sidebar', $data);
+	$this->load->view('backend/admin/jabatan/index', $data);
+	$this->load->view('backend/template/footer');
+}
 
 	public function tambah_jabatan()
 	{

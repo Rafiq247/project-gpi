@@ -94,7 +94,7 @@
 									<select class="form-control" id="devisi" name="devisi">
 										<option value="">- Pilih -</option>
 										<?php foreach ($department as $d) :?>
-											<option value="<?= $d['devisi']?>"> <?= $d['devisi'];?></option>
+											<option value="<?= $d['id_department']?>" <?= ($d['id_department'] == $department) ? 'selected' : '' ?>><?= $d['devisi'];?></option>
 										<?php endforeach;?>
 									</select>
 								</div>
@@ -138,6 +138,7 @@
  		<?php foreach ($jabatan as $j) :
 				$id_jabatan = $j['id_jabatan'];
 				$jabatan = $j['jabatan'];
+				$devisi = $j['devisi'];
 				$salary = $j['salary'];
 				$overtime = $j['overtime'];
 				$bonus = $j['bonus'];
