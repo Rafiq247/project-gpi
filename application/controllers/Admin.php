@@ -126,133 +126,28 @@ class Admin extends CI_Controller
 		redirect('admin/department');
 	}
 
-	// public function tambah_department()
-	// {
-	// 	$data['title'] = 'Data Department';
-	// 	// mengambil data user berdasarkan email yang ada di session
-	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-	// 	$jabatan = $this->input->post('jabatan', true);
-	// 	$role_group = $this->input->post('role_group', true);
-	// 	$id_jabatan = $this->input->post('id_jabatan', true);
-	// 	$salary = $this->input->post('salary', true);
-	// 	$overtime = $salary / 173;
-	// 	$bonus = $this->input->post('bonus', true);
-
-	// 	// Memeriksa apakah data sudah ada di dalam database
-	// 	$cek_data = $this->db
-	// 		->select('*')
-	// 		->from('department')
-	// 		->join('jabatan', 'department.jabatan = jabatan.jabatan')
-	// 		->where('department.jabatan', $jabatan)
-	// 		->get()
-	// 		->row_array();
-	// 	if ($cek_data) {
-	// 		$this->session->set_flashdata('flash', 'Jabatan Tersebut Sudah Tersedia');
-	// 		redirect('admin/department');
-	// 		return;
-	// 	}
-
-	// 	$data = [
-	// 		"jabatan" => $jabatan,
-	// 		"id_jabatan" => $id_jabatan,
-	// 	];
-
-	// 	$data1 = [
-	// 		"jabatan" => $jabatan,
-	// 		"id_jabatan" => $id_jabatan,
-	// 		"role_group" => $role_group,
-	// 		"salary" => $salary,
-	// 		"overtime" => $overtime,
-	// 		"bonus" => $bonus,
-	// 	];
-	// 	$this->db->insert('jabatan', $data1);
-	// 	$this->db->insert('department', $data);
-	// 	$this->session->set_flashdata('flash', 'Berhasil ditambah');
-	// 	redirect('admin/department');
-	// }
-
-	// public function edit_department()
-	// {
-	// 	$data['title'] = 'Data Department';
-	// 	// mengambil data user berdasarkan email yang ada di session
-	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-	// 	$jabatan = $this->input->post('jabatan', true);
-	// 	$id_jabatan = $this->input->post('id_jabatan', true);
-	// 	$data = [
-	// 		"jabatan" => $jabatan,
-	// 		"id_jabatan" => $id_jabatan,
-
-	// 	];
-
-	// 	$this->db->where('jabatan', $jabatan);
-	// 	$this->db->update('department', $data);
-
-	// 	$data1 = [
-	// 		"jabatan" => $jabatan,
-	// 		"id_jabatan" => $id_jabatan,
-
-	// 	];
-
-	// 	$this->db->where('jabatan', $jabatan);
-	// 	$this->db->update('jabatan', $data1);
-	// 	$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
-	// 	redirect('admin/department');
-	// }
-
-	// public function hapus_department($id_department)
-	// {
-	// 	$this->db->where('id_jabatan', $id_department);
-	// 	$this->db->delete('department');
-	// 	// Menghapus data dari tabel jabatan
-	// 	$this->db->where('id_jabatan', $id_department);
-	// 	$this->db->delete('jabatan');
-	// 	$this->session->set_flashdata('flash', ' Berhasil Dihapus');
-	// 	redirect('admin/department');
-	// }
-	
-
 	// Jabatan & Sistem Penggajian
-	// public function jabatan()
-	// {
-	// 	$data['title'] = 'Data Jabatan';
-	// 	// mengambil data user berdasarkan email yang ada di session
-	// 	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-	// 	$data['jabatan'] = $this->Admin_model->getAlljabatan();
-	// 	$data['department'] = $this->Admin_model->getAllidjabatan();
-	// 	foreach ($data['jabatan'] as $key => $value) {
-	// 		$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
-	// 		// $data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
-	// 	}
-	// 	$this->load->view('backend/template/header', $data);
-	// 	$this->load->view('backend/template/topbar', $data);
-	// 	$this->load->view('backend/template/sidebar', $data);
-	// 	$this->load->view('backend/admin/jabatan/index', $data);
-	// 	$this->load->view('backend/template/footer');
-	// }
-
 	public function jabatan()
-{
-	$data['title'] = 'Data Jabatan';
-	// mengambil data user berdasarkan email yang ada di session
-	$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-	$this->db->select('jabatan.*, department.devisi');
-	$this->db->from('jabatan');
-	$this->db->join('department', 'jabatan.devisi = department.id_department');
-	$query = $this->db->get();
-	$data['jabatan'] = $query->result_array();
-	$data['department'] = $this->Admin_model->getAllidjabatan();
-	foreach ($data['jabatan'] as $key => $value) {
-		$data['jabatan'][$key]['overtime'] = 'Rp '. number_format($data['jabatan'][$key]['overtime']);
-		// $data['jabatan'][$key]['bonus'] = 'Rp '. number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+	{
+		$data['title'] = 'Data Jabatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$this->db->select('jabatan.*, department.devisi');
+		$this->db->from('jabatan');
+		$this->db->join('department', 'jabatan.devisi = department.id_department');
+		$query = $this->db->get();
+		$data['jabatan'] = $query->result_array();
+		$data['department'] = $this->Admin_model->getAllidjabatan();
+		foreach ($data['jabatan'] as $key => $value) {
+			$data['jabatan'][$key]['overtime'] = 'Rp '. number_format($data['jabatan'][$key]['overtime']);
+			// $data['jabatan'][$key]['bonus'] = 'Rp '. number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+		}
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/jabatan/index', $data);
+		$this->load->view('backend/template/footer');
 	}
-	$this->load->view('backend/template/header', $data);
-	$this->load->view('backend/template/topbar', $data);
-	$this->load->view('backend/template/sidebar', $data);
-	$this->load->view('backend/admin/jabatan/index', $data);
-	$this->load->view('backend/template/footer');
-}
 
 	public function tambah_jabatan()
 	{
