@@ -168,7 +168,7 @@
 										<div class="col-sm-12">
 											<select class="form-control" id="devisi" name="devisi">
 												<?php foreach ($department as $d) :?>
-													<option value="<?= $d['id_department']?>" <?= ($d['id_department'] == $department) ? 'selected' : '' ?>><?= $d['devisi'];?></option>
+													<option value="<?= $d['id_department']?>" <?= ($d['id_department'] == $j['id_department']) ? 'selected' : '' ?>><?= $d['devisi'];?></option>
 												<?php endforeach;?>
 											</select>
 										</div>

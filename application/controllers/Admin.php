@@ -132,11 +132,13 @@ class Admin extends CI_Controller
 		$data['title'] = 'Data Jabatan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$this->db->select('jabatan.*, department.devisi');
+		$this->db->select('jabatan.*, department.*');
 		$this->db->from('jabatan');
 		$this->db->join('department', 'jabatan.devisi = department.id_department');
 		$query = $this->db->get();
 		$data['jabatan'] = $query->result_array();
+		// echo json_encode($data['jabatan']);
+		// exit;
 		$data['department'] = $this->Admin_model->getAllidjabatan();
 		foreach ($data['jabatan'] as $key => $value) {
 			$data['jabatan'][$key]['overtime'] = 'Rp '. number_format($data['jabatan'][$key]['overtime']);
@@ -1582,7 +1584,8 @@ class Admin extends CI_Controller
 				}
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-				$jabatan = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
@@ -1601,7 +1604,6 @@ class Admin extends CI_Controller
 				$onCheck = true;
 			}
 		}
-
 		$data['gaji'] = [];
 
 		// $this->checkData($data['recap']);
@@ -1623,6 +1625,7 @@ class Admin extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$jabatan = $jabatan_loop[$pegawai];
 				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
 				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
