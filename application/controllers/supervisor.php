@@ -544,12 +544,8 @@ class supervisor extends CI_Controller
 
 	public function laporan_tpp_bulanan()
 	{
-		$data['title'] = 'Cetak Payrol Bulanan';
-
+		$data['title'] = 'Payrol Bulanan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-		$userData = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
-
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
 		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
@@ -607,14 +603,19 @@ class supervisor extends CI_Controller
 
 				$hadirLembur  = "Lembur";
 				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
+					if (strcmp("Sun", $dayNow) == 0) {
+						$overtime = $hours + 3; // Menambahkan waktu 3 jam di hari Minggu
+					} else {
+						$overtime = $hours; // Jumlah jam kerja pada Sabtu
+					}
 				} else {
 					$overtime = $hours - 8;
 					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
 				}
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-				$jabatan = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
@@ -633,7 +634,6 @@ class supervisor extends CI_Controller
 				$onCheck = true;
 			}
 		}
-
 		$data['gaji'] = [];
 
 		// $this->checkData($data['recap']);
@@ -655,6 +655,7 @@ class supervisor extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$jabatan = $jabatan_loop[$pegawai];
 				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
 				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
@@ -765,24 +766,18 @@ class supervisor extends CI_Controller
 			}
 		}
 		// $this->checkData($data['gaji'][$date]);
-		// // 
-		$dataFinal = [];
-
-		$counter = 0;
+		// 
 		foreach ($data['gaji'] as $key => $value) {
 			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
 			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {
 				$data['gaji'][$key][$dateKey]['tidak_hadir'] = $workingDaysCount - $valueDate['hadir'] >= 0 ? $workingDaysCount - $valueDate['hadir'] : 0;
 				$data['gaji'][$key][$dateKey]['pengurangan'] += ($data['gaji'][$key][$dateKey]['tidak_hadir'] * $valueDate['value_pengurangan']);
-				if (strcmp($userData['id_pegawai'], $data['gaji'][$key][$dateKey]['id_pegawai'])) {
-					array_push($dataFinal, $data['gaji'][$key][$dateKey]);
-					$dataFinal[$counter]['date'] = $key;
-					$counter += 1;
-				}
 			}
 		}
-		// $this->checkData($dataFinal);
-		$data['dataFinal'] = $dataFinal;
+
+		// return;
+		// $this->checkData($data['gaji']);
+
 		// return;
 
 		$data['blnnya'] = $bln;
