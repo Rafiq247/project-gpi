@@ -6,7 +6,7 @@
      <div class="inner-sidebar mr-3">
        <!--Image Avatar-->
        <div class="avatar text-center">
-         <img src="<?php echo base_url() . '/gambar/pegawai/' . $user['image']; ?>" alt="" class="rounded-circle" />
+         <img src="<?php echo base_url() . '/gambar/leader/' . $user['image']; ?>" alt="" class="rounded-circle" />
          <!-- <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['name']; ?></span> -->
          <p><strong><?= $user['name']; ?></strong></p>
          <span class="text-primary small"><strong>Selamat Datang</strong></span>

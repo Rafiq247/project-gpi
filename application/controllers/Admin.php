@@ -89,43 +89,27 @@ class Admin extends CI_Controller
 
 			if ($this->upload->do_upload('userfilefoto')) {
 				$new_image = $this->upload->data('file_name');
-				$new_image1 = $this->upload->data('file_name');
-				$data = $this->db->set('foto', $new_image);
+				$data = $this->db->set('image', $new_image);
 			} else {
 				echo $this->upload->display_errors();
 			}
 			$data = [
-				"nama_pegawai" => $nama,
-
-			];
-			$this->db->where('id_user', $id);
-			$this->db->update('tb_pegawai', $data);
-
-			$data1 = $this->db->set('image', $new_image1);
-
-			$data1 = [
 				"name" => $nama,
 
 			];
 			$this->db->where('id', $id);
-			$this->db->update('user', $data1);
-
+			$this->db->update('user', $data);
 
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 			redirect('admin');
 		} else {
 			$data = [
-				"nama_pegawai" => $nama,
-
-			];
-			$this->db->where('id_user', $id);
-			$this->db->update('tb_pegawai', $data);
-			$data1 = [
 				"name" => $nama,
 
 			];
 			$this->db->where('id', $id);
-			$this->db->update('user', $data1);
+			$this->db->update('user', $data);
+
 			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 			redirect('admin');
 		}
@@ -1675,7 +1659,7 @@ class Admin extends CI_Controller
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
 				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
-				
+
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
