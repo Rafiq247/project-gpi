@@ -1659,7 +1659,6 @@ class Admin extends CI_Controller
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
 				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
-
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
@@ -2366,7 +2365,7 @@ class Admin extends CI_Controller
 		$salary = $this->input->post('salary', true);
 		$iuran_jjk = $salary * 0.0024;
 		$iuran_jkm = $salary * 0.0030;
-		$iuran_jht_tk = $salary * 0.037;
+		$iuran_jht_tk = $salary * 0.02;
 		$iuran_jht = $salary * 0.037;
 		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
 
@@ -2408,7 +2407,7 @@ class Admin extends CI_Controller
 		$salary = $this->input->post('salary', true);
 		$iuran_jjk = $salary * 0.0024;
 		$iuran_jkm = $salary * 0.0030;
-		$iuran_jht_tk = $salary * 0.037;
+		$iuran_jht_tk = $salary * 0.02;
 		$iuran_jht = $salary * 0.037;
 		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
 
