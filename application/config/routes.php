@@ -166,6 +166,11 @@
     $route['supervisor/laporan-tpp-bulanan'] = 'supervisor/laporan_tpp_bulanan';
     $route['supervisor/detail-laporan-tpp/(:any)/(:any)/(:any)'] = 'supervisor/detail_laporan_tpp_bulanan/$1/$2/$3';
     $route['supervisor/cetak-payrol-supervisor/(:any)/(:any)/(:any)'] = 'supervisor/cetak_payrol_pegawai/$1/$2/$3';
+    $route['supervisor/hapus-payrol/(:any)'] = 'supervisor/hapusPayrol/$1';
+    $route['supervisor/input-data-tpp'] = 'supervisor/inputPayrol';
+    $route['supervisor/simpan-gaji'] = 'supervisor/simpan_gaji';
+    $route['supervisor/akumulasi-gaji'] = 'supervisor/akumulasi_gaji';
+
 
     // Supervisor Konfirmasi izin
     $route['supervisor/tampil-konfirmasi'] = 'supervisor/konfirmasi_leader';
