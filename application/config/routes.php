@@ -59,6 +59,8 @@
     // $route['Login'] = 'auth/index';
     // dashboard
     $route['admin/dashboard'] = 'admin/index';
+    $route['admin/edit-profil/(:any)'] = 'admin/edit_profil/$1';
+    $route['admin/edit-password/(:any)'] = 'admin/edit_password/$1';
     // jabatan
     $route['admin/jabatan'] = 'admin/jabatan';
     $route['admin/tambah-jabatan'] = 'admin/tambah_jabatan';

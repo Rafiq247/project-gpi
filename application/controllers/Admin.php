@@ -69,6 +69,96 @@ class Admin extends CI_Controller
 		$this->load->view('backend/template/footer');
 	}
 
+	public function edit_profil($id)
+	{
+		$data['title'] = 'Edit Profil';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$nama = $this->input->post('nama', true);
+
+
+		//foto dan ktp 
+		$upload_image = $_FILES['userfilefoto']['name'];
+		if ($upload_image) {
+			$config['upload_path']          = './gambar/admin/';
+			$config['allowed_types']        = 'gif|jpg|png|PNG';
+			$config['max_size']             = 10000;
+			$config['max_width']            = 10000;
+			$config['max_height']           = 10000;
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload('userfilefoto')) {
+				$new_image = $this->upload->data('file_name');
+				$new_image1 = $this->upload->data('file_name');
+				$data = $this->db->set('foto', $new_image);
+			} else {
+				echo $this->upload->display_errors();
+			}
+			$data = [
+				"nama_pegawai" => $nama,
+
+			];
+			$this->db->where('id_user', $id);
+			$this->db->update('tb_pegawai', $data);
+
+			$data1 = $this->db->set('image', $new_image1);
+
+			$data1 = [
+				"name" => $nama,
+
+			];
+			$this->db->where('id', $id);
+			$this->db->update('user', $data1);
+
+
+			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
+			redirect('admin');
+		} else {
+			$data = [
+				"nama_pegawai" => $nama,
+
+			];
+			$this->db->where('id_user', $id);
+			$this->db->update('tb_pegawai', $data);
+			$data1 = [
+				"name" => $nama,
+
+			];
+			$this->db->where('id', $id);
+			$this->db->update('user', $data1);
+			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
+			redirect('admin');
+		}
+		// 
+	}
+
+	public function edit_password($id)
+	{
+		$data['title'] = 'Edit Password';
+		// mengambil data supervisor berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$password_lama = $this->input->post('password_lama', true);
+		$password_baru = $this->input->post('password_baru', true);
+		$password_baru1 = $this->input->post('password_baru1', true);
+		if (password_verify($password_lama, $data['user']['password'])) {
+			if ($password_baru == $password_baru1) {
+				$data = [
+					"password" => password_hash($password_baru, PASSWORD_DEFAULT),
+				];
+				$this->db->where('id', $id);
+				$this->db->update('user', $data);
+				$this->session->set_flashdata('flash', 'Password Berhasil Diubah!');
+				redirect('admin');
+			} else {
+				$this->session->set_flashdata('flash', 'Konfirmasi Password Berbeda!');
+				redirect('admin');
+			}
+		} else {
+			$this->session->set_flashdata('flash', 'Password Lama Salah!');
+			redirect('admin');
+		}
+	}
+
 	public function department()
 	{
 		$data['title'] = 'Data Department';
@@ -139,7 +229,7 @@ class Admin extends CI_Controller
 		$data['jabatan'] = $query->result_array();
 		$data['department'] = $this->Admin_model->getAllidjabatan();
 		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp '. number_format($data['jabatan'][$key]['overtime']);
+			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
 			// $data['jabatan'][$key]['bonus'] = 'Rp '. number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 		}
 		$this->load->view('backend/template/header', $data);
@@ -1369,7 +1459,7 @@ class Admin extends CI_Controller
 
 					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
-					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 						$pengurangan = 0;
 					}
 					$dataPenggajian = [
@@ -1424,7 +1514,7 @@ class Admin extends CI_Controller
 
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								// check id pegawainya ada gak $pegawai
-								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
 								}
 								$dataPenggajian = [
@@ -1646,9 +1736,9 @@ class Admin extends CI_Controller
 					}
 					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
-					if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 						$pengurangan = 0;
-					} 
+					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
@@ -1700,9 +1790,9 @@ class Admin extends CI_Controller
 								}
 								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								// check id pegawai $pegawai
-								if(empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())){
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
-								} 
+								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
