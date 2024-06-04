@@ -13,7 +13,7 @@ class leader_model extends CI_model
 
 	public function getAllpegawai($devisi = null)
 	{
-		$sql = "SELECT tb_pegawai.*, department.devisi as namdev, jabatan.jabatan as namjab from tb_pegawai, department, jabatan where department.id_department=tb_pegawai.devisi AND jabatan.id_jabatan=tb_pegawai.jabatan";
+		$sql = "SELECT tb_pegawai.*, department.devisi as namdev, jabatan.jabatan as namjab from tb_pegawai, department, jabatan where department.id_department=tb_pegawai.devisi AND jabatan.id_jabatan=tb_pegawai.jabatan AND tb_pegawai.role_id IN (3,4) ";
 		if (!is_null($devisi)) {
 			$sql.= " AND tb_pegawai.devisi = '$devisi'";
 		}
@@ -120,10 +120,12 @@ class leader_model extends CI_model
 
 	public function getIzinPegawai($devisi = null)
 	{
-		$sql = "SELECT * FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 4";
+		$sql = "SELECT izin.*, tb_pegawai.id_pegawai, tb_pegawai.jabatan,tb_pegawai.nama_pegawai FROM izin JOIN tb_pegawai ON izin.id_pegawai = tb_pegawai.id_pegawai WHERE izin.role_id = 4";
 		if (!is_null($devisi)) {
 			$sql.= " AND tb_pegawai.devisi = '$devisi'";
 		}
+		// var_dump($devisi);
+		// exit;
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -198,4 +200,5 @@ class leader_model extends CI_model
 		$result =  $result_q->row();
 		return $result->jumlah_hari;
 	}
+	
 }

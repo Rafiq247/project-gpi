@@ -12,6 +12,7 @@ class pegawai extends CI_Controller
 		};
 		$this->load->library('form_validation');
 		$this->load->model('User_model');
+		$this->load->model('supervisor_model');
 		$this->load->model('Admin_model');
 	}
 
@@ -567,7 +568,7 @@ class pegawai extends CI_Controller
 			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
 		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
+			$data['absensi'] = $this->supervisor_model->getAbsensi();
 		} else {
 			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
 		}

@@ -194,4 +194,13 @@ class supervisor_model extends CI_model
 		$result =  $result_q->row();
 		return $result->jumlah_hari;
 	}
+
+	public function getAbsensi()
+	{
+		$sql = "SELECT ABS.* FROM absensi ABS 
+		JOIN absensi_pegawai ABSPEG ON ABS.id_fingerprint = ABSPEG.id_fingerprint
+		JOIN tb_pegawai PEG ON ABSPEG.id_pegawai = PEG.id_pegawai AND PEG.id_user = ?;";
+		$result = $this->db->query($sql, [$this->session->userdata('id')]);
+		return $result->result_array();
+	}
 }

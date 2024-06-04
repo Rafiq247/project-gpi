@@ -544,6 +544,8 @@ class supervisor extends CI_Controller
 
 	public function laporan_tpp_bulanan()
 	{
+		// var_dump($this->session->userdata());
+		// exit;
 		$data['title'] = 'Payrol Bulanan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
@@ -564,7 +566,7 @@ class supervisor extends CI_Controller
 			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
 		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
+			$data['absensi'] = $this->supervisor_model->getAbsensi();
 		} else {
 			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
 		}
@@ -895,10 +897,10 @@ class supervisor extends CI_Controller
 	public function konfirmasi_leader()
 	{
 		$data['title'] = 'Tampil Konfirmasi';
-		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai,tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		if (isset($data['user']['jabatan'])) {
-			$id_jabatan = $data['user']['jabatan'];
+		if (isset($data['user']['devisi'])) {
+			$id_jabatan = $data['user']['devisi'];
 			$data['absensi'] = $this->supervisor_model->getIzinLeader($id_jabatan);
 			foreach ($data['absensi'] as $key => $value) {
 				$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
@@ -1024,10 +1026,10 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Data Pegawai Izin';
 		// mengambil data user berdasarkan email yang ada di session
-		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		if (isset($data['user']['jabatan'])) {
-			$id_jabatan = $data['user']['jabatan'];
+		if (isset($data['user']['devisi'])) {
+			$id_jabatan = $data['user']['devisi'];
 			$data['absensi'] = $this->supervisor_model->getIzinDataPegawai($id_jabatan);
 			foreach ($data['absensi'] as $key => $value) {
 				$data['absensi'][$key]['pegawai'] = $this->supervisor_model->getPegawaiById($value['id_pegawai']);
@@ -1045,10 +1047,10 @@ class supervisor extends CI_Controller
 	{
 		$data['title'] = 'Data Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
-		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		if (isset($data['user']['jabatan'])) {
-			$devisi = $data['user']['jabatan'];
+		if (isset($data['user']['devisi'])) {
+			$devisi = $data['user']['devisi'];
 			$data['pegawai'] = $this->supervisor_model->getAllpegawai($devisi);
 			foreach ($data['pegawai'] as $key => $value) {
 				$data['pegawai'][$key]['pegawai'] = $this->supervisor_model->getAlljabatan($value['id_pegawai']);

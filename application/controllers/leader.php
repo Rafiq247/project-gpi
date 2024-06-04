@@ -12,6 +12,7 @@ class leader extends CI_Controller
 		};
 		$this->load->library('form_validation');
 		$this->load->model('leader_model');
+		$this->load->model('supervisor_model');
 		$this->load->model('Admin_model');
 	}
 
@@ -560,7 +561,7 @@ class leader extends CI_Controller
 			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
 		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
+			$data['absensi'] = $this->supervisor_model->getAbsensi();
 		} else {
 			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
 		}
@@ -892,11 +893,13 @@ class leader extends CI_Controller
 	public function konfirmasi_pegawai()
 	{
 		$data['title'] = 'Tampil Konfirmasi';
-		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai,tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		if (isset($data['user']['jabatan'])) {
-			$id_jabatan = $data['user']['jabatan'];
+		if (isset($data['user']['devisi'])) {
+			$id_jabatan = $data['user']['devisi'];
 			$data['absensi'] = $this->leader_model->getIzinPegawai($id_jabatan);
+			// var_dump($this->session->userdata());
+			// exit;
 			foreach ($data['absensi'] as $key => $value) {
 				$data['absensi'][$key]['pegawai'] = $this->leader_model->getPegawaiById($value['id_pegawai']);
 				// $this->checkData($data['absensi'][$key]['pegawai'][0]);
@@ -1022,12 +1025,11 @@ class leader extends CI_Controller
 	{
 		$data['title'] = 'Data Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
-		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
-		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		if (isset($data['user']['jabatan'])) {
-			$id_jabatan = $data['user']['jabatan'];
+		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai,tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
+
+		if (isset($data['user']['devisi'])) {
+			$id_jabatan = $data['user']['devisi'];
 			$data['pegawai'] = $this->leader_model->getAllpegawai($id_jabatan);
-			// var_dump($data['pegawai']); exit;
 			foreach ($data['pegawai'] as $key => $value) {
 				$data['pegawai'][$key]['pegawai'] = $this->leader_model->getAlljabatan($value['id_pegawai']);
 				// $this->checkData($data['pegawai'][$key]['jabatan'][0]);
