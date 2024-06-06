@@ -80,7 +80,7 @@ class Admin extends CI_Controller
 		//foto dan ktp 
 		$upload_image = $_FILES['userfilefoto']['name'];
 		if ($upload_image) {
-			$config['upload_path']          = './gambar/admin/';
+			$config['upload_path']          = './gambar/pegawai/';
 			$config['allowed_types']        = 'gif|jpg|png|PNG';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
@@ -421,135 +421,135 @@ class Admin extends CI_Controller
 			"foto" => $fotoName,
 		];
 
-		$token = base64_encode(random_bytes(32));
-		$user_token = [
-			"id_user" => $id_user,
-			'email' => $email,
-			'token' => $token,
-			'date_created' => time()
-		];
+		// $token = base64_encode(random_bytes(32));
+		// $user_token = [
+		// 	"id_user" => $id_user,
+		// 	'email' => $email,
+		// 	'token' => $token,
+		// 	'date_created' => time()
+		// ];
 
 		$this->db->insert('tb_pegawai', $data);
-		$this->db->insert('user_token', $user_token);
+		// $this->db->insert('user_token', $user_token);
 
-		$this->_sendEmail($token, 'verify');
+		// $this->_sendEmail($token, 'verify');
 
 
 		$this->session->set_flashdata('flash', 'Data karyawan berhasil ditambah!');
 		redirect('admin/pegawai');
 	}
 
-	private function _sendEmail($token, $type)
-	{
-		$config = [
-			'protocol'  => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_user' => 'joyiseod4mban@gmail.com',
-			'smtp_pass' => 'ksurnbftyxgafqku',
-			'smtp_port' => 465,
-			'mailtype'  => 'html',
-			'charset'   => 'utf-8',
-			'newline'   => "\r\n"
-		];
+	// private function _sendEmail($token, $type)
+	// {
+	// 	$config = [
+	// 		'protocol'  => 'smtp',
+	// 		'smtp_host' => 'ssl://smtp.googlemail.com',
+	// 		'smtp_user' => 'joyiseod4mban@gmail.com',
+	// 		'smtp_pass' => 'ksurnbftyxgafqku',
+	// 		'smtp_port' => 465,
+	// 		'mailtype'  => 'html',
+	// 		'charset'   => 'utf-8',
+	// 		'newline'   => "\r\n"
+	// 	];
 
-		$emailContent = "
-        <!DOCTYPE html>
-        <html lang='en'>
-        <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>Verify Your Account</title>
-        </head>
-        <body style='font-family: Arial, sans-serif;'>
-          <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-            <tr>
-              <td align='center'>
-                <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
-                  <tr>
-                    <td align='center'>
-                      <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
-                      <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
-                      <table border='0' cellspacing='0' cellpadding='0'>
-                        <tr>
-                          <td align='center'>
-                            <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-        ";
+	// 	$emailContent = "
+	//     <!DOCTYPE html>
+	//     <html lang='en'>
+	//     <head>
+	//     <meta charset='UTF-8'>
+	//     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	//     <title>Verify Your Account</title>
+	//     </head>
+	//     <body style='font-family: Arial, sans-serif;'>
+	//       <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+	//         <tr>
+	//           <td align='center'>
+	//             <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
+	//               <tr>
+	//                 <td align='center'>
+	//                   <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
+	//                   <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
+	//                   <table border='0' cellspacing='0' cellpadding='0'>
+	//                     <tr>
+	//                       <td align='center'>
+	//                         <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
+	//                       </td>
+	//                     </tr>
+	//                   </table>
+	//                 </td>
+	//               </tr>
+	//             </table>
+	//           </td>
+	//         </tr>
+	//       </table>
+	//     </body>
+	//     </html>
+	//     ";
 
-		$this->load->library('email', $config);
-		$this->email->initialize($config);
+	// 	$this->load->library('email', $config);
+	// 	$this->email->initialize($config);
 
-		$this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
-		$this->email->to($this->input->post('email'));
+	// 	$this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+	// 	$this->email->to($this->input->post('email'));
 
-		if ($type == 'verify') {
-			$this->email->subject('Account Verification');
-			// $this->email->message(
-			// 	'Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>'
-			// );
-			$this->email->message($emailContent);
-		}
+	// 	if ($type == 'verify') {
+	// 		$this->email->subject('Account Verification');
+	// 		// $this->email->message(
+	// 		// 	'Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>'
+	// 		// );
+	// 		$this->email->message($emailContent);
+	// 	}
 
 
-		if ($this->email->send()) {
-			return true;
-		} else {
-			echo $this->email->print_debugger();
-			die;
-		}
-	}
+	// 	if ($this->email->send()) {
+	// 		return true;
+	// 	} else {
+	// 		echo $this->email->print_debugger();
+	// 		die;
+	// 	}
+	// }
 
-	public function verify()
-	{
-		$email = $this->input->get('email');
-		$token = $this->input->get('token');
+	// public function verify()
+	// {
+	// 	$email = $this->input->get('email');
+	// 	$token = $this->input->get('token');
 
-		$user = $this->Auth_model->getUserByEmail($email);
+	// 	$user = $this->Auth_model->getUserByEmail($email);
 
-		if ($user) {
-			$user_token = $this->Auth_model->getTokenByUserId($token);
+	// 	if ($user) {
+	// 		$user_token = $this->Auth_model->getTokenByUserId($token);
 
-			if ($user_token) {
-				if (time() - $user_token->date_created < (60 * 60 * 24)) {
+	// 		if ($user_token) {
+	// 			if (time() - $user_token->date_created < (60 * 60 * 24)) {
 
-					$this->db->set('is_active', 1);
-					$this->db->where('email', $email);
-					$this->db->update('user');
+	// 				$this->db->set('is_active', 1);
+	// 				$this->db->where('email', $email);
+	// 				$this->db->update('user');
 
-					$this->db->delete('user_token', ['email' => $email]);
+	// 				$this->db->delete('user_token', ['email' => $email]);
 
-					$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
-          			</div>');
-					redirect('auth');
-				} else {
-					$this->db->delete('user', ['email' => $email]);
-					$this->db->delete('user_token', ['email' => $email]);
+	// 				$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
+	//       			</div>');
+	// 				redirect('auth');
+	// 			} else {
+	// 				$this->db->delete('user', ['email' => $email]);
+	// 				$this->db->delete('user_token', ['email' => $email]);
 
-					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
-        			</div>');
-					redirect('auth');
-				}
-			} else {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
-        		</div>');
-				redirect('auth');
-			}
-		} else {
-			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
-        </div>');
-			redirect('auth');
-		}
-	}
+	// 				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
+	//     			</div>');
+	// 				redirect('auth');
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
+	//     		</div>');
+	// 			redirect('auth');
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
+	//     </div>');
+	// 		redirect('auth');
+	// 	}
+	// }
 
 	public function edit_pegawai()
 	{

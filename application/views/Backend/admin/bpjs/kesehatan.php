@@ -43,32 +43,32 @@
                 </thead>
                 <tbody>
                     <?php $no = 1; ?>
-                    <?php  foreach ($bpjs_kes as $b) : ?>
+                    <?php foreach ($bpjs_kes as $b) : ?>
                         <tr>
-                        <td><?= $no++ ?></td>
-                        <td><?= $b['id_pegawai']; ?></td>
-                        <td><?= $b['no_kartu']; ?></td>
-                        <td><?= $b['nama_pegawai']; ?></td>
-                        <td><?= $b['salary']; ?></td>
-                        <td><?= $b['total_salary']; ?></td>
-                        <td><?= $b['total_salary_iuran']; ?></td>
-                        <td><?= $b['iuran_4']; ?></td>
-                        <td><?= $b['iuran_1']; ?></td>
-                        <td><?= $b['total_iuran_kes']; ?></td>
-                        <td><?= $b['kelas']; ?></td>
-                        <td>
-                        <a href="javascript:void(0)" class="btn btn-theme ml-1 trigger-edit-modal" data-id-kes="<?= $b['id_bpjs_kes'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>" href="">Edit</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-kesehatan/'.$b['id_bpjs_kes']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
-                        </td>
-                    </tr>
+                            <td><?= $no++ ?></td>
+                            <td><?= $b['id_pegawai']; ?></td>
+                            <td><?= $b['no_kartu']; ?></td>
+                            <td><?= $b['nama_pegawai']; ?></td>
+                            <td><?= $b['salary']; ?></td>
+                            <td><?= $b['total_salary']; ?></td>
+                            <td><?= $b['total_salary_iuran']; ?></td>
+                            <td><?= $b['iuran_4']; ?></td>
+                            <td><?= $b['iuran_1']; ?></td>
+                            <td><?= $b['total_iuran_kes']; ?></td>
+                            <td><?= $b['kelas']; ?></td>
+                            <td>
+                                <a href="javascript:void(0)" class="btn btn-theme ml-1 trigger-edit-modal" data-id-kes="<?= $b['id_bpjs_kes'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>" href="">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-kesehatan/' . $b['id_bpjs_kes']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                            </td>
+                        </tr>
                     <?php endforeach ?>
                 </tbody>
 
             </table>
         </div>
-        
+
         <div class="modal fade" id="editBpjsKes" tabindex="-1" role="dialog" aria-labelledby="editBpjsKes">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -78,13 +78,13 @@
                     </div>
                     <div class="modal-body text-justify">
                         <form class="form-horizontal" action="<?php echo base_url() . 'admin/edit-bpjs-kesehatan' ?>" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="id_bpjs_kes" id="modal__id_bpjs_kes">
+                            <input type="hidden" name="id_bpjs_kes" id="modal__id_bpjs_kes">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label class="col-sm-12">ID KARYAWAN</label>
                                         <div class="col-sm-12">
-                                        <select class="form-control" id="select__id_pegawai_edit" name="id_pegawai">
+                                            <select class="form-control" id="select__id_pegawai_edit" name="id_pegawai">
                                                 <option>-pilih-</option>
                                                 <?php foreach ($pegawai_list as $pegawai) : ?>
                                                     <option value="<?= $pegawai['id_pegawai'] ?>"><?= $pegawai['id_pegawai'] ?></option>
@@ -109,13 +109,13 @@
                                     <div class="form-group">
                                         <label class="col-sm-12">NO KARTU</label>
                                         <div class="col-sm-12">
-                                            <input type="text" name="no_kartu" class="form-control " required>
+                                            <input type="text" name="no_kartu" class="form-control " value="<?= $b['no_kartu']; ?>" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">KELAS RAWAT</label>
                                         <div class="col-sm-12">
-                                            <input type="text" name="kelas" class="form-control " required>
+                                            <input type="text" name="kelas" class="form-control " value="<?= $b['kelas']; ?>" required>
                                         </div>
                                     </div>
                                 </div>
@@ -139,13 +139,13 @@
                         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-justify">
-                        <form class="form-horizontal" action="<?php echo base_url() . 'admin/input-bpjs-kesehatan'?>" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal" action="<?php echo base_url() . 'admin/input-bpjs-kesehatan' ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label class="col-sm-12">ID KARYAWAN</label>
                                         <div class="col-sm-12">
-                                        <select class="form-control" id="select__id_pegawai" name="id_pegawai">
+                                            <select class="form-control" id="select__id_pegawai" name="id_pegawai">
                                                 <option>-pilih-</option>
                                                 <?php foreach ($pegawai_list as $pegawai) : ?>
                                                     <option value="<?= $pegawai['id_pegawai'] ?>"><?= $pegawai['id_pegawai'] ?></option>
@@ -170,13 +170,13 @@
                                     <div class="form-group">
                                         <label class="col-sm-12">NO KARTU</label>
                                         <div class="col-sm-12">
-                                            <input type="text"name="no_kartu" class="form-control " required>
+                                            <input type="text" name="no_kartu" class="form-control " required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12">KELAS RAWAT</label>
                                         <div class="col-sm-12">
-                                            <input type="text"name="kelas" class="form-control " required>
+                                            <input type="text" name="kelas" class="form-control " required>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +197,7 @@
 
         <script>
             $(document).ready(function() {
-                $("#select__id_pegawai").on("change", function(){
+                $("#select__id_pegawai").on("change", function() {
                     $.post('<?= base_url('admin/ajax_pegawai') ?>', {
                         id_pegawai: $(this).val()
                     }).then(function(response) {
@@ -206,7 +206,7 @@
                         $("#modal_add_salary").val(response.salary);
                     })
                 })
-                $("#select__id_pegawai_edit").on("change", function(){
+                $("#select__id_pegawai_edit").on("change", function() {
                     $.post('<?= base_url('admin/ajax_pegawai') ?>', {
                         id_pegawai: $(this).val()
                     }).then(function(response) {
@@ -216,7 +216,7 @@
                     })
                 })
 
-                $(".trigger-edit-modal").on("click", function(){
+                $(".trigger-edit-modal").on("click", function() {
                     $("#modal__id_bpjs_kes").val($(this).data("id-kes"));
                     $("#select__id_pegawai_edit").val($(this).data("id-pegawai")).trigger('change');
                     $("#editBpjsKes").modal("show");

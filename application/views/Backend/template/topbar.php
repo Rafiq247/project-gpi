@@ -73,7 +73,7 @@
                             <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['name']; ?></span>
 
-                                <img src="<?php echo base_url() . '/gambar/admin/' . $user['image']; ?>" class="rounded-circle" width="40px" height="40px">
+                                <img src="<?php echo base_url() . '/gambar/pegawai/' . $user['image']; ?>" class="rounded-circle" width="40px" height="40px">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
                                 <!-- <a class="dropdown-item" href="#"><i class="fa fa-user pr-2"></i> Profile</a> -->
