@@ -989,7 +989,7 @@ class supervisor extends CI_Controller
 	{
 		// anuan get jabatan
 		$data = array(
-			"acc" => "1",
+			"acc" => "3",
 			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
@@ -1001,9 +1001,8 @@ class supervisor extends CI_Controller
 	{
 
 		$data = array(
-			"acc" => "0",
-			"acc_by" => null,
-			"penolakan" => null
+			"acc" => "5",
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1020,6 +1019,42 @@ class supervisor extends CI_Controller
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('supervisor/tampil-konfirmasi');
+	}
+
+	public function izinStatusAccPegawai($id)
+	{
+		// anuan get jabatan
+		$data = array(
+			"acc" => "3",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeniedPegawai($id)
+	{
+
+		$data = array(
+			"acc" => "5",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeletePegawai($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('supervisor/tampil-konfirmasi-pegawai');
 	}
 
 	public function data_pegawai()

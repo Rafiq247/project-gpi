@@ -130,7 +130,15 @@
 
     //Data Karyawan
     $route['admin/absen-pegawai'] = 'admin/data_pegawai';
+    $route['admin/tampil-konfirmasi-pegawai'] = 'admin/data_pegawai';
+    $route['admin/acc-izin-pegawai/(:any)'] = 'admin/izinStatusAccPegawai/$1';
+    $route['admin/hapus-izin-pegawai/(:any)'] = 'admin/izinStatusDeniedPegawai/$1';
+    $route['admin/tolak-izin-pegawai/(:any)'] = 'admin/izinStatusDeletePegawai/$1';
     $route['admin/absen-pegawai'] = 'admin/data_leader';
+    $route['admin/tampil-konfirmasi-leader'] = 'admin/data_leader';
+    $route['admin/acc-izin-leader/(:any)'] = 'admin/izinStatusAccLeader/$1';
+    $route['admin/hapus-izin-leader/(:any)'] = 'admin/izinStatusDeniedLeader/$1';
+    $route['admin/tolak-izin-leader/(:any)'] = 'admin/izinStatusDeleteLeader/$1';
 
     $route['admin/akumulasi-gaji'] = 'admin/akumulasi_gaji';
     $route['admin/simpan-gaji'] = 'admin/simpan_gaji';
@@ -183,6 +191,10 @@
     $route['supervisor/acc-izin/(:any)'] = 'supervisor/izinStatusAcc/$1';
     $route['supervisor/hapus-izin/(:any)'] = 'supervisor/izinStatusDenied/$1';
     $route['supervisor/tolak-izin/(:any)'] = 'supervisor/izinStatusDelete/$1';
+    $route['supervisor/tampil-konfirmasi-pegawai'] = 'supervisor/data_pegawai';
+    $route['supervisor/acc-izin-pegawai/(:any)'] = 'supervisor/izinStatusAccPegawai/$1';
+    $route['supervisor/hapus-izin-pegawai/(:any)'] = 'supervisor/izinStatusDeniedPegawai/$1';
+    $route['supervisor/tolak-izin-pegawai/(:any)'] = 'supervisor/izinStatusDeletePegawai/$1';
 
     // Data Pegawai
     $route['supervisor/pegawai'] = 'supervisor/pegawai';

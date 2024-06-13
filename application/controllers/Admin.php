@@ -2034,7 +2034,6 @@ class Admin extends CI_Controller
 
 	public function izinStatusAcc($id)
 	{
-		// anuan get jabatan
 		$data = array(
 			"acc" => "1",
 			"acc_by" => $this->session->userdata('name'),
@@ -2048,9 +2047,8 @@ class Admin extends CI_Controller
 	{
 
 		$data = array(
-			"acc" => "0",
-			"acc_by" => null,
-			"penolakan" => null
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -2067,6 +2065,76 @@ class Admin extends CI_Controller
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('admin/tampil-konfirmasi');
+	}
+
+	public function izinStatusAccPegawai($id)
+	{
+		$data = array(
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeniedPegawai($id)
+	{
+
+		$data = array(
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeletePegawai($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusAccLeader($id)
+	{
+		$data = array(
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
+	}
+
+	public function izinStatusDeniedLeader($id)
+	{
+
+		$data = array(
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
+	}
+
+	public function izinStatusDeleteLeader($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
 	}
 
 

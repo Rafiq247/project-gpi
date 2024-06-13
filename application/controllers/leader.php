@@ -988,7 +988,7 @@ class leader extends CI_Controller
 	{
 		// anuan get jabatan
 		$data = array(
-			"acc" => "1",
+			"acc" => "4",
 			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
@@ -1000,9 +1000,8 @@ class leader extends CI_Controller
 	{
 
 		$data = array(
-			"acc" => "0",
+			"acc" => "6",
 			"acc_by" => null,
-			"penolakan" => null
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);

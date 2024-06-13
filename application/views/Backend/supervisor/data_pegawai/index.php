@@ -125,6 +125,7 @@
  						<th>KETERANGAN</th>
  						<th>SURAT</th>
  						<th>STATUS</th>
+						<th>Act</th>
  					</tr>
  				</thead>
  				<tbody>
@@ -139,7 +140,42 @@
  							<td><?= $b['tanggal_akhir']; ?></td>
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
- 							<td><?php echo $b['acc'] == 0 ? "Belum Diizinkan" : ($b['acc'] == 1 ? "Diizinkan oleh Leader $b[acc_by]"   : $b["penolakan"]) ?></td>
+							<td>
+								<?php
+								if ($b['acc'] == 0) {
+									echo "Belum Diizinkan";
+								} elseif ($b['acc'] == 1) {
+									echo "Diizinkan oleh HRD $b[acc_by]";
+								} elseif ($b['acc'] == 3) {
+									echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
+								} elseif ($b['acc'] == 4) {
+									echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
+								} elseif ($b['acc'] == 5) {
+									echo "Izin dibatalkan oleh SPV $b[acc_by]";
+								} elseif ($b['acc'] == 6) {
+									echo "Izin dibatalkan oleh Leader $b[acc_by]";
+								} elseif ($b['acc'] == 7) {
+									echo "Izin dibatalkan oleh HRD $b[acc_by]";
+								} else {
+									echo $b["penolakan"], "oleh $b[acc_by]";
+								}
+								?>
+							</td>
+							 <td>
+							 <?php
+								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5) {
+									?>
+									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin-pegawai') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
+									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
+								<?php
+								} elseif ($b['acc'] == 1 || $b['acc'] == 3) {
+									?>
+									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin-pegawai') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
+								<?php
+								}
+								?>
+
+ 							</td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
