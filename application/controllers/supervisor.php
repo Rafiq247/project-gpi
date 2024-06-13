@@ -70,7 +70,7 @@ class supervisor extends CI_Controller
 		//foto dan ktp 
 		$upload_image = $_FILES['userfilefoto']['name'];
 		if ($upload_image) {
-			$config['upload_path']          = './gambar/supervisor/';
+			$config['upload_path']          = './gambar/pegawai/';
 			$config['allowed_types']        = 'gif|jpg|png|PNG';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;

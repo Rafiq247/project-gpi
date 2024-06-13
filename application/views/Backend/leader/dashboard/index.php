@@ -184,7 +184,7 @@
                  <div class="row">
                    <label class="col-sm-1 ml-3">Photo</label>
                    <div class="col-sm-2 ml-3">
-                     <img src="<?php echo base_url() . '/gambar/leader/' . $user['image']; ?>" class="card-img mx-auto d-block" style="width: 120px; height: 140px;">
+                     <img src="<?php echo base_url() . '/gambar/pegawai/' . $user['image']; ?>" class="card-img mx-auto d-block" style="width: 120px; height: 140px;">
                    </div>
                    <div class="col-sm-6 ml-5">
                      <input type="file" name="userfilefoto" class="form-control" id="userfilefoto">
