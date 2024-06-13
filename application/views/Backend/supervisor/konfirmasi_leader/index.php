@@ -157,7 +157,7 @@
 								} elseif ($b['acc'] == 7) {
 									echo "Izin dibatalkan oleh HRD $b[acc_by]";
 								}  else {
-									echo "Ditolak oleh $b[acc_by] karena", $b["penolakan"];
+									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
 								}
 								?>
 							</td>
