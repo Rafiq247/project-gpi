@@ -1015,6 +1015,7 @@ class supervisor extends CI_Controller
 		$data = array(
 			"acc" => "2",
 			"penolakan" => $keteranganTolak,
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1051,6 +1052,7 @@ class supervisor extends CI_Controller
 		$data = array(
 			"acc" => "2",
 			"penolakan" => $keteranganTolak,
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
