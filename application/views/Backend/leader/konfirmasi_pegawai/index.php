@@ -168,7 +168,7 @@
 									<a class="btn btn-theme ml-1" href="<?= base_url('leader/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
 								<?php
-								} elseif ($b['acc'] == 1 || $b['acc'] == 3 || $b['acc'] == 4 || $b['acc'] == 7) {
+								} elseif ($b['acc'] == 4 || $b['acc'] == 7) {
 									?>
 									<a class="btn btn-danger ml-1" href="<?= base_url('leader/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
 								<?php

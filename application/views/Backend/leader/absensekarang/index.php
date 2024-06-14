@@ -168,8 +168,8 @@
  		<!-- modal -->
  		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
  			<div class="modal-dialog modal-lg">
- 				<div class="modal-content">
- 					<div class="modal-header text-center">
+ 				<div class="modl-content">
+ 					<div class="modal-header text-center">a
  						<h5 class="modal-title text-secondary"><strong>Ajukan Cuti</strong></h5>
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>

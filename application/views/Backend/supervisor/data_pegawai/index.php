@@ -163,12 +163,12 @@
 							</td>
 							 <td>
 							 <?php
-								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5) {
+								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6) {
 									?>
 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin-pegawai') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
 								<?php
-								} elseif ($b['acc'] == 1 || $b['acc'] == 3) {
+								} elseif ($b['acc'] == 3) {
 									?>
 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin-pegawai') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
 								<?php
