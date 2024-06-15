@@ -81,7 +81,7 @@ class Admin extends CI_Controller
 		$upload_image = $_FILES['userfilefoto']['name'];
 		if ($upload_image) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = 'gif|jpg|png|PNG';
+			$config['allowed_types']        = 'gif|jpg|jpeg|png|PNG';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
@@ -353,8 +353,8 @@ class Admin extends CI_Controller
 		$fotoName = "";
 		if ($upload_image) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = '*';
-			// $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+			// $config['allowed_types']        = '*';
+			$config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
