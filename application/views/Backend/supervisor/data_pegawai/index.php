@@ -161,7 +161,7 @@
 								}
 								?>
 							</td>
-							 
+							 <td>
 							 <?php
 								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6) {
 									?>
@@ -178,9 +178,8 @@
 								<?php
 								}
 								?>
-				
-
- 							
+							 </td>
+							 						
  						</tr>
  					<?php endforeach ?>
  				</tbody>
