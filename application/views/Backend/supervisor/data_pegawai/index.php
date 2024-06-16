@@ -128,7 +128,7 @@
 						<th>Act</th>
  					</tr>
  				</thead>
- 				<tbody>
+ 				<tbody id="table_data">
  					<?php $no = 1; ?>
  					<?php
 						foreach ($absensi as $b) : ?>
@@ -161,7 +161,7 @@
 								}
 								?>
 							</td>
-							 <td>
+							 
 							 <?php
 								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6) {
 									?>
@@ -172,10 +172,15 @@
 									?>
 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin-pegawai') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
 								<?php
+								} elseif ($b['acc'] == 1) {
+									?>
+									<td></td>
+								<?php
 								}
 								?>
+				
 
- 							</td>
+ 							
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -251,3 +256,16 @@
  				</div>
  			</div>
  		</div>
+
+		 <script>
+ 			$(document).ready(function() {
+ 				$("#table_data").on("click", ".trigger-tolak", function() {
+ 					const keterangan = prompt("Keterangan Tolak");
+ 					if (!keterangan) return;
+ 					const idIzin = $(this).data("id-izin");
+ 					const targetUrl = `<?= base_url('supervisor/tolak-izin-pegawai') ?>/${idIzin}?keterangan=` + keterangan;
+ 					console.log(targetUrl);
+ 					window.location.href = targetUrl;
+ 				})
+ 			});
+ 		</script>

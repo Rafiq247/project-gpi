@@ -127,7 +127,7 @@
  						<th>STATUS</th>
  					</tr>
  				</thead>
- 				<tbody>
+ 				<tbody id="table_data">
  					<?php $no = 1; ?>
  					<?php
 						foreach ($absensi as $b) : ?>
@@ -255,3 +255,16 @@
  				</div>
  			</div>
  		</div>
+
+		 <script>
+ 			$(document).ready(function() {
+ 				$("#table_data").on("click", ".trigger-tolak", function() {
+ 					const keterangan = prompt("Keterangan Tolak");
+ 					if (!keterangan) return;
+ 					const idIzin = $(this).data("id-izin");
+ 					const targetUrl = `<?= base_url('admin/tolak-izin-leader') ?>/${idIzin}?keterangan=` + keterangan;
+ 					console.log(targetUrl);
+ 					window.location.href = targetUrl;
+ 				})
+ 			});
+ 		</script>
