@@ -38,13 +38,13 @@
                          <th>TANGGAL MASUK</th>
                          <th>JABATAN</th>
                          <th>NO.HP</th>
-                         <th>AKSI</th>
+                         <!-- <th>AKSI</th> -->
                      </tr>
                  </thead>
                  <tbody>
                      <?php $no = 1; ?>
                      <?php if (isset($pegawai) && is_array($pegawai))
-                        foreach ($pegawai as $b) : ?>
+                            foreach ($pegawai as $b) : ?>
                          <tr>
                              <td><?= $no++ ?></td>
                              <td><?= $b['nama_pegawai']; ?></td>
@@ -57,7 +57,7 @@
                              <td><?= $b['tanggal_masuk']; ?></td>
                              <td><?= $b['namjab']; ?></td>
                              <td><?= $b['no_hp']; ?></td>
-                             <td width="120px">
+                             <!-- <td width="120px">
                                  <div class="row">
                                      <a href="<?= base_url('leader/detail-pegawai') ?>/<?= $b['id_pegawai']; ?>" class="ml-2">
                                          <button type="button" class="btn btn-theme">
@@ -65,7 +65,7 @@
                                          </button>
                                      </a>
                                  </div>
-                             </td>
+                             </td> -->
                          </tr>
                      <?php endforeach ?>
                  </tbody>

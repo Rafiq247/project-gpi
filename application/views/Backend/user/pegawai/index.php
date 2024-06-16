@@ -45,7 +45,7 @@
                          <th>TANGGAL MASUK</th>
                          <th>JABATAN</th>
                          <th>NO.HP</th>
-                         <th>AKSI</th>
+                         <!-- <th>AKSI</th> -->
                      </tr>
                  </thead>
                  <tbody>
@@ -64,7 +64,7 @@
                              <td><?= $b['tanggal_masuk']; ?></td>
                              <td><?= $b['namjab']; ?></td>
                              <td><?= $b['no_hp']; ?></td>
-                             <td width="120px">
+                             <!-- <td width="120px">
                                  <div class="row">
                                      <a href="<?= base_url('admin/detail-pegawai') ?>/<?= $b['id_pegawai']; ?>" class="ml-2">
                                          <button type="button" class="btn btn-theme">
@@ -83,7 +83,7 @@
                                      </a>
 
                                  </div>
-                             </td>
+                             </td> -->
                          </tr>
                      <?php endforeach ?>
                  </tbody>
