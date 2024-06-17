@@ -153,6 +153,10 @@
 									echo "Izin dibatalkan oleh Leader $b[acc_by]";
 								} elseif ($b['acc'] == 7) {
 									echo "Izin dibatalkan oleh HRD $b[acc_by]";
+								} elseif ($b['acc'] == 8) {
+									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+								} elseif ($b['acc'] == 9) {
+									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
 								}  else {
 									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
 								}

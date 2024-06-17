@@ -156,6 +156,10 @@
 									echo "Izin dibatalkan oleh Leader $b[acc_by]";
 								} elseif ($b['acc'] == 7) {
 									echo "Izin dibatalkan oleh HRD $b[acc_by]";
+								} elseif ($b['acc'] == 8) {
+									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+								} elseif ($b['acc'] == 9) {
+									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
 								}  else {
 									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
 								}
@@ -163,7 +167,7 @@
 							</td>
 							 <td>
 							 <?php
-								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6) {
+								if ($b['acc'] == 0 || $b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6 || $b['acc'] == 9) {
 									?>
 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin-pegawai') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>

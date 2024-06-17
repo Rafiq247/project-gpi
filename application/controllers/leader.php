@@ -1001,7 +1001,7 @@ class leader extends CI_Controller
 
 		$data = array(
 			"acc" => "6",
-			"acc_by" => null,
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1012,7 +1012,7 @@ class leader extends CI_Controller
 	{
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
-			"acc" => "2",
+			"acc" => "9",
 			"penolakan" => $keteranganTolak,
 			"acc_by" => $this->session->userdata('name'),
 		);

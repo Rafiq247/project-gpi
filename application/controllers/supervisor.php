@@ -1013,7 +1013,7 @@ class supervisor extends CI_Controller
 	{
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
-			"acc" => "2",
+			"acc" => "8",
 			"penolakan" => $keteranganTolak,
 			"acc_by" => $this->session->userdata('name'),
 		);
@@ -1050,7 +1050,7 @@ class supervisor extends CI_Controller
 	{
 		$keteranganTolak = $this->input->get('keterangan', true);
 		$data = array(
-			"acc" => "2",
+			"acc" => "8",
 			"penolakan" => $keteranganTolak,
 			"acc_by" => $this->session->userdata('name'),
 		);
