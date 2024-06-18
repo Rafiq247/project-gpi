@@ -166,7 +166,7 @@
 							</td>
 							<td>
 							 <?php
-								if ($b['acc'] == 0 || $b['acc'] == 3 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6 || $b['acc'] == 7 || $b['acc'] == 8 || $b['acc'] == 9) {
+								if ($b['acc'] == 3 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6 || $b['acc'] == 7 || $b['acc'] == 8 || $b['acc'] == 9) {
 									?>
 									<a class="btn btn-theme ml-1" href="<?= base_url('admin/acc-izin-leader') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>

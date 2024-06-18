@@ -1720,10 +1720,12 @@ class Admin extends CI_Controller
 							}
 						}
 					}
-					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
 					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
-						$pengurangan = 0;
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin * 0;
+					} else{
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
@@ -1774,10 +1776,10 @@ class Admin extends CI_Controller
 										}
 									}
 								}
-								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
-								// check id pegawai $pegawai
 								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
 									$pengurangan = 0;
+								} else{
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],

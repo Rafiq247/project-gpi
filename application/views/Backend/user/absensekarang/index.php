@@ -186,7 +186,7 @@
  									<div class="form-group">
  										<label>Jenis Izin</label>
  										<div>
- 											<select class="form-control" id="jenisizin" name="jenisizin">
+ 											<select class="form-control" id="jenisizin" name="jenisizin" required>
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
@@ -199,22 +199,22 @@
  									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
  										<label class="">Upload Surat Keterangan Sakit</label>
  										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit" required>
  										</div>
  									</div>
  									<div class="form-group">
  										<label>Tanggal Izin</label>
  										<div>
- 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal">
+ 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal" required>
  										</div>
  										<div>
- 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir">
+ 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir" required>
  										</div>
  									</div>
  									<div class="form-group">
  										<label>Keterangan</label>
  										<div>
- 											<input type="text" name="penjelasan" class="form-control " value="">
+ 											<input type="text" name="penjelasan" class="form-control " value="" required>
  										</div>
  									</div>
  								</div>
