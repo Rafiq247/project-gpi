@@ -1707,11 +1707,12 @@ class Admin extends CI_Controller
 					$valueTotalIzin = 0;
 					$izin = 0;
 					$cuti = 0;
+					$valueTotalSakit = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-								$valueTotalIzin += 1;
+								$valueTotalSakit += 1;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
 								$valueTotalIzin += 1;
@@ -1723,8 +1724,8 @@ class Admin extends CI_Controller
 					// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
 					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
-						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin * 0;
-					} else{
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+					} else {
 						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					}
 					$dataPenggajian = [
@@ -1763,11 +1764,12 @@ class Admin extends CI_Controller
 								$izin = 0;
 								$cuti = 0;
 								$valueTotalIzin = 0;
+								$valueTotalSakit = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-											$valueTotalIzin += 1;
+											$valueTotalSakit += 1;
 										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
 											$valueTotalIzin += 1;
@@ -1777,8 +1779,8 @@ class Admin extends CI_Controller
 									}
 								}
 								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
-									$pengurangan = 0;
-								} else{
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+								} else {
 									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								}
 								$dataPenggajian = [
