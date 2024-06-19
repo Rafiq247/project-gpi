@@ -666,11 +666,12 @@ class supervisor extends CI_Controller
 					$valueTotalIzin = 0;
 					$izin = 0;
 					$cuti = 0;
+					$valueTotalSakit = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-								$valueTotalIzin += 1;
+								$valueTotalSakit += 1;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
 								$valueTotalIzin += 1;
@@ -679,10 +680,12 @@ class supervisor extends CI_Controller
 							}
 						}
 					}
-					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					// check id pegawainya ada gak $pegawai
 					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
-						$pengurangan = 0;
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+					} else {
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
@@ -717,14 +720,15 @@ class supervisor extends CI_Controller
 							if ($keyGajiDate == count($data['gaji'][$date]) - 1) {
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
+								$valueTotalIzin = 0;
 								$izin = 0;
 								$cuti = 0;
-								$valueTotalIzin = 0;
+								$valueTotalSakit = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-											$valueTotalIzin += 1;
+											$valueTotalSakit += 1;
 										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
 											$valueTotalIzin += 1;
@@ -733,10 +737,12 @@ class supervisor extends CI_Controller
 										}
 									}
 								}
-								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
-								// check id pegawai $pegawai
+								// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+								// check id pegawainya ada gak $pegawai
 								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
-									$pengurangan = 0;
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+								} else {
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
