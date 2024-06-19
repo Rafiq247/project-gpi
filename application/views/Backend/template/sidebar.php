@@ -17,7 +17,7 @@
          <ul class="sidebar-menu mt-4 mb-4">
            <li class="parent">
              <a href="<?= base_url() ?>admin/dashboard" class=""><i class="fa fa-dashboard mr-3"> </i>
-               <span class="none">Dashboard </span>
+               <span class="none">Dashboard</span>
              </a>
            </li>
            <!-- <li class="parent">
@@ -30,13 +30,13 @@
              </ul>
            </li> -->
            <li class="parent">
-             <a href="" onclick="toggle_menu('datamaster'); return false" class=""><i class="fa fa-book mr-3"> </i>
+             <a href="" onclick="toggle_menu('datamaster'); return false" class=""><i class="fa fa-database mr-3"> </i>
                <span class="none">Data Master<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="datamaster">
-               <li class="child"><a href="<?= base_url() ?>admin/jabatan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Gaji</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/jabatan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Jabatan & Gaji</a></li>
                <li class="child"><a href="<?= base_url() ?>admin/pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Pegawai</a></li>
-               <li class="child"><a href="<?= base_url() ?>admin/department" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Jabatan</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/department" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Departemen</a></li>
              </ul>
            </li>
            <!-- <li class="parent">
@@ -50,32 +50,34 @@
            </li> -->
 
            <li class="parent">
-             <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
-               <span class="none">Konfirmasi Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+             <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-book mr-3"> </i>
+               <span class="none">Data Absensi<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="absensi">
                <li class="child"><a href="<?= base_url() ?>admin/tampil-input" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Input Absensi</a></li>
-               <li class="child"><a href="<?= base_url() ?>admin/tampil-konfirmasi" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Absen</a></li>
              </ul>
            </li>
+
            <li class="parent">
              <a href="#" onclick="toggle_menu('karyawan'); return false" class=""><i class="fa fa-bookmark mr-3"> </i>
-               <span class="none">Data Karyawan<i class="fa fa-angle-down pull-right align-bottom"></i></span>
+               <span class="none">Data Izin Absen<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="karyawan">
-               <li class="child"><a href="<?= base_url() ?>admin/data_leader" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Leader</a></li>
-               <li class="child"><a href="<?= base_url() ?>admin/data_pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Pegawai</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/tampil-konfirmasi" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Izin Absen Supervisor</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/data_leader" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Izin Absen Leader</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/data_pegawai" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Konfirmasi Izin Absen Pegawai</a></li>
              </ul>
            </li>
+
            <li class="parent">
-             <a href="#" onclick="toggle_menu('tunjangan'); return false" class=""><i class="fa fa-credit-card mr-3"> </i>
+             <a href="#" onclick="toggle_menu('tunjangan'); return false" class=""><i class="fa fa-money mr-3"> </i>
                <span class="none">Tunjangan Pegawai<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="tunjangan">
                <li class="child"><a href="<?= base_url() ?>admin/tpp-bulanan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>TPP</a></li>
-
              </ul>
            </li>
+
            <li class="parent">
              <a href="#" onclick="toggle_menu('bpjs'); return false" class=""><i class="fa fa-credit-card mr-3"> </i>
                <span class="none">BPJS<i class="fa fa-angle-down pull-right align-bottom"></i></span>
@@ -85,6 +87,7 @@
                <li class="child"><a href="<?= base_url() ?>admin/bpjs-jamsostek" class="ml-4"><i class="fa fa-angle-right mr-2"></i>BPJS Jamsostek</a></li>
              </ul>
            </li>
+
            <li class="parent">
              <a href="#" onclick="toggle_menu('akun'); return false" class=""><i class="fas fa-user-circle mr-3"> </i>
                <span class="none">Data Akun<i class="fa fa-angle-down pull-right align-bottom"></i></span>
@@ -100,12 +103,15 @@
              </a>
              <ul class="children" id="laporan">
                <li class="child"><a href="<?= base_url() ?>admin/lembur-bulanan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data Absen Bulanan</a></li>
-               <li class="child"><a href="<?= base_url() ?>admin/absen-bulanan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Detail Absen Bulanan</a></li>
+               <li class="child"><a href="<?= base_url() ?>admin/absen-bulanan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Rekap Absen Harian</a></li>
                <li class="child"><a href="<?= base_url() ?>admin/laporan-tpp-bulanan" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Data TPP</a></li>
-
              </ul>
            </li>
-
+           <li class="parent">
+             <a href="<?= base_url() ?>auth/logout" class=""><i class="fa fa-power-off mr-3"> </i>
+               <span class="none">Keluar</span>
+             </a>
+           </li>
 
          </ul>
        </div>

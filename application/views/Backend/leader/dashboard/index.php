@@ -33,28 +33,20 @@
              <p class="pw-2 text-center text-white">
                <i class="fa fa-users"></i>
              </p>
-             <p class="mt-2 text-white text-center">Data Anda <br> </p>
-
+             <a href="<?= base_url() ?>leader/pegawai">
+               <p class="mt-2 text-white text-center">Data Pegawai</p>
+             </a>
            </div>
          </div>
-
-         <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
-           <div class="border shadow p-3 bg-danger">
-             <p class="pw-2 text-center text-white">
-               <i class="fa fa-bookmark"></i>
-
-             </p>
-             <p class="mt-2 text-white text-center">Konfirmasi Absen<br> <small class="bc-description text-white"></small></p>
-           </div>
-         </div> -->
 
          <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
            <div class="border shadow p-3 bg-primary">
              <p class="pw-2 text-center text-white">
                <i class="fa fa-file-powerpoint"></i>
-
              </p>
-             <p class="mt-2 text-white text-center">Absensi Bulanan Anda<br> </p>
+             <a href="<?= base_url() ?>leader/absen-bulanan">
+               <p class="mt-2 text-white text-center">Data Absensi Anda</p>
+             </a>
            </div>
          </div>
 
@@ -63,7 +55,9 @@
              <p class="pw-2 text-center text-white">
                <i class="fa fa-credit-card"></i>
              </p>
-             <p class="mt-2 text-white text-center">Cek Gaji & Bonus Bulanan<br></p>
+             <a href="<?= base_url() ?>leader/laporan-tpp-bulanan">
+               <p class="mt-2 text-white text-center">Data Gaji Anda</p>
+             </a>
            </div>
          </div>
 

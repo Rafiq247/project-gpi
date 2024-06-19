@@ -51,7 +51,7 @@
                  <i class="fa fa-bookmark"></i>
                </p>
              </a>
-             <a href="<?= base_url() ?>admin/tampil-konfirmasi">
+             <a href="<?= base_url() ?>admin/tampil-input">
                <p class="mt-2 text-white text-center">Absensi Hari Ini</p>
              </a>
            </div>

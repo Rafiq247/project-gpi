@@ -33,8 +33,9 @@
              <p class="pw-2 text-center text-white">
                <i class="fa fa-users"></i>
              </p>
-             <p class="mt-2 text-white text-center">Data Anda <br> </p>
-
+             <a href="<?= base_url() ?>supervisor/pegawai">
+               <p class="mt-2 text-white text-center">Data Pegawai</p>
+             </a>
            </div>
          </div>
 
@@ -42,9 +43,10 @@
            <div class="border shadow p-3 bg-primary">
              <p class="pw-2 text-center text-white">
                <i class="fa fa-file-powerpoint"></i>
-
              </p>
-             <p class="mt-2 text-white text-center">Absensi Bulanan Anda<br> </p>
+             <a href="<?= base_url() ?>supervisor/absen-bulanan">
+               <p class="mt-2 text-white text-center">Data Absensi Anda</p>
+             </a>
            </div>
          </div>
 
@@ -53,7 +55,9 @@
              <p class="pw-2 text-center text-white">
                <i class="fa fa-credit-card"></i>
              </p>
-             <p class="mt-2 text-white text-center">Cek Gaji & Bonus Bulanan<br></p>
+             <a href="<?= base_url() ?>supervisor/laporan-tpp-bulanan">
+               <p class="mt-2 text-white text-center">Data Gaji Anda</p>
+             </a>
            </div>
          </div>
 
