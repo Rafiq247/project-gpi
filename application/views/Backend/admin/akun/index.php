@@ -36,7 +36,7 @@
              <table id="example" class="table table-striped table-bordered">
                  <thead>
                      <tr>
-                         <th>#</th>
+                         <th>NO.</th>
                          <th>NAMA</th>
                          <th>EMAIL</th>
                          <th>STATUS</th>
@@ -61,7 +61,7 @@
                                  <?php endif ?>
                              </td>
                              <td>
-                                <?php if ($b['role_id'] == 1) : ?>
+                                 <?php if ($b['role_id'] == 1) : ?>
                                      Admin
                                  <?php elseif ($b['role_id'] == 2) : ?>
                                      Supervisor

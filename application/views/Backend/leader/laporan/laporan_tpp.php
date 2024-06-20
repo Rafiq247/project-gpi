@@ -70,7 +70,7 @@
            <table id="example" class="table table-striped table-bordered">
              <thead>
                <tr>
-                 <th>#</th>
+                 <th>NO.</th>
                  <th>ID KARYAWAN</th>
                  <th>NAMA KARYAWAN</th>
                  <th>TANGGAL</th>
@@ -80,13 +80,13 @@
                  <th>JAM LEMBUR</th>
                  <th>LEMBUR</th>
                  <th>HADIR</th>
-                 <th>BPJS Jamsostek</th>
-                 <th>BPJS Kesehatan</th>
+                 <th>BPJS JAMSOSTEK</th>
+                 <th>BPJS KESEHATAN</th>
                  <th>TIDAK HADIR</th>
-                 <th>Izin</th>
-                 <th>sakit</th>
-                 <th>Cuti</th>
-                 <th>Pengurangan</th>
+                 <th>IZIN</th>
+                 <th>SAKIT</th>
+                 <th>CUTI</th>
+                 <th>PENGURANGAN</th>
                  <th>GAJI BERSIH</th>
                  <!-- <th>AKSI</th> -->
                </tr>

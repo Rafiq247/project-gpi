@@ -26,7 +26,7 @@
             <table id="example" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>NO.</th>
                         <th>ID PEGAWAI</th>
                         <th>NAMA KARYAWAN</th>
                         <th>DEVISI</th>
@@ -36,8 +36,7 @@
                         <th>IURAN JHT TK</th>
                         <th>IURAN JHT</th>
                         <th>TOTAL IURAN</th>
-                        <th></th>
-                        <th></th>
+                        <th>AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,10 +54,17 @@
                             <td><?= $b['iuran_jht']; ?></td>
                             <td><?= $b['total_iuran_sos']; ?></td>
                             <td>
-                                <a href="javascript:void(0)" class="btn btn-theme ml-1 trigger-edit-modal" data-id-sos="<?= $b['id_bpjs_sos'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>" href="">Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-jamsostek/'.$b['id_bpjs_sos']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                                <a href="javascript:void(0)" class="ml-1 trigger-edit-modal" href="" data-id-sos="<?= $b['id_bpjs_sos'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>">
+                                    <button type=" button" class="btn btn-primary">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                </a>
+
+                                <a href="<?= base_url('admin/hapus-bpjs-jamsostek/' . $b['id_bpjs_sos']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -83,7 +89,7 @@
                                         <label class="col-sm-12">ID KARYAWAN</label>
                                         <div class="col-sm-12">
                                             <select class="form-control" id="select__id_pegawai_edit" name="id_pegawai">
-                                            <option>-pilih-</option>
+                                                <option>-pilih-</option>
                                                 <?php foreach ($pegawai_list as $pegawai) : ?>
                                                     <option value="<?= $pegawai['id_pegawai'] ?>"><?= $pegawai['id_pegawai'] ?></option>
                                                 <?php endforeach ?>
@@ -181,7 +187,7 @@
 
         <script>
             $(document).ready(function() {
-                $("#select__id_pegawai").on("change", function(){
+                $("#select__id_pegawai").on("change", function() {
                     $.post('<?= base_url('admin/ajax_pegawai') ?>', {
                         id_pegawai: $(this).val()
                     }).then(function(response) {
@@ -191,7 +197,7 @@
                         $("#modal_add_salary").val(response.salary);
                     })
                 })
-                $("#select__id_pegawai_edit").on("change", function(){
+                $("#select__id_pegawai_edit").on("change", function() {
                     $.post('<?= base_url('admin/ajax_pegawai') ?>', {
                         id_pegawai: $(this).val()
                     }).then(function(response) {
@@ -202,7 +208,7 @@
                     })
                 })
 
-                $(".trigger-edit-modal").on("click", function(){
+                $(".trigger-edit-modal").on("click", function() {
                     $("#modal__id_bpjs_sos").val($(this).data("id-sos"));
                     $("#select__id_pegawai_edit").val($(this).data("id-pegawai")).trigger('change');
                     $("#editBpjsJamsos").modal("show");

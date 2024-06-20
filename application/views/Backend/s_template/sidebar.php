@@ -38,7 +38,7 @@
              </ul>
            </li>
            <li class="parent">
-             <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-pencil-square-o mr-3"> </i>
+             <a href="#" onclick="toggle_menu('absensi'); return false" class=""><i class="fa fa-pencil mr-3"> </i>
                <span class="none">Pengajuan Izin Absen<i class="fa fa-angle-down pull-right align-bottom"></i></span>
              </a>
              <ul class="children" id="absensi">

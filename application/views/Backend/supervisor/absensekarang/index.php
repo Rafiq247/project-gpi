@@ -63,61 +63,13 @@
 
  		</div>
 
- 		<form action="absen-harian" method="post">
- 			<div class="row ">
 
- 				<div class="col-lg-3">
-
- 					<select name="th" id="th" class="form-control">
- 						<option value="">- PILIH TAHUN -</option>
- 						<?php
-							foreach ($list_th as $t) {
-								if ($thn == $t['th']) {
-							?>
- 								<option selected value="<?php echo $t['th'];  ?>"><?php echo $t['th']; ?></option>
- 							<?php
-								} else {
-								?>
- 								<option value="<?php echo $t['th']; ?>"><?php echo $t['th']; ?></option>
- 						<?php
-								}
-							}
-							?>
- 					</select>
- 				</div>
- 				<div class="col-lg-3">
-
- 					<select name="bln" id="bln" class="form-control ">
- 						<option value="">- PILIH BULAN -</option>
- 						<?php
-							foreach ($list_bln as $t) {
-								if ($blnnya == $t['bln']) {
-							?>
- 								<option selected value="<?php $t['bln'];  ?>"><?php echo nmbulan($t['bln']); ?></option>
- 							<?php
-								} else {
-								?>
- 								<option value="<?php echo $t['bln']; ?>"><?php echo nmbulan($t['bln']); ?></option>
- 						<?php
-								}
-							}
-							?>
- 					</select>
- 				</div>
- 				<div class="col-lg-3">
- 					&nbsp;
- 					<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
- 					&nbsp;
- 				</div>
- 				<!--  -->
- 			</div>
- 		</form>
  		<div class="table-responsive">
 
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>JENIS</th>
  						<th>TGL/WAKTU AWAL</th>
  						<th>TGL/WAKTU AKHIR</th>
@@ -138,30 +90,30 @@
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
  							<td>
-								<?php
-								if ($b['acc'] == 0) {
-									echo "Belum Diizinkan";
-								} elseif ($b['acc'] == 1) {
-									echo "Diizinkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 3) {
-									echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
-								} elseif ($b['acc'] == 4) {
-									echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
-								} elseif ($b['acc'] == 5) {
-									echo "Izin dibatalkan oleh SPV $b[acc_by]";
-								} elseif ($b['acc'] == 6) {
-									echo "Izin dibatalkan oleh Leader $b[acc_by]";
-								} elseif ($b['acc'] == 7) {
-									echo "Izin dibatalkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 8) {
-									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
-								} elseif ($b['acc'] == 9) {
-									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
-								}  else {
-									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
-								}
-								?>
-							</td>
+ 								<?php
+									if ($b['acc'] == 0) {
+										echo "Belum Diizinkan";
+									} elseif ($b['acc'] == 1) {
+										echo "Diizinkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 3) {
+										echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
+									} elseif ($b['acc'] == 4) {
+										echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
+									} elseif ($b['acc'] == 5) {
+										echo "Izin dibatalkan oleh SPV $b[acc_by]";
+									} elseif ($b['acc'] == 6) {
+										echo "Izin dibatalkan oleh Leader $b[acc_by]";
+									} elseif ($b['acc'] == 7) {
+										echo "Izin dibatalkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 8) {
+										echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+									} elseif ($b['acc'] == 9) {
+										echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
+									} else {
+										echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
+									}
+									?>
+ 							</td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -186,7 +138,7 @@
  									<div class="form-group">
  										<label>Jenis Izin</label>
  										<div>
- 											<select class="form-control" id="jenisizin" name="jenisizin">
+ 											<select class="form-control" id="jenisizin" name="jenisizin" required>
  												<option value="">-pilih-</option>
  												<option value="4">Izin Sakit</option>
  												<option value="5">Izin Tidak Masuk</option>
@@ -199,22 +151,22 @@
  									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
  										<label class="">Upload Surat Keterangan Sakit</label>
  										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit" required>
  										</div>
  									</div>
  									<div class="form-group">
  										<label>Tanggal Izin</label>
  										<div>
- 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal">
+ 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class=" form-control mb-3" id="datepicker_tgl_awal" required>
  										</div>
  										<div>
- 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir">
+ 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class=" form-control" id="datepicker_tgl_akhir" required>
  										</div>
  									</div>
  									<div class="form-group">
  										<label>Keterangan</label>
  										<div>
- 											<input type="text" name="penjelasan" class="form-control " value="">
+ 											<input type="text" name="penjelasan" class="form-control " value="" required>
  										</div>
  									</div>
  								</div>
@@ -225,17 +177,17 @@
  										- Upload bukti keterangan dokter untuk "Izin Sakit"*<br>
  										- Silahkan isi keterangan alasan<br>
  										<?php if ($pegawai_month >= 365) : ?>
-											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
- 												<?php endif;  ?>
-										- <?php 
-												$id_pegawai = is_array($pegawai) ? $pegawai['id_pegawai'] : $pegawai; 
-												$result = $this->db->from("bpjs_kes")->where("id_pegawai", $id_pegawai)->get()->row_array();
-												if(empty($result)) {
+ 											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
+ 										<?php endif;  ?>
+ 										- <?php
+											$id_pegawai = is_array($pegawai) ? $pegawai['id_pegawai'] : $pegawai;
+											$result = $this->db->from("bpjs_kes")->where("id_pegawai", $id_pegawai)->get()->row_array();
+											if (empty($result)) {
 												echo "Anda tidak punya BPJS";
-												} else {
+											} else {
 												echo "Anda punya BPJS";
-												}
-												?>
+											}
+											?>
  									</div>
  								</div>
  							</div>
@@ -243,7 +195,7 @@
  						</div>
  						<!-- /.card-body -->
  						<div class="modal-footer">
- 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+ 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
  							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
  						</div>
  						</form>

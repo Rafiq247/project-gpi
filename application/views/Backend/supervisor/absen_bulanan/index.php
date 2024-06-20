@@ -84,71 +84,13 @@
 
  				</div>
  				<!-- PENCARIAN BERDASARKAN BULAN DAN TAHUN-->
- 				<form action="<?= base_url() ?>pegawai/absen-bulanan" method="post">
- 					<div class="row ">
 
- 						<div class="col-lg-3">
-
- 							<select name="th" id="th" class="form-control">
- 								<option value="">- PILIH TAHUN -</option>
- 								<?php
-									foreach ($list_th as $t) {
-										if ($thn == $t['th']) {
-									?>
- 										<option selected value="<?php echo $t['th'];  ?>"><?php echo $t['th']; ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['th']; ?>"><?php echo $t['th']; ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
- 						<div class="col-lg-3">
-
- 							<select name="bln" id="bln" class="form-control ">
- 								<option value="">- PILIH BULAN -</option>
- 								<?php
-									foreach ($list_bln as $t) {
-										if ($blnnya == $t['bln']) {
-									?>
- 										<option selected value="<?php $t['bln'];  ?>"><?php echo nmbulan($t['bln']); ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['bln']; ?>"><?php echo nmbulan($t['bln']); ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
- 						<div class="col-lg-3">
- 							&nbsp;
- 							<?php if ($recap == null) : ?>
- 								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
- 							<?php else : ?>
- 								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Refresh</button>
- 							<?php endif ?>
- 							&nbsp;
- 							<?php if ($blnnya == '' || $thn == '') { ?>
- 								&nbsp;<a target="_blank" href="" class="btn btn-danger mb-3" hidden><i class="fa fa-print"></i> Cetak</a>
- 							<?php } else { ?>
- 								&nbsp;<a target="_blank" href="<?= base_url(); ?>admin/cetak-absen-bulanan/<?php echo $thn  ?>/<?php echo $blnnya  ?>" class="btn btn-danger mb-3"><i class="fa fa-print"></i> Cetak</a>
- 							<?php } ?>
-
- 						</div>
- 						<!--  -->
- 					</div>
- 				</form>
 
  				<div class="table-responsive">
  					<table id="example" class="table table-striped table-bordered">
  						<thead>
  							<tr>
- 								<th>#</th>
+ 								<th>NO.</th>
 
  								<th>TANGGAL</th>
  								<th>WAKTU</th>
@@ -167,7 +109,7 @@
  									<td><?php echo substr($b['date'], 11, 9) . " - " . substr($b['date'], 32, 9); ?></td>
  									<td><?= $b['kode_verifikasi']; ?></td>
  									<td><?= $b['overtime']; ?></td>
- 									
+
  								</tr>
  							<?php endforeach ?>
  						</tbody>

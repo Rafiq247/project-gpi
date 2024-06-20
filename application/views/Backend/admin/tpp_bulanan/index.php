@@ -70,7 +70,7 @@
  					<table id="example" class="table table-striped table-bordered">
  						<thead>
  							<tr>
- 								<th>#</th>
+ 								<th>NO.</th>
  								<th>ID KARYAWAN</th>
  								<th>NAMA KARYAWAN</th>
  								<th>TANGGAL</th>
@@ -80,13 +80,13 @@
  								<th>JAM LEMBUR</th>
  								<th>LEMBUR</th>
  								<th>HADIR</th>
- 								<th>BPJS Jamsostek</th>
- 								<th>BPJS Kesehatan</th>
+ 								<th>BPJS JAMSOSTEK</th>
+ 								<th>BPJS KESEHATAN</th>
  								<th>TIDAK HADIR</th>
- 								<th>Izin</th>
- 								<th>sakit</th>
- 								<th>Cuti</th>
- 								<th>Pengurangan</th>
+ 								<th>IZIN</th>
+ 								<th>SAKIT</th>
+ 								<th>CUTI</th>
+ 								<th>PENGURANGAN</th>
  								<th>GAJI BERSIH</th>
  								<th>AKSI</th>
  							</tr>
@@ -136,7 +136,8 @@
  												<input type="hidden" name="pengurangan" value="<?= $b['pengurangan']; ?>">
  												<input type="hidden" name="gaji_bersih" value="<?= $b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'] + $b['total_iuran_sos'] + $b['total_iuran_kes']; ?>">
 
- 												<button type="submit" class="btn btn-primary btn-flat" id="simpan">Tambah Data</button>
+ 												<button type="submit" class="btn btn-primary btn-flat" id="simpan"><i class="fa fa-plus"></i> Tambah Data</button>
+
  											</form>
  										</td>
  									</tr>

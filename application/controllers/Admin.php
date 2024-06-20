@@ -145,7 +145,7 @@ class Admin extends CI_Controller
 
 	public function department()
 	{
-		$data['title'] = 'Data Department';
+		$data['title'] = 'Data Departemen';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['jabatan'] = $this->Admin_model->getAllidjabatan();
@@ -203,7 +203,7 @@ class Admin extends CI_Controller
 	// Jabatan & Sistem Penggajian
 	public function jabatan()
 	{
-		$data['title'] = 'Data Jabatan';
+		$data['title'] = 'Data Jabatan & Gaji';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$this->db->select('jabatan.*, department.*');
@@ -739,7 +739,7 @@ class Admin extends CI_Controller
 
 	public function data_pegawai()
 	{
-		$data['title'] = 'Data Pegawai Izin';
+		$data['title'] = 'Data Izin Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
@@ -760,7 +760,7 @@ class Admin extends CI_Controller
 
 	public function data_leader()
 	{
-		$data['title'] = 'Data Pegawai Izin';
+		$data['title'] = 'Data Izin Leader';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
@@ -781,7 +781,7 @@ class Admin extends CI_Controller
 
 	public function tampil_konfirmasi()
 	{
-		$data['title'] = 'Tampil Konfirmasi';
+		$data['title'] = 'Data Izin Supervisor';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
@@ -1170,7 +1170,7 @@ class Admin extends CI_Controller
 	//data absen
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Input Absensi';
+		$data['title'] = 'Rekap Absen';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
@@ -1310,7 +1310,7 @@ class Admin extends CI_Controller
 
 	public function lembur_bulanan()
 	{
-		$data['title'] = 'Lembur Bulanan';
+		$data['title'] = 'Data Absen Bulanan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -2314,7 +2314,7 @@ class Admin extends CI_Controller
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$salary = $this->input->post('salary', true);
 		$no_kartu = $this->input->post('no_kartu', true);
-		$kelas = $this->input->post('kelas', true);
+		// $kelas = $this->input->post('kelas', true);
 		$total_salary = $salary;
 		$total_salary_iuran = +$salary;
 		$iuran_4 = $salary * 0.04;
@@ -2337,7 +2337,7 @@ class Admin extends CI_Controller
 			"nama_pegawai" => $nama_pegawai,
 			"salary" => $salary,
 			"no_kartu" => $no_kartu,
-			"kelas" => $kelas,
+			// "kelas" => $kelas,
 			"total_salary" => $total_salary,
 			"total_salary_iuran" => $total_salary_iuran,
 			"iuran_4" => $iuran_4,
@@ -2369,7 +2369,7 @@ class Admin extends CI_Controller
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$salary = $this->input->post('salary', true);
 		$no_kartu = $this->input->post('no_kartu', true);
-		$kelas = $this->input->post('kelas', true);
+		// $kelas = $this->input->post('kelas', true);
 		$total_salary = $salary;
 		$total_salary_iuran = +$salary;
 		$iuran_4 = $salary * 0.04;
@@ -2381,7 +2381,7 @@ class Admin extends CI_Controller
 			"nama_pegawai" => $nama_pegawai,
 			"salary" => $salary,
 			"no_kartu" => $no_kartu,
-			"kelas" => $kelas,
+			// "kelas" => $kelas,
 			"total_salary" => $total_salary,
 			"total_salary_iuran" => $total_salary_iuran,
 			"iuran_4" => $iuran_4,

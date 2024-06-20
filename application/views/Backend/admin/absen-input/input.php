@@ -107,15 +107,14 @@
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>DEPARTEMEN</th>
  						<th>NAMA</th>
  						<th>ID</th>
  						<th>TGL/WAKTU</th>
  						<th>STATUS</th>
  						<th>KODE VERIFIKASI</th>
- 						<th></th>
- 						<th></th>
+ 						<th>AKSI</th>
  					</tr>
  				</thead>
  				<tbody>
@@ -131,11 +130,18 @@
  							<td><?= $b['status']; ?></td>
  							<td><?= $b['verification_code']; ?></td>
  							<td>
- 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target="#editInput<?= $b['id']; ?>">Edit</a>
+ 								<a class="ml-1" data-toggle="modal" data-target="#editInput<?= $b['id']; ?>">
+ 									<button type="button" class="btn btn-primary">
+ 										<i class="fa fa-pencil-square-o"></i>
+ 									</button>
+ 								</a>
+ 								<a href="<?= base_url('admin/hapus-input-absen') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+ 									<button type="button" class="btn btn-danger">
+ 										<i class="fa fa-trash"></i>
+ 									</button>
+ 								</a>
  							</td>
- 							<td>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-input-absen') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
- 							</td>
+
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -150,7 +156,7 @@
  				<div class="modal-dialog modal-lg">
  					<div class="modal-content">
  						<div class="modal-header text-center">
- 							<h5 class="modal-title text-secondary"><strong>Import File Absensi</strong></h5>
+ 							<h5 class="modal-title text-secondary"><strong>Masukkan File Absensi</strong></h5>
  							<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  						</div>
  						<div class="modal-body text-justify">
@@ -188,8 +194,8 @@
  								</div>
  						</div>
  						<div class="modal-footer">
- 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
- 							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+ 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+ 							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
  						</div>
  						</form>
@@ -203,14 +209,14 @@
  			<div class="modal-dialog modal-lg">
  				<div class="modal-content">
  					<div class="modal-header text-center">
- 						<h5 class="modal-title text-secondary"><strong>Import File Absensi</strong></h5>
+ 						<h5 class="modal-title text-secondary"><strong>Masukkan File Absensi</strong></h5>
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify">
  						<form class="form-horizontal" action="<?php echo base_url() . 'admin/input-absensi' ?>" method="post" enctype="multipart/form-data">
  							<div class="modal-body">
  								<div class="form-group">
- 									<label class="col-sm-12">Upload Files</label>
+ 									<label class="col-sm-12">Unggah Files</label>
  									<div class="col-sm-12">
  										<input type="file" name="xlsx" class="form-control " required>
  									</div>
@@ -218,8 +224,8 @@
  							</div>
  					</div>
  					<div class="modal-footer">
- 						<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
- 						<button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+ 						<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+ 						<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
  					</div>
  					</form>

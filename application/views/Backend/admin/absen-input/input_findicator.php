@@ -30,8 +30,7 @@
  						<th>No</th>
  						<th>ID KARYAWAN</th>
  						<th>ID FINGERPRINT</th>
- 						<th></th>
- 						<th></th>
+ 						<th>AKSI</th>
  					</tr>
  				</thead>
  				<tbody>
@@ -43,11 +42,18 @@
  							<td><?= $b['id_pegawai']; ?></td>
  							<td><?= $b['id_fingerprint']; ?></td>
  							<td>
- 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target="#editfingerprintmodal<?= $b['id']; ?>">Edit</a>
+ 								<a class="ml-1" data-toggle="modal" data-target="#editfingerprintmodal<?= $b['id']; ?>">
+ 									<button type="button" class="btn btn-primary">
+ 										<i class="fa fa-pencil-square-o"></i>
+ 									</button>
+ 								</a>
+ 								<a href="<?= base_url('admin/hapus-fingerprint') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+ 									<button type="button" class="btn btn-danger">
+ 										<i class="fa fa-trash"></i>
+ 									</button>
+ 								</a>
  							</td>
- 							<td>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-fingerprint') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
- 							</td>
+
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -84,8 +90,8 @@
  							</div>
  					</div>
  					<div class="modal-footer">
- 						<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
- 						<button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+ 						<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+ 						<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
  					</div>
  					</form>
@@ -127,8 +133,8 @@
  									</div>
  								</div>
  								<div class="modal-footer">
- 									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
- 									<button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+ 									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+ 									<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
  								</div>
  							</form>

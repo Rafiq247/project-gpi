@@ -63,61 +63,13 @@
 
  		</div>
 
- 		<form action="absen-harian" method="post">
- 			<div class="row ">
 
- 				<div class="col-lg-3">
-
- 					<select name="th" id="th" class="form-control">
- 						<option value="">- PILIH TAHUN -</option>
- 						<?php
-							foreach ($list_th as $t) {
-								if ($thn == $t['th']) {
-							?>
- 								<option selected value="<?php echo $t['th'];  ?>"><?php echo $t['th']; ?></option>
- 							<?php
-								} else {
-								?>
- 								<option value="<?php echo $t['th']; ?>"><?php echo $t['th']; ?></option>
- 						<?php
-								}
-							}
-							?>
- 					</select>
- 				</div>
- 				<div class="col-lg-3">
-
- 					<select name="bln" id="bln" class="form-control ">
- 						<option value="">- PILIH BULAN -</option>
- 						<?php
-							foreach ($list_bln as $t) {
-								if ($blnnya == $t['bln']) {
-							?>
- 								<option selected value="<?php $t['bln'];  ?>"><?php echo nmbulan($t['bln']); ?></option>
- 							<?php
-								} else {
-								?>
- 								<option value="<?php echo $t['bln']; ?>"><?php echo nmbulan($t['bln']); ?></option>
- 						<?php
-								}
-							}
-							?>
- 					</select>
- 				</div>
- 				<div class="col-lg-3">
- 					&nbsp;
- 					<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
- 					&nbsp;
- 				</div>
- 				<!--  -->
- 			</div>
- 		</form>
  		<div class="table-responsive">
 
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>NAMA</th>
  						<th>JENIS</th>
  						<th>TGL/WAKTU AWAL</th>
@@ -141,43 +93,43 @@
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
  							<td>
-								<?php
-								if ($b['acc'] == 0) {
-									echo "Belum Diizinkan";
-								} elseif ($b['acc'] == 1) {
-									echo "Diizinkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 3) {
-									echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
-								} elseif ($b['acc'] == 4) {
-									echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
-								} elseif ($b['acc'] == 5) {
-									echo "Izin dibatalkan oleh SPV $b[acc_by]";
-								} elseif ($b['acc'] == 6) {
-									echo "Izin dibatalkan oleh Leader $b[acc_by]";
-								} elseif ($b['acc'] == 7) {
-									echo "Izin dibatalkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 8) {
-									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
-								} elseif ($b['acc'] == 9) {
-									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
-								}  else {
-									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
-								}
-								?>
-							</td>
-							 <td>
-							 <?php
-								if ($b['acc'] == 0 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 7) {
+ 								<?php
+									if ($b['acc'] == 0) {
+										echo "Belum Diizinkan";
+									} elseif ($b['acc'] == 1) {
+										echo "Diizinkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 3) {
+										echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
+									} elseif ($b['acc'] == 4) {
+										echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
+									} elseif ($b['acc'] == 5) {
+										echo "Izin dibatalkan oleh SPV $b[acc_by]";
+									} elseif ($b['acc'] == 6) {
+										echo "Izin dibatalkan oleh Leader $b[acc_by]";
+									} elseif ($b['acc'] == 7) {
+										echo "Izin dibatalkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 8) {
+										echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+									} elseif ($b['acc'] == 9) {
+										echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
+									} else {
+										echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
+									}
 									?>
-									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
-									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
-								<?php
-								} elseif ($b['acc'] == 3) {
+ 							</td>
+ 							<td>
+ 								<?php
+									if ($b['acc'] == 0 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 7) {
 									?>
-									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
-								<?php
-								} 
-								?>
+ 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
+ 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
+ 								<?php
+									} elseif ($b['acc'] == 3) {
+									?>
+ 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
+ 								<?php
+									}
+									?>
 
  							</td>
  						</tr>

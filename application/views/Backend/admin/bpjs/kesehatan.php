@@ -26,7 +26,7 @@
             <table id="example" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>NO.</th>
                         <th>ID PEGAWAI</th>
                         <th>NO KARTU</th>
                         <th>NAMA LENGKAP</th>
@@ -36,9 +36,8 @@
                         <th>IURAN 4%</th>
                         <th>IURAN 1.0%</th>
                         <th>TOTAL IURAN</th>
-                        <th>KELAS RAWAT</th>
-                        <th></th>
-                        <th></th>
+                        <!-- <th>KELAS RAWAT</th> -->
+                        <th>AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,12 +54,19 @@
                             <td><?= $b['iuran_4']; ?></td>
                             <td><?= $b['iuran_1']; ?></td>
                             <td><?= $b['total_iuran_kes']; ?></td>
-                            <td><?= $b['kelas']; ?></td>
+                            <!-- <td><?= $b['kelas']; ?></td> -->
                             <td>
-                                <a href="javascript:void(0)" class="btn btn-theme ml-1 trigger-edit-modal" data-id-kes="<?= $b['id_bpjs_kes'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>" href="">Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-bpjs-kesehatan/' . $b['id_bpjs_kes']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                                <a href="javascript:void(0)" class="ml-1 trigger-edit-modal" href="" data-id-kes="<?= $b['id_bpjs_kes'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>">
+                                    <button type=" button" class="btn btn-primary">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                </a>
+
+                                <a href="<?= base_url('admin/hapus-bpjs-kesehatan/' . $b['id_bpjs_kes']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -112,18 +118,18 @@
                                             <input type="text" name="no_kartu" class="form-control " value="<?= $b['no_kartu']; ?>" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="col-sm-12">KELAS RAWAT</label>
                                         <div class="col-sm-12">
                                             <input type="text" name="kelas" class="form-control " value="<?= $b['kelas']; ?>" required>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
                     </div>
                     </form>
                 </div>
@@ -173,18 +179,19 @@
                                             <input type="text" name="no_kartu" class="form-control " required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+
+                                    <!-- <div class="form-group">
                                         <label class="col-sm-12">KELAS RAWAT</label>
                                         <div class="col-sm-12">
                                             <input type="text" name="kelas" class="form-control " required>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Upload</button>
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
                     </div>
                     </form>

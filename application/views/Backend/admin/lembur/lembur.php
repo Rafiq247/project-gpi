@@ -23,7 +23,7 @@
              <table id="example" class="table table-striped table-bordered">
                  <thead>
                      <tr>
-                         <th>#</th>
+                         <th>NO.</th>
                          <th>NAMA</th>
                          <th>TANGGAL LEMBUR</th>
                          <th>WAKTU LEMBUR</th>

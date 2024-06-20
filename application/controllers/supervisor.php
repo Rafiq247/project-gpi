@@ -151,7 +151,7 @@ class supervisor extends CI_Controller
 
 	public function absen_harian()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Ambil Izin';
 		$months = (int)$this->supervisor_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		$used_cuti = (int)$this->supervisor_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
@@ -197,7 +197,7 @@ class supervisor extends CI_Controller
 	}
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Absen Bulanan';
+		$data['title'] = 'Absen Anda';
 		// mengambil data supervisor berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
@@ -546,7 +546,7 @@ class supervisor extends CI_Controller
 	{
 		// var_dump($this->session->userdata());
 		// exit;
-		$data['title'] = 'Payrol Bulanan';
+		$data['title'] = 'Gaji Anda';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -902,7 +902,7 @@ class supervisor extends CI_Controller
 
 	public function konfirmasi_leader()
 	{
-		$data['title'] = 'Tampil Konfirmasi';
+		$data['title'] = 'Data Izin Leader';
 		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai,tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		if (isset($data['user']['devisi'])) {
@@ -1067,7 +1067,7 @@ class supervisor extends CI_Controller
 
 	public function data_pegawai()
 	{
-		$data['title'] = 'Data Pegawai Izin';
+		$data['title'] = 'Data Izin Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai, tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();

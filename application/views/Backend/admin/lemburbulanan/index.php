@@ -70,7 +70,6 @@
  				</div>
  				<div class="text-center mb-3">
 
- 					<h3 class="mb-0"><b>DATA LEMBUR PEGAWAI</b></h3>
  					<h6 class="mt-0">
  						<?php if ($thnselected == null && $blnselected == null) : ?>
  						<?php else : ?>
@@ -79,57 +78,18 @@
  							</div>
  						<?php endif ?>
  					</h6>
- 					<hr>
 
  				</div>
  				<!-- PENCARIAN BERDASARKAN BULAN DAN TAHUN-->
  				<form action="" method="post">
  					<div class="row ">
 
- 						<div class="col-lg-3">
 
- 							<select name="th" id="th" class="form-control">
- 								<option value="">- PILIH TAHUN -</option>
- 								<?php
-									foreach ($list_th as $t) {
-										if ($thn == $t['th']) {
-									?>
- 										<option selected value="<?php echo $t['th'];  ?>"><?php echo $t['th']; ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['th']; ?>"><?php echo $t['th']; ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
- 						<div class="col-lg-3">
-
- 							<select name="bln" id="bln" class="form-control ">
- 								<option value="">- PILIH BULAN -</option>
- 								<?php
-									foreach ($list_bln as $t) {
-										if ($blnnya == $t['bln']) {
-									?>
- 										<option selected value="<?php $t['bln'];  ?>"><?php echo nmbulan($t['bln']); ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['bln']; ?>"><?php echo nmbulan($t['bln']); ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
  						<div class="col-lg-3">
  							&nbsp;
  							<?php if ($gaji == null) : ?>
  								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
- 							<?php else : ?>
- 								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Refresh</button>
+
  							<?php endif ?>
  							&nbsp;
  							<?php if ($blnnya == '' || $thn == '') { ?>
@@ -147,8 +107,7 @@
  					<table id="example" class="table table-striped table-bordered">
  						<thead>
  							<tr>
- 								<th>#</th>
-
+ 								<th>NO.</th>
  								<th>NAMA</th>
  								<th>JABATAN</th>
  								<th>LEMBUR</th>

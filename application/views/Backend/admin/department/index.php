@@ -21,10 +21,10 @@
             <table id="example" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Department</th>
+                        <th>NO.</th>
+                        <th>DEPARTEMEN</th>
                         <!-- <th>Id Jabatan</th> -->
-                        <th>Aksi</th>
+                        <th>AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +35,16 @@
                             <td><?= $b['devisi']; ?></td>
                             <!-- <td><?= $b['id_jabatan']; ?></td> -->
                             <td>
-                                <button class="btn btn-theme ml-1" data-toggle="modal" data-target="#editModal<?= $b['id_department']; ?>">Edit</button>
-                                <a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-department') ?>/<?= $b['id_department']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+                                <a class="ml-1" data-toggle="modal" data-target="#editModal<?= $b['id_department']; ?>">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                </a>
+                                <a href="<?= base_url('admin/hapus-department') ?>/<?= $b['id_department']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -47,18 +55,18 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header text-center">
-                        <h5 class="modal-title text-secondary"><strong> Tambah Department</strong></h5>
+                        <h5 class="modal-title text-secondary"><strong> Tambah Departemen</strong></h5>
                         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-justify">
                         <form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-department' ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
-                            <div class="form-group">
-                                    <label class="col-sm-12">Department</label>
+                                <div class="form-group">
+                                    <label class="col-sm-12">Departemen</label>
                                     <input type="text" name="devisi" class="form-control" required>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
                                     <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
                                 </div>
                             </div>
@@ -78,7 +86,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header text-center">
-                            <h5 class="modal-title text-secondary"><strong> Edit Jabatan</strong></h5>
+                            <h5 class="modal-title text-secondary"><strong> Edit Departemen</strong></h5>
                             <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body text-justify">
@@ -86,14 +94,14 @@
                                 <input type="hidden" name="id_department" value="<?php echo $id_department; ?>" />
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label class="col-sm-12">Department</label>
+                                        <label class="col-sm-12">Departemen</label>
                                         <div class="col-sm-12">
-                                            <input type="text" name="devisi" value="<?= $devisi ?>" class="form-control" >
+                                            <input type="text" name="devisi" value="<?= $devisi ?>" class="form-control">
                                         </div>
-                                    </div>		
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
                                     <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
                                 </div>
                             </form>

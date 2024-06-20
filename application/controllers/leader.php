@@ -147,7 +147,7 @@ class leader extends CI_Controller
 
 	public function absen_harian()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Rekap Absen';
 		$months = (int)$this->leader_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		$used_cuti = (int)$this->leader_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
@@ -194,7 +194,7 @@ class leader extends CI_Controller
 	}
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Absen Bulanan';
+		$data['title'] = 'Absen Anda';
 		// mengambil data leader berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
@@ -541,7 +541,7 @@ class leader extends CI_Controller
 
 	public function laporan_tpp_bulanan()
 	{
-		$data['title'] = 'Payrol Bulanan';
+		$data['title'] = 'Gaji Anda';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -898,7 +898,7 @@ class leader extends CI_Controller
 	// Konfirmasi Izin Pegawai
 	public function konfirmasi_pegawai()
 	{
-		$data['title'] = 'Tampil Konfirmasi';
+		$data['title'] = 'Data Izin Pegawai';
 		$data['user'] = $this->db->query('SELECT user.*,tb_pegawai.id_pegawai,tb_pegawai.devisi, tb_pegawai.jabatan from user, tb_pegawai where tb_pegawai.id_user=user.id and user.email = ?', [$this->session->userdata('email')])->first_row("array");
 		// $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		if (isset($data['user']['devisi'])) {
