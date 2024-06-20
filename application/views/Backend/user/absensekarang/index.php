@@ -199,7 +199,7 @@
  									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
  										<label class="">Upload Surat Keterangan Sakit</label>
  										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit" required>
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
  										</div>
  									</div>
  									<div class="form-group">
