@@ -671,14 +671,18 @@ class pegawai extends CI_Controller
 					$valueTotalSakit = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
+							$date1 = date_create($value['tanggal_awal']);
+							$date2 = date_create($value['tanggal_akhir']);
+							$diff = date_diff($date2, $date1);
+							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += 1;
-								$valueTotalSakit += 1;
+								$sakit += $hasil_tanggal ;
+								$valueTotalSakit += $hasil_tanggal;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
-								$izin += 1;
-								$valueTotalIzin += 1;
+								$izin += $hasil_tanggal;
+								$valueTotalIzin += $hasil_tanggal;
 							} else {
-								$cuti += 1;
+								$cuti += $hasil_tanggal;
 							}
 						}
 					}
@@ -722,20 +726,24 @@ class pegawai extends CI_Controller
 							if ($keyGajiDate == count($data['gaji'][$date]) - 1) {
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
-								$valueTotalIzin = 0;
 								$izin = 0;
 								$cuti = 0;
+								$valueTotalIzin = 0;
 								$valueTotalSakit = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
+										$date1 = date_create($value['tanggal_awal']);
+										$date2 = date_create($value['tanggal_akhir']);
+										$diff = date_diff($date2, $date1);
+										$hasil_tanggal = $diff->format("%a") + 1;
 										if (strcmp($value['jenis'], "Sakit") == 0) {
-											$sakit += 1;
-											$valueTotalSakit += 1;
+											$sakit += $hasil_tanggal;
+											$valueTotalSakit += $hasil_tanggal;
 										} elseif (strcmp($value['jenis'], "Izin") == 0) {
-											$izin += 1;
-											$valueTotalIzin += 1;
+											$izin += $hasil_tanggal;
+											$valueTotalIzin += $hasil_tanggal;
 										} else {
-											$cuti += 1;
+											$cuti += $hasil_tanggal;
 										}
 									}
 								}
