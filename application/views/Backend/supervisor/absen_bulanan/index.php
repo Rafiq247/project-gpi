@@ -70,13 +70,13 @@
  				</div>
  				<div class="text-center mb-3">
 
- 					<h3 class="mb-0"><b>DATA ABSENSI PEGAWAI</b></h3>
+ 					<h3 class="mb-3"><b>DATA ABSENSI ANDA</b></h3>
  					<h6 class="mt-0">
  						<?php if ($detail_pegawai['nama_pegawai'] == null) : ?>
  						<?php else : ?>
  							<div class="mt-0">
- 								<h5 class="mt-0"><b> <?= $detail_pegawai['nama_pegawai'] ?>- <?= $detail_pegawai['namjab'] ?></b></h5>
- 								<h6 class="mb-0"> <b>(<?php echo nmbulan($blnselected); ?>-<?php echo $thnselected; ?> )</b></h6>
+ 								<h5 class="mt-0"><b> <?= $detail_pegawai['nama_pegawai'] ?> - <?= $detail_pegawai['namjab'] ?></b></h5>
+ 								<!-- <h6 class="mb-0"> <b>(<?php echo nmbulan($blnselected); ?> - <?php echo $thnselected; ?> )</b></h6> -->
  							</div>
  						<?php endif ?>
  					</h6>

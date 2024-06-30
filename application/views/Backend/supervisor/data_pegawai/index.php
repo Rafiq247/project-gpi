@@ -118,24 +118,24 @@
 									?>
  							</td>
  							<td>
- 								<?php
-									if ($b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6 || $b['acc'] == 9) {
-									?>
- 									<a class="btn btn-theme ml-1" href="<?= base_url('supervisor/acc-izin-pegawai') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
- 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
- 								<?php
-									} elseif ($b['acc'] == 3) {
-									?>
- 									<a class="btn btn-danger ml-1" href="<?= base_url('supervisor/hapus-izin-pegawai') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
- 								<?php
-									} elseif ($b['acc'] == 1) {
-									?>
- 							<td></td>
- 						<?php
-									}
-							?>
- 						</td>
-
+ 								<div class="d-flex justify-content-start">
+ 									<?php
+										if ($b['acc'] == 7 || $b['acc'] == 4 || $b['acc'] == 5 || $b['acc'] == 6 || $b['acc'] == 9) {
+										?>
+ 										<a class="btn btn-theme" href="<?= base_url('supervisor/acc-izin-pegawai') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');"><i class="fas fa-check"></i></a>
+ 										<a class="btn btn-danger ml-3 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white"><i class="fas fa-ban"></i></a>
+ 									<?php
+										} elseif ($b['acc'] == 3) {
+										?>
+ 										<a class="btn btn-danger" href="<?= base_url('supervisor/hapus-izin-pegawai') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');"><i class="fas fa-times text-light"></i></a>
+ 									<?php
+										} elseif ($b['acc'] == 1) {
+										?>
+ 									<?php
+										}
+										?>
+ 								</div>
+ 							</td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -143,74 +143,6 @@
  			</table>
  		</div>
 
- 		<!-- modal -->
- 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
- 			<div class="modal-dialog modal-lg">
- 				<div class="modal-content">
- 					<div class="modal-header text-center">
- 						<h5 class="modal-title text-secondary"><strong>Ajukan Cuti</strong></h5>
- 						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
- 					</div>
- 					<div class="modal-body text-justify ">
- 						<?php echo form_open_multipart('supervisor/izin-pegawai'); ?>
- 						<div class="card-body">
- 							<div class="row">
- 								<div class="col-md-6">
- 									<input type="hidden" name="id_peg" class="form-control " value="<?= $pegawai['id_pegawai'] ?>" required>
- 									<div class="form-group">
- 										<label>Jenis Izin</label>
- 										<div>
- 											<select class="form-control" id="jenisizin" name="jenisizin">
- 												<option value="">-pilih-</option>
- 												<option value="4">Izin Sakit</option>
- 												<option value="5">Izin Tidak Masuk</option>
- 											</select>
- 										</div>
- 									</div>
- 									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
- 										<label class="">Upload Surat Keterangan Sakit</label>
- 										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
- 										</div>
- 									</div>
- 									<div class="form-group">
- 										<label>Tanggal Izin</label>
- 										<div>
- 											<input type="text" name="tgl_awal" placeholder="Tanggal Awal" class="datepicker form-control mb-3" id="datepicker">
- 										</div>
- 										<div>
- 											<input type="text" name="tgl_akhir" placeholder="Tanggal Akhir" class="datepicker form-control" id="datepicker">
- 										</div>
- 									</div>
- 									<div class="form-group">
- 										<label>Keterangan</label>
- 										<div>
- 											<input type="text" name="penjelasan" class="form-control " value="">
- 										</div>
- 									</div>
- 								</div>
- 								<div class="col-md-6">
- 									<div class="col-md-12 ">
- 										Ket.<br>
- 										-Silahkan pilih jenis izin anda*<br>
- 										-upload bukti keterangan dokter untuk "Izin Sakit"*<br>
- 										-Silahkan isi keterangan alasan<br>
- 									</div>
- 								</div>
- 							</div>
-
- 						</div>
- 						<!-- /.card-body -->
- 						<div class="modal-footer">
- 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
- 							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
- 						</div>
- 						</form>
- 					</div>
-
- 				</div>
- 			</div>
- 		</div>
 
  		<script>
  			$(document).ready(function() {

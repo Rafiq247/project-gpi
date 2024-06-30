@@ -54,17 +54,19 @@
                             <td><?= $b['iuran_jht']; ?></td>
                             <td><?= $b['total_iuran_sos']; ?></td>
                             <td>
-                                <a href="javascript:void(0)" class="ml-1 trigger-edit-modal" href="" data-id-sos="<?= $b['id_bpjs_sos'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>">
-                                    <button type=" button" class="btn btn-primary">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </button>
-                                </a>
+                                <div class="d-flex justify-content-start">
+                                    <a href="javascript:void(0)" class="ml-1 trigger-edit-modal" href="" data-id-sos="<?= $b['id_bpjs_sos'] ?>" data-id-pegawai="<?= $b['id_pegawai'] ?>">
+                                        <button type=" button" class="btn btn-primary">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </button>
+                                    </a>
 
-                                <a href="<?= base_url('admin/hapus-bpjs-jamsostek/' . $b['id_bpjs_sos']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </a>
+                                    <a href="<?= base_url('admin/hapus-bpjs-jamsostek/' . $b['id_bpjs_sos']) ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+                                        <button type="button" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach ?>

@@ -142,16 +142,18 @@
  									<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
  									<td><?php echo 'Rp ' . number_format($b['gaji_bersih'], 2, ',', '.'); ?></td>
  									<td width="20px">
- 										<a target="_blank" href="<?= base_url(); ?>admin/cetak-payrol-pegawai/<?= $b['id_payrol']; ?>/<?php echo $blnnya  ?>/<?php echo $thn  ?>" class="ml-0">
- 											<button type="button" class="btn btn-primary">
- 												<i class="fa fa-print"></i>
- 											</button>
- 										</a>
- 										<a href="<?= base_url(); ?>admin/hapus-payrol/<?= $b['id_payrol']; ?>" class="ml-0">
- 											<button type="button" class="btn btn-danger">
- 												<i class="fa fa-trash"></i>
- 											</button>
- 										</a>
+ 										<div class="d-flex justify-content-start">
+ 											<a target="_blank" href="<?= base_url(); ?>admin/cetak-payrol-pegawai/<?= $b['id_payrol']; ?>/<?php echo $blnnya  ?>/<?php echo $thn  ?>" class="ml-0">
+ 												<button type="button" class="btn btn-primary">
+ 													<i class="fa fa-print"></i>
+ 												</button>
+ 											</a>
+ 											<a href="<?= base_url(); ?>admin/hapus-payrol/<?= $b['id_payrol']; ?>" class="ml-0">
+ 												<button type="button" class="btn btn-danger ml-3">
+ 													<i class="fa fa-trash"></i>
+ 												</button>
+ 											</a>
+ 										</div>
  								</tr>
  							<?php endforeach ?>
  						</tbody>

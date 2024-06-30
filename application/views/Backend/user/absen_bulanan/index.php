@@ -70,13 +70,13 @@
  				</div>
  				<div class="text-center mb-3">
 
- 					<h3 class="mb-0"><b>DATA ABSENSI PEGAWAI</b></h3>
+ 					<h3 class="mb-3"><b>DATA ABSENSI ANDA</b></h3>
  					<h6 class="mt-0">
  						<?php if ($detail_pegawai['nama_pegawai'] == null) : ?>
  						<?php else : ?>
- 							<div class="mt-0">
- 								<h5 class="mt-0"><b> <?= $detail_pegawai['nama_pegawai'] ?>- <?= $detail_pegawai['namjab'] ?></b></h5>
- 								<h6 class="mb-0"> <b>(<?php echo nmbulan($blnselected); ?>-<?php echo $thnselected; ?> )</b></h6>
+ 							<div class="mt-4">
+ 								<h5 class="mt-0"><b> <?= $detail_pegawai['nama_pegawai'] ?> - <?= $detail_pegawai['namjab'] ?></b></h5>
+ 								<!-- <h6 class="mb-0"> <b>(<?php echo nmbulan($blnselected); ?> - <?php echo $thnselected; ?> )</b></h6> -->
  							</div>
  						<?php endif ?>
  					</h6>
@@ -84,7 +84,7 @@
 
  				</div>
  				<!-- PENCARIAN BERDASARKAN BULAN DAN TAHUN-->
- 				<form action="<?= base_url() ?>pegawai/absen-bulanan" method="post">
+ 				<!-- <form action="<?= base_url() ?>pegawai/absen-bulanan" method="post">
  					<div class="row ">
 
  						<div class="col-lg-3">
@@ -140,9 +140,8 @@
  							<?php } ?>
 
  						</div>
- 						<!--  -->
  					</div>
- 				</form>
+ 				</form> -->
 
  				<div class="table-responsive">
  					<table id="example" class="table table-striped table-bordered">

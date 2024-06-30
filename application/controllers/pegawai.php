@@ -152,7 +152,7 @@ class pegawai extends CI_Controller
 
 	public function absen_harian()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Ambil Izin';
 		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id'));
 		// mengambil data user berdasarkan email yang ada di session
@@ -202,7 +202,7 @@ class pegawai extends CI_Controller
 	}
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Absen Bulanan';
+		$data['title'] = 'Absen Bulanan Anda';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
@@ -548,7 +548,7 @@ class pegawai extends CI_Controller
 
 	public function laporan_tpp_bulanan()
 	{
-		$data['title'] = 'Payrol Bulanan';
+		$data['title'] = 'Gaji Anda';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -676,7 +676,7 @@ class pegawai extends CI_Controller
 							$diff = date_diff($date2, $date1);
 							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += $hasil_tanggal ;
+								$sakit += $hasil_tanggal;
 								$valueTotalSakit += $hasil_tanggal;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += $hasil_tanggal;
@@ -753,7 +753,7 @@ class pegawai extends CI_Controller
 									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
 								} else {
 									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
-					}
+								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],

@@ -53,7 +53,7 @@
  			</div>
  		</div>
 
- 		<form action="tampil-input" method="post">
+ 		<!-- <form action="tampil-input" method="post">
  			<div class="row ">
 
  				<div class="col-lg-3">
@@ -99,9 +99,9 @@
  					<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
  					&nbsp;
  				</div>
- 				<!--  -->
  			</div>
- 		</form>
+ 		</form> -->
+
  		<div class="table-responsive">
 
  			<table id="example" class="table table-striped table-bordered">
@@ -130,16 +130,18 @@
  							<td><?= $b['status']; ?></td>
  							<td><?= $b['verification_code']; ?></td>
  							<td>
- 								<a class="ml-1" data-toggle="modal" data-target="#editInput<?= $b['id']; ?>">
- 									<button type="button" class="btn btn-primary">
- 										<i class="fa fa-pencil-square-o"></i>
- 									</button>
- 								</a>
- 								<a href="<?= base_url('admin/hapus-input-absen') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
- 									<button type="button" class="btn btn-danger">
- 										<i class="fa fa-trash"></i>
- 									</button>
- 								</a>
+ 								<div class="d-flex justify-content-start">
+ 									<a class="" data-toggle="modal" data-target="#editInput<?= $b['id']; ?>">
+ 										<button type="button" class="btn btn-primary">
+ 											<i class="fa fa-pencil-square-o"></i>
+ 										</button>
+ 									</a>
+ 									<a href="<?= base_url('admin/hapus-input-absen') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+ 										<button type="button" class="btn btn-danger ml-3">
+ 											<i class="fa fa-trash"></i>
+ 										</button>
+ 									</a>
+ 								</div>
  							</td>
 
  						</tr>

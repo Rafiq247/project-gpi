@@ -203,7 +203,7 @@ class Admin extends CI_Controller
 	// Jabatan & Sistem Penggajian
 	public function jabatan()
 	{
-		$data['title'] = 'Data Jabatan & Gaji';
+		$data['title'] = 'Data Gaji';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$this->db->select('jabatan.*, department.*');
@@ -1715,7 +1715,7 @@ class Admin extends CI_Controller
 							$diff = date_diff($date2, $date1);
 							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += $hasil_tanggal ;
+								$sakit += $hasil_tanggal;
 								$valueTotalSakit += $hasil_tanggal;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += $hasil_tanggal;

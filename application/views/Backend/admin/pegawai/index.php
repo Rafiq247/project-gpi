@@ -36,7 +36,7 @@
        <table id="example" class="table table-striped table-bordered">
          <thead>
            <tr>
-             <th>#</th>
+             <th>NO.</th>
              <th>NAMA PEGAWAI</th>
              <th>STATUS KEPEGAWAIAN</th>
              <th>TANGGAL MASUK</th>

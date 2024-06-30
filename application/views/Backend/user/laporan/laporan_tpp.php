@@ -60,7 +60,7 @@
          </div>
          <div class="text-center mb-3">
 
-           <h3 class="mb-0"><b>DATA PAYROL PEGAWAI</b></h3>
+           <h3 class="mb-0"><b>DATA GAJI ANDA</b></h3>
 
            <hr>
 

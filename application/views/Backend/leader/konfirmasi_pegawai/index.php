@@ -63,7 +63,7 @@
 
  		</div>
 
- 		<form action="absen-harian" method="post">
+ 		<!-- <form action="absen-harian" method="post">
  			<div class="row ">
 
  				<div class="col-lg-3">
@@ -109,9 +109,9 @@
  					<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
  					&nbsp;
  				</div>
- 				<!--  -->
  			</div>
- 		</form>
+ 		</form> -->
+
  		<div class="table-responsive">
 
  			<table id="example" class="table table-striped table-bordered">
@@ -167,19 +167,21 @@
  							</td>
 
  							<td>
- 								<?php
-									if ($b['acc'] == 0 || $b['acc'] == 5 || $b['acc'] == 6) {
-									?>
- 									<a class="btn btn-theme ml-1" href="<?= base_url('leader/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
- 									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
- 								<?php
-									} elseif ($b['acc'] == 4 || $b['acc'] == 7) {
-									?>
- 									<a class="btn btn-danger ml-1" href="<?= base_url('leader/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
- 								<?php
-									}
-									?>
+ 								<div class="d-flex justify-content-start">
 
+ 									<?php
+										if ($b['acc'] == 0 || $b['acc'] == 5 || $b['acc'] == 6) {
+										?>
+ 										<a class="btn btn-theme" href="<?= base_url('leader/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');"><i class="fas fa-check"></i></a>
+ 										<a class="btn btn-danger ml-3 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white"><i class="fas fa-ban"></i></a>
+ 									<?php
+										} elseif ($b['acc'] == 4 || $b['acc'] == 7) {
+										?>
+ 										<a class="btn btn-danger" href="<?= base_url('leader/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');"><i class="fas fa-times text-light"></i></a>
+ 									<?php
+										}
+										?>
+ 								</div>
  							</td>
  						</tr>
  					<?php endforeach ?>

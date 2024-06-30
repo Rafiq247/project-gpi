@@ -27,7 +27,7 @@
  			<table id="fingerprint" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>ID KARYAWAN</th>
  						<th>ID FINGERPRINT</th>
  						<th>AKSI</th>
@@ -42,16 +42,18 @@
  							<td><?= $b['id_pegawai']; ?></td>
  							<td><?= $b['id_fingerprint']; ?></td>
  							<td>
- 								<a class="ml-1" data-toggle="modal" data-target="#editfingerprintmodal<?= $b['id']; ?>">
- 									<button type="button" class="btn btn-primary">
- 										<i class="fa fa-pencil-square-o"></i>
- 									</button>
- 								</a>
- 								<a href="<?= base_url('admin/hapus-fingerprint') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
- 									<button type="button" class="btn btn-danger">
- 										<i class="fa fa-trash"></i>
- 									</button>
- 								</a>
+ 								<div class="d-flex justify-content-start">
+ 									<a class="" data-toggle="modal" data-target="#editfingerprintmodal<?= $b['id']; ?>">
+ 										<button type="button" class="btn btn-primary">
+ 											<i class="fa fa-pencil-square-o"></i>
+ 										</button>
+ 									</a>
+ 									<a href="<?= base_url('admin/hapus-fingerprint') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-3">
+ 										<button type="button" class="btn btn-danger">
+ 											<i class="fa fa-trash"></i>
+ 										</button>
+ 									</a>
+ 								</div>
  							</td>
 
  						</tr>
@@ -72,7 +74,7 @@
  							<div class="modal-body">
  								<div class="form-group">
  									<label class="col-sm-12">ID Pegawai</label>
- 									<div class="col-sm-12">
+ 									<div class="col-sm-12 mb-3">
  										<select class="form-control" name="id_pegawai">
  											<?php
 												foreach ($pegawai as $value) : ?>

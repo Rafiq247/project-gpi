@@ -117,7 +117,7 @@
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>JENIS</th>
  						<th>TGL/WAKTU AWAL</th>
  						<th>TGL/WAKTU AKHIR</th>
@@ -138,30 +138,30 @@
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
  							<td>
-								<?php
-								if ($b['acc'] == 0) {
-									echo "Belum Diizinkan";
-								} elseif ($b['acc'] == 1) {
-									echo "Diizinkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 3) {
-									echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
-								} elseif ($b['acc'] == 4) {
-									echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
-								} elseif ($b['acc'] == 5) {
-									echo "Izin dibatalkan oleh SPV $b[acc_by]";
-								} elseif ($b['acc'] == 6) {
-									echo "Izin dibatalkan oleh Leader $b[acc_by]";
-								} elseif ($b['acc'] == 7) {
-									echo "Izin dibatalkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 8) {
-									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
-								} elseif ($b['acc'] == 9) {
-									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
-								}  else {
-									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
-								}
-								?>
-							</td>
+ 								<?php
+									if ($b['acc'] == 0) {
+										echo "Belum Diizinkan";
+									} elseif ($b['acc'] == 1) {
+										echo "Diizinkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 3) {
+										echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
+									} elseif ($b['acc'] == 4) {
+										echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
+									} elseif ($b['acc'] == 5) {
+										echo "Izin dibatalkan oleh SPV $b[acc_by]";
+									} elseif ($b['acc'] == 6) {
+										echo "Izin dibatalkan oleh Leader $b[acc_by]";
+									} elseif ($b['acc'] == 7) {
+										echo "Izin dibatalkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 8) {
+										echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+									} elseif ($b['acc'] == 9) {
+										echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
+									} else {
+										echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
+									}
+									?>
+ 							</td>
  						</tr>
  					<?php endforeach ?>
  				</tbody>
@@ -174,7 +174,7 @@
  			<div class="modal-dialog modal-lg">
  				<div class="modal-content">
  					<div class="modal-header text-center">
- 						<h5 class="modal-title text-secondary"><strong>Ajukan Cuti</strong></h5>
+ 						<h5 class="modal-title text-secondary"><strong>Ajukan Izin</strong></h5>
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
@@ -199,7 +199,7 @@
  									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
  										<label class="">Upload Surat Keterangan Sakit</label>
  										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit" required>
  										</div>
  									</div>
  									<div class="form-group">
@@ -225,17 +225,17 @@
  										- Upload bukti keterangan dokter untuk "Izin Sakit"*<br>
  										- Silahkan isi keterangan alasan<br>
  										<?php if ($pegawai_month >= 365) : ?>
-											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
- 												<?php endif;  ?>
-										- <?php 
-												$id_pegawai = is_array($pegawai) ? $pegawai['id_pegawai'] : $pegawai; 
-												$result = $this->db->from("bpjs_kes")->where("id_pegawai", $id_pegawai)->get()->row_array();
-												if(empty($result)) {
+ 											- Sisa Cuti Anda: <b><?= 12 - $used_cuti ?></b>
+ 										<?php endif;  ?>
+ 										- <?php
+											$id_pegawai = is_array($pegawai) ? $pegawai['id_pegawai'] : $pegawai;
+											$result = $this->db->from("bpjs_kes")->where("id_pegawai", $id_pegawai)->get()->row_array();
+											if (empty($result)) {
 												echo "Anda tidak punya BPJS";
-												} else {
+											} else {
 												echo "Anda punya BPJS";
-												}
-												?>
+											}
+											?>
  									</div>
  								</div>
  							</div>

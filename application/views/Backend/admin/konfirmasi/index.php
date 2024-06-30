@@ -63,7 +63,7 @@
 
  		</div>
 
- 		<form action="absen-harian" method="post">
+ 		<!-- <form action="absen-harian" method="post">
  			<div class="row ">
 
  				<div class="col-lg-3">
@@ -109,15 +109,15 @@
  					<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
  					&nbsp;
  				</div>
- 				<!--  -->
  			</div>
- 		</form>
+ 		</form> -->
+
  		<div class="table-responsive">
 
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>No</th>
+ 						<th>NO.</th>
  						<th>NAMA</th>
  						<th>JENIS</th>
  						<th>TGL/WAKTU AWAL</th>
@@ -141,43 +141,46 @@
  							<td><?= $b['keterangan']; ?></td>
  							<td><a style="color:blue" href="./../gambar/Absensi/suratdokter/<?= $b['surat']; ?>"><?= $b['surat']; ?></a></td>
  							<td>
-								<?php
-								if ($b['acc'] == 0) {
-									echo "Belum Diizinkan";
-								} elseif ($b['acc'] == 1) {
-									echo "Diizinkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 3) {
-									echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
-								} elseif ($b['acc'] == 4) {
-									echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
-								} elseif ($b['acc'] == 5) {
-									echo "Izin dibatalkan oleh SPV $b[acc_by]";
-								} elseif ($b['acc'] == 6) {
-									echo "Izin dibatalkan oleh Leader $b[acc_by]";
-								} elseif ($b['acc'] == 7) {
-									echo "Izin dibatalkan oleh HRD $b[acc_by]";
-								} elseif ($b['acc'] == 8) {
-									echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
-								} elseif ($b['acc'] == 9) {
-									echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
-								}  else {
-									echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
-								}
-								?>
-							</td>
-							<td>
-							 <?php
-								if ($b['acc'] == 0 || $b['acc'] == 7 ) {
+ 								<?php
+									if ($b['acc'] == 0) {
+										echo "Belum Diizinkan";
+									} elseif ($b['acc'] == 1) {
+										echo "Diizinkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 3) {
+										echo "Di izinkan oleh SPV $b[acc_by] progress to HRD";
+									} elseif ($b['acc'] == 4) {
+										echo "Di izinkan oleh Leader $b[acc_by] progress to SPV";
+									} elseif ($b['acc'] == 5) {
+										echo "Izin dibatalkan oleh SPV $b[acc_by]";
+									} elseif ($b['acc'] == 6) {
+										echo "Izin dibatalkan oleh Leader $b[acc_by]";
+									} elseif ($b['acc'] == 7) {
+										echo "Izin dibatalkan oleh HRD $b[acc_by]";
+									} elseif ($b['acc'] == 8) {
+										echo "Izin ditolak oleh SPV $b[acc_by] karena ", $b["penolakan"];
+									} elseif ($b['acc'] == 9) {
+										echo "Izin ditolak oleh Leader $b[acc_by] karena ", $b["penolakan"];
+									} else {
+										echo "Ditolak oleh $b[acc_by] karena ", $b["penolakan"];
+									}
 									?>
-									<a class="btn btn-theme ml-1" href="<?= base_url('admin/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');">Izinkan</a>
-									<a class="btn btn-danger ml-1 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white">Tolak</a>
-								<?php
-								} elseif ($b['acc'] == 1) {
-									?>
-									<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');">Batalkan Izin</a>
-								<?php
-								}
-								?>
+ 							</td>
+ 							<td>
+ 								<div class="d-flex justify-content-start">
+ 									<?php
+										if ($b['acc'] == 0 || $b['acc'] == 7) {
+										?>
+ 										<a class="btn btn-theme" href="<?= base_url('admin/acc-izin') ?>/<?= $b['id']; ?>" style="color:white" onclick="return confirm('Yakin Ingin Menizinkan?');"><i class="fas fa-check"></i></a>
+ 										<a class="btn btn-danger ml-3 trigger-tolak" data-id-izin="<?= $b['id']; ?>" style="color:white"><i class="fas fa-ban"></i></a>
+ 									<?php
+										} elseif ($b['acc'] == 1) {
+										?>
+ 										<a class="btn btn-danger" href="<?= base_url('admin/hapus-izin') ?>/<?= $b['id']; ?>" onclick="return confirm('Yakin Ingin Membatalkan?');"><i class="fas fa-times text-light"></i>
+ 										</a>
+ 									<?php
+										}
+										?>
+ 								</div>
 
  							</td>
  						</tr>
@@ -246,7 +249,7 @@
  						</div>
  						<!-- /.card-body -->
  						<div class="modal-footer">
- 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+ 							<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
  							<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
  						</div>
  						</form>

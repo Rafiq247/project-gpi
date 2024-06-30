@@ -136,7 +136,9 @@
  												<input type="hidden" name="pengurangan" value="<?= $b['pengurangan']; ?>">
  												<input type="hidden" name="gaji_bersih" value="<?= $b['gaji_pokok'] - $b['pengurangan'] + $b['lembur'] + $b['bonus'] + $b['total_iuran_sos'] + $b['total_iuran_kes']; ?>">
 
- 												<button type="submit" class="btn btn-primary btn-flat" id="simpan"><i class="fa fa-plus"></i> Tambah Data</button>
+ 												<div class="d-flex justify-content-start">
+ 													<button type="submit" class="btn btn-primary btn-flat" id="simpan"><i class="fa fa-plus-square"></i></button>
+ 												</div>
 
  											</form>
  										</td>

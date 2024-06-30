@@ -126,7 +126,7 @@
  			<div class="modal-dialog modal-lg">
  				<div class="modal-content">
  					<div class="modal-header text-center">
- 						<h5 class="modal-title text-secondary"><strong>Ajukan Cuti</strong></h5>
+ 						<h5 class="modal-title text-secondary"><strong>Ajukan Izin</strong></h5>
  						<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  					</div>
  					<div class="modal-body text-justify ">
@@ -151,7 +151,7 @@
  									<div class="form-group" name="suratsakit" id="suratsakit" hidden>
  										<label class="">Upload Surat Keterangan Sakit</label>
  										<div class="">
- 											<input type="file" name="suratsakit" class="form-control" id="suratsakit">
+ 											<input type="file" name="suratsakit" class="form-control" id="suratsakit" required>
  										</div>
  									</div>
  									<div class="form-group">

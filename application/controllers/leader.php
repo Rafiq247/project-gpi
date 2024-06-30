@@ -147,7 +147,7 @@ class leader extends CI_Controller
 
 	public function absen_harian()
 	{
-		$data['title'] = 'Rekap Absen';
+		$data['title'] = 'Ambil Izin ';
 		$months = (int)$this->leader_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		$used_cuti = (int)$this->leader_model->getUsedCuti($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
 		// mengambil data user berdasarkan email yang ada di session
@@ -669,7 +669,7 @@ class leader extends CI_Controller
 							$diff = date_diff($date2, $date1);
 							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += $hasil_tanggal ;
+								$sakit += $hasil_tanggal;
 								$valueTotalSakit += $hasil_tanggal;
 							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += $hasil_tanggal;
