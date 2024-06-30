@@ -78,50 +78,12 @@
  				<form action="laporan-tpp-bulanan" method="post">
  					<div class="row ">
 
- 						<div class="col-lg-3">
 
- 							<select name="th" id="th" class="form-control">
- 								<option value="">- PILIH TAHUN -</option>
- 								<?php
-									foreach ($list_th as $t) {
-										if ($thn == $t['th']) {
-									?>
- 										<option selected value="<?php echo $t['th'];  ?>"><?php echo $t['th']; ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['th']; ?>"><?php echo $t['th']; ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
- 						<div class="col-lg-3">
-
- 							<select name="bln" id="bln" class="form-control ">
- 								<option value="">- PILIH BULAN -</option>
- 								<?php
-									foreach ($list_bln as $t) {
-										if ($blnnya == $t['bln']) {
-									?>
- 										<option selected value="<?php $t['bln'];  ?>"><?php echo nmbulan($t['bln']); ?></option>
- 									<?php
-										} else {
-										?>
- 										<option value="<?php echo $t['bln']; ?>"><?php echo nmbulan($t['bln']); ?></option>
- 								<?php
-										}
-									}
-									?>
- 							</select>
- 						</div>
  						<div class="col-lg-3">
  							&nbsp;
  							<?php if ($gaji == null) : ?>
  								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Cari</button>
- 							<?php else : ?>
- 								<button type="submit" class="btn btn-primary mb-3"><i class="fa fa-search"></i>Refresh</button>
+
  							<?php endif ?>
  							&nbsp;
 
@@ -135,7 +97,7 @@
  					<table id="example" class="table table-striped table-bordered">
  						<thead>
  							<tr>
- 								<th>#</th>
+ 								<th>NO.</th>
  								<th>ID KARYAWAN</th>
  								<th>NAMA KARYAWAN</th>
  								<th>TANGGAL</th>
@@ -145,14 +107,15 @@
  								<th>JAM LEMBUR</th>
  								<th>LEMBUR</th>
  								<th>HADIR</th>
+ 								<th>BPJS JAMSOSTEK</th>
+ 								<th>BPJS KESEHATAN</th>
  								<th>TIDAK HADIR</th>
  								<th>IZIN</th>
  								<th>SAKIT</th>
- 								<th>Pengurangan</th>
+ 								<th>CUTI</th>
+ 								<th>PENGURANGAN</th>
  								<th>GAJI BERSIH</th>
  								<th>AKSI</th>
- 								<th></th>
- 								<th></th>
  							</tr>
  						</thead>
  						<tbody>
@@ -170,33 +133,27 @@
  									<td><?= $b['jam_lembur']; ?> Jam</td>
  									<td><?php echo 'Rp ' . number_format($b['lembur'], 2, ',', '.'); ?></td>
  									<td><?= $b['hadir']; ?> Hari</td>
+ 									<td><?php echo 'Rp ' . number_format($b['total_iuran_sos'], 2, ',', '.'); ?></td>
+ 									<td><?php echo 'Rp ' . number_format($b['total_iuran_kes'], 2, ',', '.'); ?></td>
  									<td><?= $b['tidak_hadir']; ?> Hari</td>
  									<td><?= $b['izin']; ?> Hari</td>
  									<td><?= $b['sakit']; ?> Hari</td>
+ 									<td><?= $b['cuti']; ?> Hari</td>
  									<td><?php echo 'Rp ' . number_format($b['pengurangan'], 2, ',', '.'); ?></td>
  									<td><?php echo 'Rp ' . number_format($b['gaji_bersih'], 2, ',', '.'); ?></td>
  									<td width="20px">
- 										<a href="<?= base_url('admin/detail-laporan-tpp') ?>/<?= $b['id_pegawai']; ?>/<?= $blnselected; ?>/<?= $thnselected; ?>" class="ml-3 mb-0">
- 											<button type="button" class="btn btn-theme">
- 												<i class="fa fa-eye"></i>
- 											</button>
- 										</a>
- 									</td>
- 									<td>
- 										<a target="_blank" href="<?= base_url(); ?>admin/cetak-payrol-pegawai/<?= $b['id_payrol']; ?>/<?php echo $blnnya  ?>/<?php echo $thn  ?>" class="ml-0">
- 											<button type="button" class="btn btn-danger">
- 												<i class="fa fa-print"></i>
- 											</button>
- 										</a>
- 									</td>
- 									<td>
- 										<a href="<?= base_url(); ?>admin/hapus-payrol/<?= $b['id_payrol']; ?>" class="ml-0">
- 											<button type="button" class="btn btn-danger">
- 												<i class="fa fa-close"></i>
- 											</button>
- 										</a>
- 									</td>
-
+ 										<div class="d-flex justify-content-start">
+ 											<a target="_blank" href="<?= base_url(); ?>admin/cetak-payrol-pegawai/<?= $b['id_payrol']; ?>/<?php echo $blnnya  ?>/<?php echo $thn  ?>" class="ml-0">
+ 												<button type="button" class="btn btn-primary">
+ 													<i class="fa fa-print"></i>
+ 												</button>
+ 											</a>
+ 											<a href="<?= base_url(); ?>admin/hapus-payrol/<?= $b['id_payrol']; ?>" class="ml-0">
+ 												<button type="button" class="btn btn-danger ml-3">
+ 													<i class="fa fa-trash"></i>
+ 												</button>
+ 											</a>
+ 										</div>
  								</tr>
  							<?php endforeach ?>
  						</tbody>

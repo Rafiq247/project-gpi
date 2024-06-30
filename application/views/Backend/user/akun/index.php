@@ -61,9 +61,13 @@
                                  <?php endif ?>
                              </td>
                              <td>
-                                 <?php if ($b['role_id'] == 1) : ?>
-                                     Super Admin
-                                 <?php else : ?>
+                             <?php if ($b['role_id'] == 1) : ?>
+                                     Admin
+                                 <?php elseif ($b['role_id'] == 2) : ?>
+                                     Supervisor
+                                 <?php elseif ($b['role_id'] == 3) : ?>
+                                     Leader
+                                 <?php elseif ($b['role_id'] == 4) : ?>
                                      Pegawai
                                  <?php endif ?>
                              </td>

@@ -20,7 +20,7 @@
        <table id="recap" class="table table-striped table-bordered">
          <thead>
            <tr>
-             <th>No</th>
+             <th>NO.</th>
              <th>ID KARYAWAN</th>
              <th>NAMA</th>
              <th>KEHADIRAN</th>

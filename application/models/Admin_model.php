@@ -4,19 +4,37 @@
 class Admin_model extends CI_model
 {
 	// FEBY
-	public function getAlljabatan()
+	public function getAlljabatan($filterRoleGroup = null)
 	{
 		$sql = "SELECT * from jabatan";
+		if ($filterRoleGroup != null) {
+			$sql .= " WHERE role_group = '$filterRoleGroup'";
+		}
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	public function getAllidjabatan()
+	{
+		$sql = "SELECT * from department";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getAlluser_role($filterRoleGroup = null)
+	{
+		$sql = "SELECT * from user_role";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
 	public function getAllDetail()
 	{
-		$sql = "SELECT * from user where role_id=2";
+		$role_ids = [1, 2, 3, 4]; // Define the array of role IDs
+		$sql = "SELECT * from user where role_id IN (" . implode(',', $role_ids) . ")";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
-	// 
 
 	public function getAllpegawai()
 	{
@@ -135,7 +153,21 @@ class Admin_model extends CI_model
 
 	public function getIzin()
 	{
-		$sql = "SELECT * FROM `izin`";
+		$sql = "SELECT * FROM izin WHERE role_id = 2";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinDataPegawai()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 4";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getIzinDataLeader()
+	{
+		$sql = "SELECT * FROM izin WHERE role_id = 3";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -337,6 +369,34 @@ class Admin_model extends CI_model
 		$sql = "SELECT tb_pegawai.*, jabatan.jabatan as namjab from tb_pegawai, jabatan where tb_pegawai.jabatan=jabatan.id_jabatan and tb_pegawai.id_pegawai='$id'";
 		$result = $this->db->query($sql);
 		return $result->row_array();
+	}
+
+	public function getBpjs_jamsos_total($pegawai)
+	{
+		$sql = "SELECT * from bpjs_jamsos WHERE id_pegawai = '$pegawai'";
+		$result = $this->db->query($sql);
+		return $result->row()->total_iuran_sos ?? 0;
+	}
+
+	public function getBpjs_kes_total($pegawai)
+	{
+		$sql = "SELECT * from bpjs_kes WHERE id_pegawai = '$pegawai'";
+		$result = $this->db->query($sql);
+		return $result->row()->total_iuran_kes ?? 0;
+	}
+
+	public function getBpjs_jamsos()
+	{
+		$sql = "SELECT * from bpjs_jamsos";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getBpjs_kes()
+	{
+		$sql = "SELECT * from bpjs_kes";
+		$result = $this->db->query($sql);
+		return $result->result_array();
 	}
 }
 

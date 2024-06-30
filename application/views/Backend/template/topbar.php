@@ -17,8 +17,8 @@
             <!--Logo-->
             <!-- bg transparent diilangin, di bg style ilangin jadi ganti di class bg-theme, logo bg jadi text-info -->
             <div class="bg-transparent col-sm-3 pl-0 pt-0 text-center header-logo">
-                <div class="mr-3 pt-3 pb-2 mb-0" style="background-image: linear-gradient(60deg, #2083C6, #98C73B);">
-                    <h3 class="logo"><span class="text-secondary logo"><i class="fa fa-user text-theme"></i> Sistem Informasi</span></h3>
+                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" style="background-image: linear-gradient(60deg, #2083C6, #98C73B);">
+                    <h3 class="logo"><i class="fa fa-user mr-2"></i> HRD</h3>
                 </div>
             </div>
             <!--Logo-->
@@ -44,11 +44,11 @@
                                 // $notif = $this->db->count_all_results();
                                 ?> -->
                         <!-- notif angkat -->
-                        <div class="menu-icon">
-                            <!-- <a class="" href="#" onclick="toggle_dropdown(this); return false" role="button" class="dropdown-toggle">
+                        <!-- <div class="menu-icon">
+                             <a class="" href="#" onclick="toggle_dropdown(this); return false" role="button" class="dropdown-toggle">
                                 <i class="fa fa-bell"></i>
                                 <span class="badge badge-danger"><?= $notif ?></span>
-                            </a> -->
+                            </a>
                             <div class="dropdown dropdown-left bg-white shadow border">
                                 <a class="dropdown-item" href="#"><strong>Notifications</strong></a>
 
@@ -56,7 +56,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-center link-all" href="#">See all notifications ></a>
                             </div>
-                        </div>
+                        </div> -->
                         <!--Notication icon-->
 
 
@@ -73,12 +73,12 @@
                             <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['name']; ?></span>
 
-                                <img src="<?php echo base_url() . '/gambar/' . $user['image']; ?>" class="rounded-circle" width="40px" height="40px">
+                                <img src="<?php echo base_url() . '/gambar/pegawai/' . $user['image']; ?>" class="rounded-circle" width="40px" height="40px">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
                                 <!-- <a class="dropdown-item" href="#"><i class="fa fa-user pr-2"></i> Profile</a> -->
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?= base_url('auth/logout') ?>"><i class="fa fa-power-off pr-2"></i> Logout</a>
+                                <a class="dropdown-item" href="<?= base_url('auth/logout') ?>"><i class="fa fa-power-off pr-2"></i> Keluar</a>
                             </div>
                         </div>
                     </div>

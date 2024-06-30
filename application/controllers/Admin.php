@@ -68,15 +68,155 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/dashboard/sejarah', $data);
 		$this->load->view('backend/template/footer');
 	}
-	public function jabatan()
+
+	public function edit_profil($id)
 	{
-		$data['title'] = 'Data Jabatan';
+		$data['title'] = 'Edit Profil';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-		$data['jabatan'] = $this->Admin_model->getAlljabatan();
+		$nama = $this->input->post('nama', true);
+
+
+		//foto dan ktp 
+		$upload_image = $_FILES['userfilefoto']['name'];
+		if ($upload_image) {
+			$config['upload_path']          = './gambar/pegawai/';
+			$config['allowed_types']        = 'gif|jpg|jpeg|png|PNG';
+			$config['max_size']             = 10000;
+			$config['max_width']            = 10000;
+			$config['max_height']           = 10000;
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload('userfilefoto')) {
+				$new_image = $this->upload->data('file_name');
+				$data = $this->db->set('image', $new_image);
+			} else {
+				echo $this->upload->display_errors();
+			}
+			$data = [
+				"name" => $nama,
+
+			];
+			$this->db->where('id', $id);
+			$this->db->update('user', $data);
+
+			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
+			redirect('admin');
+		} else {
+			$data = [
+				"name" => $nama,
+
+			];
+			$this->db->where('id', $id);
+			$this->db->update('user', $data);
+
+			$this->session->set_flashdata('flash', 'Berhasil diperbarui');
+			redirect('admin');
+		}
+		// 
+	}
+
+	public function edit_password($id)
+	{
+		$data['title'] = 'Edit Password';
+		// mengambil data supervisor berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$password_lama = $this->input->post('password_lama', true);
+		$password_baru = $this->input->post('password_baru', true);
+		$password_baru1 = $this->input->post('password_baru1', true);
+		if (password_verify($password_lama, $data['user']['password'])) {
+			if ($password_baru == $password_baru1) {
+				$data = [
+					"password" => password_hash($password_baru, PASSWORD_DEFAULT),
+				];
+				$this->db->where('id', $id);
+				$this->db->update('user', $data);
+				$this->session->set_flashdata('flash', 'Password Berhasil Diubah!');
+				redirect('admin');
+			} else {
+				$this->session->set_flashdata('flash', 'Konfirmasi Password Berbeda!');
+				redirect('admin');
+			}
+		} else {
+			$this->session->set_flashdata('flash', 'Password Lama Salah!');
+			redirect('admin');
+		}
+	}
+
+	public function department()
+	{
+		$data['title'] = 'Data Departemen';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['jabatan'] = $this->Admin_model->getAllidjabatan();
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/department/index', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	//Department
+	public function tambah_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$devisi = $this->input->post('devisi', true);
+		$data = [
+			"devisi" => $devisi,
+
+		];
+		$this->db->insert('department', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/department');
+	}
+
+	public function edit_department()
+	{
+		$data['title'] = 'Data Department';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_department = $this->input->post('id_department', true);
+		$devisi = $this->input->post('devisi', true);
+		$data = [
+			"devisi" => $devisi,
+		];
+
+		$this->db->where('id_department', $id_department);
+		$this->db->update('department', $data);
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/department');
+	}
+
+	public function hapus_department($id_department)
+	{
+		$this->db->where('id_department', $id_department);
+		$this->db->delete('department');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/department');
+	}
+
+	// Jabatan & Sistem Penggajian
+	public function jabatan()
+	{
+		$data['title'] = 'Data Gaji';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$this->db->select('jabatan.*, department.*');
+		$this->db->from('jabatan');
+		$this->db->join('department', 'jabatan.devisi = department.id_department');
+		$query = $this->db->get();
+		$data['jabatan'] = $query->result_array();
+		// echo json_encode($data['jabatan']);
+		// exit;
+		$data['department'] = $this->Admin_model->getAllidjabatan();
 		foreach ($data['jabatan'] as $key => $value) {
-			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime'], 2, ',', '.');
-			$data['jabatan'][$key]['bonus'] = 'Rp ' . number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
+			$data['jabatan'][$key]['overtime'] = 'Rp ' . number_format($data['jabatan'][$key]['overtime']);
+			// $data['jabatan'][$key]['bonus'] = 'Rp '. number_format($data['jabatan'][$key]['bonus'], 2, ',', '.');
 		}
 		$this->load->view('backend/template/header', $data);
 		$this->load->view('backend/template/topbar', $data);
@@ -84,6 +224,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/jabatan/index', $data);
 		$this->load->view('backend/template/footer');
 	}
+
 	public function tambah_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -91,20 +232,26 @@ class Admin extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->input->post('devisi', true);
+		$role_group = $this->input->post('role_group', true);
 		$salary = $this->input->post('salary', true);
 		$bonus = $this->input->post('bonus', true);
 		$overtime = $salary / 173;
 		$data = [
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
+			"role_group" => $role_group,
 
 		];
+
 		$this->db->insert('jabatan', $data);
 		$this->session->set_flashdata('flash', 'Berhasil ditambah');
 		redirect('admin/jabatan');
 	}
+
 	public function edit_jabatan()
 	{
 		$data['title'] = 'Data Jabatan';
@@ -113,14 +260,18 @@ class Admin extends CI_Controller
 
 		$id_jabatan = $this->input->post('id_jabatan', true);
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->input->post('devisi', true);
+		$role_group = $this->input->post('role_group', true);
 		$salary = $this->input->post('salary', true);
 		$overtime = $salary / 173;
 		$bonus = $this->input->post('bonus', true);
 		$data = [
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"salary" => $salary,
 			"overtime" => $overtime,
 			"bonus" => $bonus,
+			"role_group" => $role_group,
 
 		];
 		$this->db->where('id_jabatan', $id_jabatan);
@@ -128,20 +279,25 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
 		redirect('admin/jabatan');
 	}
-	public function hapus_jabatan($id)
+
+	public function hapus_jabatan($id_jabatan)
 	{
-		$this->db->where('id_jabatan', $id);
+		$this->db->where('id_jabatan', $id_jabatan);
 		$this->db->delete('jabatan');
 		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
 		redirect('admin/jabatan');
 	}
+
+
+	// Pegawai
 	public function pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->Admin_model->getAllpegawai();
-		$data['jabatan'] = $this->Admin_model->getAlljabatan();
+		$data['jabatan_all'] = $this->Admin_model->getAlljabatan();
+		$data['department'] = $this->Admin_model->getAllidjabatan();
 		$data['jekel'] = ['L', 'P'];
 		$data['stapeg'] = [1, 0];
 		$data['agama'] = ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Budha', 'Khonghucu'];
@@ -164,6 +320,7 @@ class Admin extends CI_Controller
 		$this->load->view('backend/admin/pegawai/detail', $data);
 		$this->load->view('backend/template/footer');
 	}
+
 	public function tambah_pegawai()
 	{
 		$data['title'] = 'Data Pegawai';
@@ -172,6 +329,7 @@ class Admin extends CI_Controller
 
 		$id_user = $this->input->post('id_user', true);
 		$id_pegawai = $this->input->post('id_pegawai', true);
+		$role_id = $this->input->post('role_id', true);
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$jekel = $this->input->post('jekel', true);
 		$pendidikan = $this->input->post('pendidikan', true);
@@ -180,6 +338,7 @@ class Admin extends CI_Controller
 		// $ktp = $this->input->post('ktp', true);
 		$agama = $this->input->post('agama', true);
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->db->from("jabatan")->where('id_jabatan', $jabatan)->join("department", "jabatan.devisi = department.id_department")->get()->row_array()['id_department'];
 		$nohp = $this->input->post('nohp', true);
 		$alamat = $this->input->post('alamat', true);
 		$tgl_msk = $this->input->post('tgl_msk', true);
@@ -194,8 +353,8 @@ class Admin extends CI_Controller
 		$fotoName = "";
 		if ($upload_image) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = '*';
-			// $config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
+			// $config['allowed_types']        = '*';
+			$config['allowed_types']        = 'gif|jpg|png|PNG|jpeg';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
@@ -234,8 +393,8 @@ class Admin extends CI_Controller
 			"email" => $email,
 			"image" => $gambar_user,
 			"password" => password_hash('anggota', PASSWORD_DEFAULT),
-			'role_id' => 2,
-			'is_active' => 0,
+			"role_id" => $role_id,
+			'is_active' => 1,
 			'date_created' => time(),
 			'temp' => $temp
 
@@ -243,16 +402,18 @@ class Admin extends CI_Controller
 
 		$this->db->insert('user', $data1);
 
-		// 
+
 		$data = [
 			"id_pegawai" => $id_pegawai,
 			"id_user" => $id_user,
 			"nama_pegawai" => $nama_pegawai,
+			'role_id' => $role_id,
 			"jekel" => $jekel,
 			"pendidikan" => $pendidikan,
 			"status_kepegawaian" => $status_pegawai,
 			"agama" => $agama,
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
 			"no_hp" => $nohp,
 			"alamat" => $alamat,
 			"tanggal_masuk" => $tgl_msk,
@@ -260,135 +421,135 @@ class Admin extends CI_Controller
 			"foto" => $fotoName,
 		];
 
-		$token = base64_encode(random_bytes(32));
-		$user_token = [
-			"id_user" => $id_user,
-			'email' => $email,
-			'token' => $token,
-			'date_created' => time()
-		];
+		// $token = base64_encode(random_bytes(32));
+		// $user_token = [
+		// 	"id_user" => $id_user,
+		// 	'email' => $email,
+		// 	'token' => $token,
+		// 	'date_created' => time()
+		// ];
 
 		$this->db->insert('tb_pegawai', $data);
-		$this->db->insert('user_token', $user_token);
+		// $this->db->insert('user_token', $user_token);
 
-		$this->_sendEmail($token, 'verify');
+		// $this->_sendEmail($token, 'verify');
 
 
 		$this->session->set_flashdata('flash', 'Data karyawan berhasil ditambah!');
 		redirect('admin/pegawai');
 	}
 
-	private function _sendEmail($token, $type)
-	{
-		$config = [
-			'protocol'  => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_user' => 'joyiseod4mban@gmail.com',
-			'smtp_pass' => 'ksurnbftyxgafqku',
-			'smtp_port' => 465,
-			'mailtype'  => 'html',
-			'charset'   => 'utf-8',
-			'newline'   => "\r\n"
-		];
+	// private function _sendEmail($token, $type)
+	// {
+	// 	$config = [
+	// 		'protocol'  => 'smtp',
+	// 		'smtp_host' => 'ssl://smtp.googlemail.com',
+	// 		'smtp_user' => 'joyiseod4mban@gmail.com',
+	// 		'smtp_pass' => 'ksurnbftyxgafqku',
+	// 		'smtp_port' => 465,
+	// 		'mailtype'  => 'html',
+	// 		'charset'   => 'utf-8',
+	// 		'newline'   => "\r\n"
+	// 	];
 
-		$emailContent = "
-        <!DOCTYPE html>
-        <html lang='en'>
-        <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>Verify Your Account</title>
-        </head>
-        <body style='font-family: Arial, sans-serif;'>
-          <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-            <tr>
-              <td align='center'>
-                <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
-                  <tr>
-                    <td align='center'>
-                      <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
-                      <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
-                      <table border='0' cellspacing='0' cellpadding='0'>
-                        <tr>
-                          <td align='center'>
-                            <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-        ";
+	// 	$emailContent = "
+	//     <!DOCTYPE html>
+	//     <html lang='en'>
+	//     <head>
+	//     <meta charset='UTF-8'>
+	//     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	//     <title>Verify Your Account</title>
+	//     </head>
+	//     <body style='font-family: Arial, sans-serif;'>
+	//       <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+	//         <tr>
+	//           <td align='center'>
+	//             <table border='0' cellspacing='0' cellpadding='0' style='max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>
+	//               <tr>
+	//                 <td align='center'>
+	//                   <h2 style='color: #333; margin-bottom: 20px;'>Verify Your Account</h2>
+	//                   <p style='color: #666; margin-bottom: 20px;'>Click the button below to verify your account:</p>
+	//                   <table border='0' cellspacing='0' cellpadding='0'>
+	//                     <tr>
+	//                       <td align='center'>
+	//                         <a href='" . base_url() . "auth/verify?email=" . $this->input->post('email') . "&token=" . urlencode($token) . "' style='background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block;'>Activate Account</a>
+	//                       </td>
+	//                     </tr>
+	//                   </table>
+	//                 </td>
+	//               </tr>
+	//             </table>
+	//           </td>
+	//         </tr>
+	//       </table>
+	//     </body>
+	//     </html>
+	//     ";
 
-		$this->load->library('email', $config);
-		$this->email->initialize($config);
+	// 	$this->load->library('email', $config);
+	// 	$this->email->initialize($config);
 
-		$this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
-		$this->email->to($this->input->post('email'));
+	// 	$this->email->from('joyiseod4mban@gmail.com', 'Tim HATARA');
+	// 	$this->email->to($this->input->post('email'));
 
-		if ($type == 'verify') {
-			$this->email->subject('Account Verification');
-			// $this->email->message(
-			// 	'Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>'
-			// );
-			$this->email->message($emailContent);
-		}
+	// 	if ($type == 'verify') {
+	// 		$this->email->subject('Account Verification');
+	// 		// $this->email->message(
+	// 		// 	'Click this link to verify your account : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Activate</a>'
+	// 		// );
+	// 		$this->email->message($emailContent);
+	// 	}
 
 
-		if ($this->email->send()) {
-			return true;
-		} else {
-			echo $this->email->print_debugger();
-			die;
-		}
-	}
+	// 	if ($this->email->send()) {
+	// 		return true;
+	// 	} else {
+	// 		echo $this->email->print_debugger();
+	// 		die;
+	// 	}
+	// }
 
-	public function verify()
-	{
-		$email = $this->input->get('email');
-		$token = $this->input->get('token');
+	// public function verify()
+	// {
+	// 	$email = $this->input->get('email');
+	// 	$token = $this->input->get('token');
 
-		$user = $this->Auth_model->getUserByEmail($email);
+	// 	$user = $this->Auth_model->getUserByEmail($email);
 
-		if ($user) {
-			$user_token = $this->Auth_model->getTokenByUserId($token);
+	// 	if ($user) {
+	// 		$user_token = $this->Auth_model->getTokenByUserId($token);
 
-			if ($user_token) {
-				if (time() - $user_token->date_created < (60 * 60 * 24)) {
+	// 		if ($user_token) {
+	// 			if (time() - $user_token->date_created < (60 * 60 * 24)) {
 
-					$this->db->set('is_active', 1);
-					$this->db->where('email', $email);
-					$this->db->update('user');
+	// 				$this->db->set('is_active', 1);
+	// 				$this->db->where('email', $email);
+	// 				$this->db->update('user');
 
-					$this->db->delete('user_token', ['email' => $email]);
+	// 				$this->db->delete('user_token', ['email' => $email]);
 
-					$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
-          			</div>');
-					redirect('auth');
-				} else {
-					$this->db->delete('user', ['email' => $email]);
-					$this->db->delete('user_token', ['email' => $email]);
+	// 				$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $email . ' sudah aktif! Silahkan anda login.
+	//       			</div>');
+	// 				redirect('auth');
+	// 			} else {
+	// 				$this->db->delete('user', ['email' => $email]);
+	// 				$this->db->delete('user_token', ['email' => $email]);
 
-					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
-        			</div>');
-					redirect('auth');
-				}
-			} else {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
-        		</div>');
-				redirect('auth');
-			}
-		} else {
-			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
-        </div>');
-			redirect('auth');
-		}
-	}
+	// 				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Token sudah kadaluarsa.
+	//     			</div>');
+	// 				redirect('auth');
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di token.
+	//     		</div>');
+	// 			redirect('auth');
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Akun gagal diaktivasi! Terdapat kesalahan di email.
+	//     </div>');
+	// 		redirect('auth');
+	// 	}
+	// }
 
 	public function edit_pegawai()
 	{
@@ -398,6 +559,7 @@ class Admin extends CI_Controller
 
 		$id_pegawai = $this->input->post('id_pegawai', true);
 		$id_user = $this->input->post('id_user', true);
+		$role_id = $this->input->post('role_id', true);
 		$nama_pegawai = $this->input->post('nama_pegawai', true);
 		$jekel = $this->input->post('jekel', true);
 		$pendidikan = $this->input->post('pendidikan', true);
@@ -406,6 +568,10 @@ class Admin extends CI_Controller
 		// $ktp = $this->input->post('ktp', true);
 		$agama = $this->input->post('agama', true);
 		$jabatan = $this->input->post('jabatan', true);
+		$devisi = $this->db->from("jabatan")->where('id_jabatan', $jabatan)->join("department", "jabatan.devisi = department.id_department")->get()->row_array()['id_department'];
+		// ;
+		// var_dump($devisi);
+		// exit;
 		$nohp = $this->input->post('nohp', true);
 		$alamat = $this->input->post('alamat', true);
 		$tgl_msk = $this->input->post('tgl_msk', true);
@@ -457,6 +623,8 @@ class Admin extends CI_Controller
 			"status_kepegawaian" => $status_pegawai,
 			"agama" => $agama,
 			"jabatan" => $jabatan,
+			"devisi" => $devisi,
+			"role_id" => $role_id,
 			"no_hp" => $nohp,
 			"alamat" => $alamat,
 			"tanggal_masuk" => $tgl_msk
@@ -468,14 +636,18 @@ class Admin extends CI_Controller
 			"name" => $nama_pegawai,
 			"is_active" => $status_pegawai,
 			"image" => $gambar_user,
+			"role_id" => $role_id,
 		];
 		$this->db->where('id', $id_user);
 		$this->db->update('user', $data1);
 		$this->session->set_flashdata('flash', 'Berhasil diperbarui');
 		redirect('admin/pegawai');
 	}
+
 	public function hapus_pegawai($id, $id_user)
 	{
+		// var_dump([$id, $id_user]);
+		// exit;
 		$this->db->where('id_pegawai', $id);
 		$this->db->delete('tb_pegawai');
 		$this->db->where('id', $id_user);
@@ -565,10 +737,51 @@ class Admin extends CI_Controller
 		redirect('admin/tambah-lembur');
 	}
 
+	public function data_pegawai()
+	{
+		$data['title'] = 'Data Izin Pegawai';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzinDataPegawai();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/data_pegawai/index', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function data_leader()
+	{
+		$data['title'] = 'Data Izin Leader';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
+		$data['absensi'] = $this->Admin_model->getIzinDataLeader();
+		foreach ($data['absensi'] as $key => $value) {
+			$data['absensi'][$key]['pegawai'] = $this->Admin_model->getPegawaiById($value['id_pegawai']);
+		}
+
+
+		// $this->checkData($data['absensi'][$key]['pegawai'][0]);
+		// return;
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/data_leader/leader', $data);
+		$this->load->view('backend/template/footer');
+	}
 
 	public function tampil_konfirmasi()
 	{
-		$data['title'] = 'Tampil Konfirmasi';
+		$data['title'] = 'Data Izin Supervisor';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		// $data['konfirmasi'] = $this->Admin_model->getAllKonfirmasiByDate();
@@ -942,10 +1155,22 @@ class Admin extends CI_Controller
 		redirect('admin/tampil-konfirmasi');
 	}
 
+	public function konfirmasi_absen_izin_cuti($id)
+	{
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data = [
+			"status" => 6,
+		];
+		$this->db->where('id_presents', $id);
+		$this->db->update('tb_presents', $data);
+		$this->session->set_flashdata('flash', 'Data Lembur Berhasil Dikonfirmasi');
+		redirect('admin/tampil-konfirmasi');
+	}
+
 	//data absen
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Input Absensi';
+		$data['title'] = 'Rekap Absen';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
@@ -1085,7 +1310,7 @@ class Admin extends CI_Controller
 
 	public function lembur_bulanan()
 	{
-		$data['title'] = 'Lembur Bulanan';
+		$data['title'] = 'Data Absen Bulanan';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
@@ -1196,37 +1421,52 @@ class Admin extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$valueTotalIzin = 0;
 					$sakit = 0;
 					$izin = 0;
+					$cuti = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
 							if (strcmp($value['jenis'], "Sakit") == 0) {
 								$sakit += 1;
-							} else {
+								$valueTotalIzin += 1;
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
 								$izin += 1;
+								$valueTotalIzin += 1;
+							} else {
+								$cuti += 1;
 							}
-							$valueTotalIzin += 1;
 						}
+					}
+
+					$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// check id pegawainya ada gak $pegawai
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+						$pengurangan = 0;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => $pengurangan,
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1243,32 +1483,45 @@ class Admin extends CI_Controller
 								$sakit = 0;
 								$valueTotalIzin = 0;
 								$izin = 0;
+								$cuti = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
 										if (strcmp($value['jenis'], "Sakit") == 0) {
 											$sakit += 1;
-										} else {
+											$valueTotalIzin += 1;
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
 											$izin += 1;
+											$valueTotalIzin += 1;
+										} else {
+											$cuti += 1;
 										}
-										$valueTotalIzin += 1;
 									}
+								}
+
+								$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+								// check id pegawainya ada gak $pegawai
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+									$pengurangan = 0;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => $pengurangan,
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1405,7 +1658,7 @@ class Admin extends CI_Controller
 				}
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-				$jabatan = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
@@ -1424,7 +1677,6 @@ class Admin extends CI_Controller
 				$onCheck = true;
 			}
 		}
-
 		$data['gaji'] = [];
 
 		// $this->checkData($data['recap']);
@@ -1446,37 +1698,59 @@ class Admin extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$jabatan = $jabatan_loop[$pegawai];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
+					$valueTotalSakit = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
+							$date1 = date_create($value['tanggal_awal']);
+							$date2 = date_create($value['tanggal_akhir']);
+							$diff = date_diff($date2, $date1);
+							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += 1;
+								$sakit += $hasil_tanggal;
+								$valueTotalSakit += $hasil_tanggal;
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
+								$izin += $hasil_tanggal;
+								$valueTotalIzin += $hasil_tanggal;
 							} else {
-								$izin += 1;
+								$cuti += $hasil_tanggal;
 							}
-							$valueTotalIzin += 1;
 						}
+					}
+					// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// check id pegawainya ada gak $pegawai
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+					} else {
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => $pengurangan,
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -1492,33 +1766,50 @@ class Admin extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
+								$valueTotalSakit = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
+										$date1 = date_create($value['tanggal_awal']);
+										$date2 = date_create($value['tanggal_akhir']);
+										$diff = date_diff($date2, $date1);
+										$hasil_tanggal = $diff->format("%a") + 1;
 										if (strcmp($value['jenis'], "Sakit") == 0) {
-											$sakit += 1;
+											$sakit += $hasil_tanggal;
+											$valueTotalSakit += $hasil_tanggal;
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
+											$izin += $hasil_tanggal;
+											$valueTotalIzin += $hasil_tanggal;
 										} else {
-											$izin += 1;
+											$cuti += $hasil_tanggal;
 										}
-										$valueTotalIzin += 1;
 									}
+								}
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+								} else {
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => $pengurangan,
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -1530,7 +1821,7 @@ class Admin extends CI_Controller
 			}
 		}
 		// $this->checkData($data['gaji'][$date]);
-		// // 
+		// 
 		foreach ($data['gaji'] as $key => $value) {
 			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
 			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {
@@ -1605,7 +1896,10 @@ class Admin extends CI_Controller
 			'bonus' => $this->input->post('bonus'),
 			'jam_lembur' => $this->input->post('jam_lembur'),
 			'lembur' => $this->input->post('lembur'),
+			'total_iuran_sos' => $this->input->post('total_iuran_sos'), //tambahan
+			'total_iuran_kes' => $this->input->post('total_iuran_kes'), //tambahan
 			'izin' => $this->input->post('izin'),
+			'cuti' => $this->input->post('cuti'),
 			'hadir' => $this->input->post('hadir'),
 			'tidak_hadir' => $this->input->post('tidak_hadir'),
 			'pengurangan' => $this->input->post('pengurangan'),
@@ -1753,7 +2047,8 @@ class Admin extends CI_Controller
 	public function izinStatusAcc($id)
 	{
 		$data = array(
-			"acc" => "1"
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
@@ -1762,13 +2057,101 @@ class Admin extends CI_Controller
 
 	public function izinStatusDenied($id)
 	{
+
 		$data = array(
-			"acc" => "0"
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
 		);
 		$this->db->where('id', $id);
 		$this->db->update('izin', $data);
 		redirect('admin/tampil-konfirmasi');
 	}
+
+	public function izinStatusDelete($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi');
+	}
+
+	public function izinStatusAccPegawai($id)
+	{
+		$data = array(
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeniedPegawai($id)
+	{
+
+		$data = array(
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusDeletePegawai($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-pegawai');
+	}
+
+	public function izinStatusAccLeader($id)
+	{
+		$data = array(
+			"acc" => "1",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
+	}
+
+	public function izinStatusDeniedLeader($id)
+	{
+
+		$data = array(
+			"acc" => "7",
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
+	}
+
+	public function izinStatusDeleteLeader($id)
+	{
+		$keteranganTolak = $this->input->get('keterangan', true);
+		$data = array(
+			"acc" => "2",
+			"penolakan" => $keteranganTolak,
+			"acc_by" => $this->session->userdata('name'),
+		);
+		$this->db->where('id', $id);
+		$this->db->update('izin', $data);
+		redirect('admin/tampil-konfirmasi-leader');
+	}
+
 
 	public function edit_gaji()
 	{
@@ -1908,5 +2291,224 @@ class Admin extends CI_Controller
 		// $this->checkData($data['gaji']);
 
 		$this->load->view('backend/admin/laporan/cetak', $data);
+	}
+
+	//BPJS Kesehatan
+	public function bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['bpjs_kes'] = $this->Admin_model->getBpjs_kes();
+		$this->db->select('*');
+		$this->db->from('tb_pegawai');
+		$query = $this->db->get();
+		$id_pegawai = $query->result_array();
+		$data['pegawai_list'] = $id_pegawai;
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/bpjs/kesehatan', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function input_bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$salary = $this->input->post('salary', true);
+		$no_kartu = $this->input->post('no_kartu', true);
+		// $kelas = $this->input->post('kelas', true);
+		$total_salary = $salary;
+		$total_salary_iuran = +$salary;
+		$iuran_4 = $salary * 0.04;
+		$iuran_1 = $salary * 0.01;
+		$total_iuran_kes = $iuran_4 + $iuran_1;
+
+		// Memeriksa apakah data sudah ada di dalam database
+		$cek_data = $this->Admin_model->getBpjs_kes();
+		if ($cek_data) {
+			$id_pegawai_array = array_column($cek_data, 'id_pegawai');
+			if (in_array($id_pegawai, $id_pegawai_array)) {
+				$this->session->set_flashdata('flash', 'Data BPJS Kesehatan telah tersedia');
+				redirect('admin/bpjs_kes');
+				return;
+			}
+		}
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"nama_pegawai" => $nama_pegawai,
+			"salary" => $salary,
+			"no_kartu" => $no_kartu,
+			// "kelas" => $kelas,
+			"total_salary" => $total_salary,
+			"total_salary_iuran" => $total_salary_iuran,
+			"iuran_4" => $iuran_4,
+			"iuran_1" => $iuran_1,
+			"total_iuran_kes" => $total_iuran_kes,
+		];
+
+		$this->db->insert('bpjs_kes', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/bpjs_kes');
+	}
+
+	public function delete_bpjs_kes($id)
+	{
+		$this->db->where('id_bpjs_kes', $id);
+		$this->db->delete('bpjs_kes');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/bpjs_kes');
+	}
+
+	public function edit_bpjs_kes()
+	{
+		$data['title'] = 'BPJS Kesehatan';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_bpjs_kes = $this->input->post('id_bpjs_kes', true);
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$salary = $this->input->post('salary', true);
+		$no_kartu = $this->input->post('no_kartu', true);
+		// $kelas = $this->input->post('kelas', true);
+		$total_salary = $salary;
+		$total_salary_iuran = +$salary;
+		$iuran_4 = $salary * 0.04;
+		$iuran_1 = $salary * 0.01;
+		$total_iuran_kes = $iuran_4 + $iuran_1;
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"nama_pegawai" => $nama_pegawai,
+			"salary" => $salary,
+			"no_kartu" => $no_kartu,
+			// "kelas" => $kelas,
+			"total_salary" => $total_salary,
+			"total_salary_iuran" => $total_salary_iuran,
+			"iuran_4" => $iuran_4,
+			"iuran_1" => $iuran_1,
+			"total_iuran_kes" => $total_iuran_kes,
+		];
+		$this->db->where('id_bpjs_kes', $id_bpjs_kes);
+		$this->db->update('bpjs_kes', $data);
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/bpjs_kes');
+	}
+
+	//BPJS Jamsostek
+	public function bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['bpjs_jamsos'] = $this->Admin_model->getBpjs_jamsos();
+		$this->db->select('*');
+		$this->db->from('tb_pegawai');
+		$query = $this->db->get();
+		$id_pegawai = $query->result_array();
+		$data['pegawai_list'] = $id_pegawai;
+
+		$this->load->view('backend/template/header', $data);
+		$this->load->view('backend/template/topbar', $data);
+		$this->load->view('backend/template/sidebar', $data);
+		$this->load->view('backend/admin/bpjs/jamsostek', $data);
+		$this->load->view('backend/template/footer');
+	}
+
+	public function ajax_pegawai()
+	{
+		$this->db->select('tb_pegawai.id_pegawai, tb_pegawai.nama_pegawai, jabatan.jabatan, jabatan.salary');
+		$this->db->from('tb_pegawai');
+		$this->db->where("tb_pegawai.id_pegawai", $this->input->post("id_pegawai"));
+		$this->db->join('jabatan', 'tb_pegawai.jabatan = jabatan.id_jabatan');
+		$query = $this->db->get();
+		$id_pegawai = $query->row();
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode($id_pegawai));
+	}
+
+	public function input_bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$jabatan = $this->input->post('jabatan', true);
+		$salary = $this->input->post('salary', true);
+		$iuran_jjk = $salary * 0.0024;
+		$iuran_jkm = $salary * 0.0030;
+		$iuran_jht_tk = $salary * 0.02;
+		$iuran_jht = $salary * 0.037;
+		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"nama_pegawai" => $nama_pegawai,
+			"jabatan" => $jabatan,
+			"salary" => $salary,
+			"iuran_jjk" => $iuran_jjk,
+			"iuran_jkm" => $iuran_jkm,
+			"iuran_jht_tk" => $iuran_jht_tk,
+			"iuran_jht" => $iuran_jht,
+			"total_iuran_sos" => $total_iuran_sos,
+		];
+
+		$this->db->insert('bpjs_jamsos', $data);
+		$this->session->set_flashdata('flash', 'Berhasil ditambah');
+		redirect('admin/bpjs_jamsos');
+	}
+
+	public function delete_bpjs_jamsos($id)
+	{
+		$this->db->where('id_bpjs_sos', $id);
+		$this->db->delete('bpjs_jamsos');
+		$this->session->set_flashdata('flash', ' Berhasil Dihapus');
+		redirect('admin/bpjs_jamsos');
+	}
+
+	public function edit_bpjs_jamsos()
+	{
+		$data['title'] = 'BPJS Jamsostek';
+		// mengambil data user berdasarkan email yang ada di session
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		$id_bpjs_sos = $this->input->post('id_bpjs_sos', true);
+		$id_pegawai = $this->input->post('id_pegawai', true);
+		$nama_pegawai = $this->input->post('nama_pegawai', true);
+		$jabatan = $this->input->post('jabatan', true);
+		$salary = $this->input->post('salary', true);
+		$iuran_jjk = $salary * 0.0024;
+		$iuran_jkm = $salary * 0.0030;
+		$iuran_jht_tk = $salary * 0.02;
+		$iuran_jht = $salary * 0.037;
+		$total_iuran_sos = $iuran_jjk + $iuran_jkm + $iuran_jht_tk + $iuran_jht;
+
+		$data = [
+			"id_pegawai" => $id_pegawai,
+			"nama_pegawai" => $nama_pegawai,
+			"jabatan" => $jabatan,
+			"salary" => $salary,
+			"iuran_jjk" => $iuran_jjk,
+			"iuran_jkm" => $iuran_jkm,
+			"iuran_jht_tk" => $iuran_jht_tk,
+			"iuran_jht" => $iuran_jht,
+			"total_iuran_sos" => $total_iuran_sos,
+		];
+
+		$this->db->where('id_bpjs_sos', $id_bpjs_sos);
+		$this->db->update('bpjs_jamsos', $data);
+		$this->session->set_flashdata('flash', 'Berhasil Diperbarui');
+		redirect('admin/bpjs_jamsos');
 	}
 }

@@ -45,16 +45,24 @@ class Auth extends CI_Controller
         if (password_verify($password, $user['password'])) {
           $data = [
             'email' => $user['email'],
-            'role_id' => $user['role_id']
+            'role_id' => $user['role_id'],
+            'id' => $user['id'],
+            'name' => $user['name']
           ];
           $this->session->set_userdata($data);
           if ($user['role_id'] == 1) {
             $this->session->set_userdata('masuk_admin', true);
             redirect('admin');
-          } else {
+          } elseif ($user['role_id'] == 2) {
+            $this->session->set_userdata('masuk_supervisor', true);
+            redirect('supervisor');
+          } elseif ($user['role_id'] == 3) {
+            $this->session->set_userdata('masuk_leader', true);
+            redirect('leader');
+          } elseif ($user['role_id'] == 4) {
             $this->session->set_userdata('masuk_user', true);
             redirect('pegawai');
-          }
+          } 
         } else {
           $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
 				Password salah!

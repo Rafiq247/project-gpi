@@ -59,11 +59,18 @@
     // $route['Login'] = 'auth/index';
     // dashboard
     $route['admin/dashboard'] = 'admin/index';
+    $route['admin/edit-profil/(:any)'] = 'admin/edit_profil/$1';
+    $route['admin/edit-password/(:any)'] = 'admin/edit_password/$1';
     // jabatan
     $route['admin/jabatan'] = 'admin/jabatan';
     $route['admin/tambah-jabatan'] = 'admin/tambah_jabatan';
     $route['admin/hapus-jabatan/(:any)'] = 'admin/hapus_jabatan/$1';
     $route['admin/edit-jabatan'] = 'admin/edit_jabatan';
+    // department
+    $route['admin/department'] = 'admin/department';
+    $route['admin/tambah-department'] = 'admin/tambah_department';
+    $route['admin/hapus-department/(:any)'] = 'admin/hapus_department/$1';
+    $route['admin/edit-department'] = 'admin/edit_department';
     // Pegawai
     $route['admin/pegawai'] = 'admin/pegawai';
     $route['admin/tambah-pegawai'] = 'admin/tambah_pegawai';
@@ -81,8 +88,10 @@
     $route['admin/konfirmasi-absen-lembur/(:any)/(:any)'] = 'admin/konfirmasi_absen_lembur/$1/$2';
     $route['admin/konfirmasi-absen-izinsakit/(:any)'] = 'admin/konfirmasi_absen_izin_sakit/$1';
     $route['admin/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'admin/konfirmasi_absen_izin_tdkmsk/$1';
+    $route['admin/konfirmasi-absen-izincuti/(:any)'] = 'admin/konfirmasi_absen_izin_cuti/$1';
     $route['admin/acc-izin/(:any)'] = 'admin/izinStatusAcc/$1';
     $route['admin/hapus-izin/(:any)'] = 'admin/izinStatusDenied/$1';
+    $route['admin/tolak-izin/(:any)'] = 'admin/izinStatusDelete/$1';
 
 
     $route['admin/tampil-input'] = 'admin/tampilInput';
@@ -119,16 +128,113 @@
     $route['admin/cetak-payrol-pegawai/(:any)'] = 'admin/cetak_payrol_pegawai/$1';
     $route['admin/hapus-payrol/(:any)'] = 'admin/hapusPayrol/$1';
 
-
+    //Data Karyawan
+    $route['admin/absen-pegawai'] = 'admin/data_pegawai';
+    $route['admin/tampil-konfirmasi-pegawai'] = 'admin/data_pegawai';
+    $route['admin/acc-izin-pegawai/(:any)'] = 'admin/izinStatusAccPegawai/$1';
+    $route['admin/hapus-izin-pegawai/(:any)'] = 'admin/izinStatusDeniedPegawai/$1';
+    $route['admin/tolak-izin-pegawai/(:any)'] = 'admin/izinStatusDeletePegawai/$1';
+    $route['admin/absen-pegawai'] = 'admin/data_leader';
+    $route['admin/tampil-konfirmasi-leader'] = 'admin/data_leader';
+    $route['admin/acc-izin-leader/(:any)'] = 'admin/izinStatusAccLeader/$1';
+    $route['admin/hapus-izin-leader/(:any)'] = 'admin/izinStatusDeniedLeader/$1';
+    $route['admin/tolak-izin-leader/(:any)'] = 'admin/izinStatusDeleteLeader/$1';
 
     $route['admin/akumulasi-gaji'] = 'admin/akumulasi_gaji';
     $route['admin/simpan-gaji'] = 'admin/simpan_gaji';
     $route['admin/edit-gaji'] = 'admin/edit_gaji';
     $route['admin/hapus-gaji/(:any)'] = 'admin/hapus_gaji/$1';
+
+    // BPJS
+    $route['admin/bpjs-kesehatan'] = 'admin/bpjs_kes';
+    $route['admin/hapus-bpjs-kesehatan/(:any)'] = 'admin/delete_bpjs_kes/$1';
+    $route['admin/input-bpjs-kesehatan'] = 'admin/input_bpjs_kes';
+    $route['admin/edit-bpjs-kesehatan'] = 'admin/edit_bpjs_kes';
+
+    $route['admin/bpjs-jamsostek'] = 'admin/bpjs_jamsos';
+    $route['admin/hapus-bpjs-jamsostek/(:any)'] = 'admin/delete_bpjs_jamsos/$1';
+    $route['admin/input-bpjs-jamsostek'] = 'admin/input_bpjs_jamsos';
+    $route['admin/edit-bpjs-jamsostek'] = 'admin/edit_bpjs_jamsos';
     // $route['admin/cetak-absen-lembur/(:any)/(:any)'] = 'admin/cetak_absen_lembur/$1/$2';
 
     // $route['admin/detail-absen/(:any)'] = 'admin/detail_absen/$1';
 
+
+    // Route Supervisor
+    $route['supervisor/edit-profil/(:any)'] = 'supervisor/edit_profil/$1';
+    $route['supervisor/edit-password/(:any)'] = 'supervisor/edit_password/$1';
+    $route['supervisor/absen-harian'] = 'supervisor/absen_harian';
+    $route['supervisor/ambilabsen'] = 'supervisor/ambil_absen';
+    $route['supervisor/ambilabsen-pulang'] = 'supervisor/ambil_absen_pulang';
+    $route['supervisor/ambilabsen-lembur'] = 'supervisor/ambil_absen_lembur';
+    $route['supervisor/izin-supervisor'] = 'supervisor/cuti_pegawai';
+    $route['supervisor/konfirmasi-absen'] = 'supervisor/konfirmasi_absen';
+    $route['supervisor/absen-bulanan'] = 'supervisor/absen_bulanan';
+    $route['supervisor/detail-absen/(:any)'] = 'supervisor/detail_absen/$1';
+    $route['supervisor/laporan-tpp-bulanan'] = 'supervisor/laporan_tpp_bulanan';
+    $route['supervisor/detail-laporan-tpp/(:any)/(:any)/(:any)'] = 'supervisor/detail_laporan_tpp_bulanan/$1/$2/$3';
+    $route['supervisor/cetak-payrol-supervisor/(:any)/(:any)/(:any)'] = 'supervisor/cetak_payrol_pegawai/$1/$2/$3';
+    $route['supervisor/hapus-payrol/(:any)'] = 'supervisor/hapusPayrol/$1';
+    $route['supervisor/input-data-tpp'] = 'supervisor/inputPayrol';
+    $route['supervisor/simpan-gaji'] = 'supervisor/simpan_gaji';
+    $route['supervisor/akumulasi-gaji'] = 'supervisor/akumulasi_gaji';
+
+
+    // Supervisor Konfirmasi izin
+    $route['supervisor/tampil-konfirmasi'] = 'supervisor/konfirmasi_leader';
+    $route['supervisor/absen-pegawai'] = 'supervisor/data_pegawai';
+    // $route['supervisor/konfirmasi-absen/(:any)'] = 'supervisor/konfirmasi_absen/$1';
+    // $route['supervisor/konfirmasi-absen-pulang/(:any)'] = 'supervisor/konfirmasi_absen_pulang/$1';
+    // $route['supervisor/konfirmasi-absen-lembur/(:any)/(:any)'] = 'supervisor/konfirmasi_absen_lembur/$1/$2';
+    // $route['supervisor/konfirmasi-absen-izinsakit/(:any)'] = 'supervisor/konfirmasi_absen_izin_sakit/$1';
+    // $route['supervisor/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'supervisor/konfirmasi_absen_izin_tdkmsk/$1';
+    $route['supervisor/acc-izin/(:any)'] = 'supervisor/izinStatusAcc/$1';
+    $route['supervisor/hapus-izin/(:any)'] = 'supervisor/izinStatusDenied/$1';
+    $route['supervisor/tolak-izin/(:any)'] = 'supervisor/izinStatusDelete/$1';
+    $route['supervisor/tampil-konfirmasi-pegawai'] = 'supervisor/data_pegawai';
+    $route['supervisor/acc-izin-pegawai/(:any)'] = 'supervisor/izinStatusAccPegawai/$1';
+    $route['supervisor/hapus-izin-pegawai/(:any)'] = 'supervisor/izinStatusDeniedPegawai/$1';
+    $route['supervisor/tolak-izin-pegawai/(:any)'] = 'supervisor/izinStatusDeletePegawai/$1';
+
+    // Data Pegawai
+    $route['supervisor/pegawai'] = 'supervisor/pegawai';
+    // $route['supervisor/tambah-pegawai'] = 'supervisor/tambah_pegawai';
+    // $route['supervisor/edit-pegawai'] = 'supervisor/edit_pegawai';
+    // $route['supervisor/hapus-pegawai/(:any)/(:any)'] = 'supervisor/hapus_pegawai/$1/$2';
+    $route['supervisor/detail-pegawai/(:any)'] = 'supervisor/detail_pegawai/$1';
+
+    // Route Leader
+    $route['leader/edit-profil/(:any)'] = 'leader/edit_profil/$1';
+    $route['leader/edit-password/(:any)'] = 'leader/edit_password/$1';
+    $route['leader/absen-harian'] = 'leader/absen_harian';
+    $route['leader/ambilabsen'] = 'leader/ambil_absen';
+    $route['leader/ambilabsen-pulang'] = 'leader/ambil_absen_pulang';
+    $route['leader/ambilabsen-lembur'] = 'leader/ambil_absen_lembur';
+    $route['leader/izin-leader'] = 'leader/cuti_pegawai';
+    $route['leader/konfirmasi-absen'] = 'leader/konfirmasi_absen';
+    $route['leader/absen-bulanan'] = 'leader/absen_bulanan';
+    $route['leader/detail-absen/(:any)'] = 'leader/detail_absen/$1';
+    $route['leader/laporan-tpp-bulanan'] = 'leader/laporan_tpp_bulanan';
+    $route['leader/detail-laporan-tpp/(:any)/(:any)/(:any)'] = 'leader/detail_laporan_tpp_bulanan/$1/$2/$3';
+    $route['leader/cetak-payrol-leader/(:any)/(:any)/(:any)'] = 'leader/cetak_payrol_pegawai/$1/$2/$3';
+
+    // Leader Konfirmasi izin
+    $route['leader/tampil-konfirmasi'] = 'leader/konfirmasi_pegawai';
+    // $route['leader/konfirmasi-absen/(:any)'] = 'leader/konfirmasi_absen/$1';
+    // $route['leader/konfirmasi-absen-pulang/(:any)'] = 'leader/konfirmasi_absen_pulang/$1';
+    // $route['leader/konfirmasi-absen-lembur/(:any)/(:any)'] = 'leader/konfirmasi_absen_lembur/$1/$2';
+    // $route['leader/konfirmasi-absen-izinsakit/(:any)'] = 'leader/konfirmasi_absen_izin_sakit/$1';
+    // $route['leader/konfirmasi-absen-izin-tidak-masuk/(:any)'] = 'leader/konfirmasi_absen_izin_tdkmsk/$1';
+    $route['leader/acc-izin/(:any)'] = 'leader/izinStatusAcc/$1';
+    $route['leader/hapus-izin/(:any)'] = 'leader/izinStatusDenied/$1';
+    $route['leader/tolak-izin/(:any)'] = 'leader/izinStatusDelete/$1';
+
+    // Data Pegawai
+    $route['leader/pegawai'] = 'leader/pegawai';
+    // $route['leader/tambah-pegawai'] = 'leader/tambah_pegawai';
+    // $route['leader/edit-pegawai'] = 'leader/edit_pegawai';
+    // $route['leader/hapus-pegawai/(:any)/(:any)'] = 'leader/hapus_pegawai/$1/$2';
+    $route['leader/detail-pegawai/(:any)'] = 'leader/detail_pegawai/$1';
 
     // Pegwai
     $route['pegawai/edit-profil/(:any)'] = 'pegawai/edit_profil/$1';

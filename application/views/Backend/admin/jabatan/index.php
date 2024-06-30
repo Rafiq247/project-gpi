@@ -40,9 +40,10 @@
  			<table id="example" class="table table-striped table-bordered">
  				<thead>
  					<tr>
- 						<th>#</th>
+ 						<th>NO.</th>
  						<th>JABATAN</th>
- 						<th>GAJI/HARI</th>
+ 						<th>DEPARTEMEN</th>
+ 						<th>GAJI/BULAN</th>
  						<th>NETTO INSENTIF</th>
  						<th>LEMBUR/JAM</th>
  						<th>AKSI</th>
@@ -55,12 +56,22 @@
  						<tr>
  							<td><?= $no++ ?></td>
  							<td><?= $b['jabatan']; ?></td>
+ 							<td><?= $b['devisi']; ?></td>
  							<td><?= rupiah($b['salary']); ?></td>
- 							<td><?= $b['bonus']; ?></td>
+ 							<td><?= rupiah($b['bonus']); ?></td>
  							<td><?= $b['overtime']; ?></td>
  							<td>
- 								<a class="btn btn-theme ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">Edit</a>
- 								<a class="btn btn-danger ml-1" href="<?= base_url('admin/hapus-jabatan') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');">Hapus</a>
+ 								<a class="ml-1" href="" data-toggle="modal" data-target=".bd-example-modal<?= $b['id_jabatan']; ?>">
+ 									<button type=" button" class="btn btn-primary">
+ 										<i class="fa fa-pencil-square-o"></i>
+ 									</button>
+ 								</a>
+
+ 								<a href="<?= base_url('admin/hapus-jabatan') ?>/<?= $b['id_jabatan']; ?>" onclick="return confirm('Yakin Ingin Menghapus?');" class="ml-1 mr-1">
+ 									<button type="button" class="btn btn-danger">
+ 										<i class="fa fa-trash"></i>
+ 									</button>
+ 								</a>
 
  							</td>
  						</tr>
@@ -82,24 +93,46 @@
  						<form class="form-horizontal" action="<?php echo base_url() . 'admin/tambah-jabatan' ?>" method="post" enctype="multipart/form-data">
 
  							<div class="modal-body">
-
  								<div class="form-group">
-
  									<label class="col-sm-12">Jabatan</label>
  									<div class="col-sm-12">
- 										<input type="text" name="jabatan" class="form-control " required>
+ 										<input type="text" name="jabatan" class="form-control" required>
  									</div>
  								</div>
- 								<div class="form-group">
 
- 									<label class="col-sm-12">Gaji/hari</label>
+ 								<div class="form-group">
+ 									<label class="col-sm-12">Deparetemen</label>
+ 									<div class="col-sm-12">
+ 										<select class="form-control" id="devisi" name="devisi" required>
+ 											<option value="">- Pilih -</option>
+ 											<?php foreach ($department as $d) : ?>
+ 												<option value="<?= $d['id_department'] ?>" <?= ($d['id_department'] == $department) ? 'selected' : '' ?>><?= $d['devisi']; ?></option>
+ 											<?php endforeach; ?>
+ 										</select>
+ 									</div>
+ 								</div>
+
+ 								<div class="form-group">
+ 									<label class="col-sm-12">Peran Pegawai</label>
+ 									<div class="col-sm-12">
+ 										<select class="form-control" id="role_group" name="role_group" required>
+ 											<option value="">- Pilih -</option>
+ 											<option value="1">Admin</option>
+ 											<option value="2">Supervisor</option>
+ 											<option value="3">Leader</option>
+ 											<option value="4">Pegawai</option>
+ 										</select>
+ 									</div>
+ 								</div>
+
+ 								<div class="form-group">
+ 									<label class="col-sm-12">Gaji/bulan</label>
  									<div class="col-sm-12">
  										<input type="text" name="salary" class="form-control" required>
  									</div>
  								</div>
 
  								<div class="form-group">
-
  									<label class="col-sm-12">Netto Insentif</label>
  									<div class="col-sm-12">
  										<input type="text" name="bonus" class="form-control" required>
@@ -107,7 +140,7 @@
  								</div>
  							</div>
  							<div class="modal-footer">
- 								<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+ 								<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
  								<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
 
  							</div>
@@ -125,15 +158,17 @@
  		<?php foreach ($jabatan as $j) :
 				$id_jabatan = $j['id_jabatan'];
 				$jabatan = $j['jabatan'];
+				$devisi = $j['devisi'];
 				$salary = $j['salary'];
 				$overtime = $j['overtime'];
 				$bonus = $j['bonus'];
+				$role_group = $j['role_group']
 			?>
  			<div class="modal fade bd-example-modal<?php echo $id_jabatan; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
  				<div class="modal-dialog modal-lg">
  					<div class="modal-content">
  						<div class="modal-header text-center">
- 							<h5 class="modal-title text-secondary"><strong> Edit Jabatan</strong></h5>
+ 							<h5 class="modal-title text-secondary"><strong> Edit Gaji</strong></h5>
  							<button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
  						</div>
  						<div class="modal-body text-justify">
@@ -142,32 +177,67 @@
  								<div class="modal-body">
 
  									<div class="form-group">
-
  										<label class="col-sm-12">Jabatan</label>
  										<div class="col-sm-12">
  											<input type="text" name="jabatan" value="<?= $jabatan ?>" class="form-control " required>
  										</div>
  									</div>
- 									<div class="form-group">
 
- 										<label class="col-sm-12">Gaji/hari</label>
+ 									<div class="form-group">
+ 										<label class="col-sm-12">Departemen</label>
+ 										<div class="col-sm-12">
+ 											<select class="form-control" id="devisi" name="devisi">
+ 												<?php foreach ($department as $d) : ?>
+ 													<option value="<?= $d['id_department'] ?>" <?= ($d['id_department'] == $j['id_department']) ? 'selected' : '' ?>><?= $d['devisi']; ?></option>
+ 												<?php endforeach; ?>
+ 											</select>
+ 										</div>
+ 									</div>
+
+ 									<div class="form-group">
+ 										<label class="col-sm-12">Gaji/bulan</label>
  										<div class="col-sm-12">
  											<input type="text" name="salary" value="<?= $salary ?>" class="form-control" required>
  										</div>
  									</div>
 
  									<div class="form-group">
-
  										<label class="col-sm-12">Netto Insentif</label>
  										<div class="col-sm-12">
  											<input type="text" name="bonus" value="<?= $bonus ?>" class="form-control" required>
  										</div>
  									</div>
 
+ 									<div class="form-group">
+ 										<div class="col-sm-12">
+ 											<label class="col-sm-12">Peran Pegawai</label>
+ 											<select class="form-control" id="role_group" name="role_group">
+ 												<?php
+													$roles = [
+														['id' => 1, 'name' => 'Admin'],
+														['id' => 2, 'name' => 'Supervisor'],
+														['id' => 3, 'name' => 'Leader'],
+														['id' => 4, 'name' => 'Pegawai'],
+													];
+													$currentRole = null;
+													foreach ($roles as $role) {
+														if ($role['id'] == $role_group) {
+															$currentRole = $role;
+															break;
+														}
+													}
+													?>
+ 												<option value="<?= $currentRole['id'] ?>"><?= $currentRole['name'] ?></option>
+ 												<?php foreach ($roles as $role) : ?>
+ 													<option value="<?= $role['id'] ?>"><?= $role['name'] ?></option>
+ 												<?php endforeach; ?>
+ 											</select>
+ 										</div>
+ 									</div>
 
  								</div>
  								<div class="modal-footer">
- 									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+ 									<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
  									<button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
  								</div>
  							</form>

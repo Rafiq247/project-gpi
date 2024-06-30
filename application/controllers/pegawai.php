@@ -12,6 +12,7 @@ class pegawai extends CI_Controller
 		};
 		$this->load->library('form_validation');
 		$this->load->model('User_model');
+		$this->load->model('supervisor_model');
 		$this->load->model('Admin_model');
 	}
 
@@ -34,7 +35,7 @@ class pegawai extends CI_Controller
 
 	public function visi_misi()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Visi dan Misi';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -47,7 +48,7 @@ class pegawai extends CI_Controller
 
 	public function sejarah()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Sejarah Perusahaan';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -58,6 +59,7 @@ class pegawai extends CI_Controller
 		$this->load->view('backend/user/dashboard/sejarah', $data);
 		$this->load->view('backend/f_template/footer');
 	}
+
 	public function edit_profil($id)
 	{
 		$data['title'] = 'Edit Profil';
@@ -70,7 +72,7 @@ class pegawai extends CI_Controller
 		$upload_image = $_FILES['userfilefoto']['name'];
 		if ($upload_image) {
 			$config['upload_path']          = './gambar/pegawai/';
-			$config['allowed_types']        = 'gif|jpg|png|PNG';
+			$config['allowed_types']        = 'gif|jpg|jpeg|png|PNG';
 			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
@@ -120,6 +122,7 @@ class pegawai extends CI_Controller
 		}
 		// 
 	}
+
 	public function edit_password($id)
 	{
 		$data['title'] = 'Edit Password';
@@ -149,8 +152,14 @@ class pegawai extends CI_Controller
 
 	public function absen_harian()
 	{
-		$data['title'] = 'Dashboard';
+		$data['title'] = 'Ambil Izin';
+		$months = (int)$this->User_model->getPegawaiTotalMonth($this->session->userdata('id')); // hitung berapa lama pegawai dari tanggal masuk ke sekarang
+		$used_cuti = (int)$this->User_model->getUsedCuti($this->session->userdata('id'));
 		// mengambil data user berdasarkan email yang ada di session
+
+		$data['pegawai_month'] = $months;
+		$data['used_cuti'] = $used_cuti;
+		// var_dump($months);exit;
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['pegawai'] = $this->User_model->PegawaiById($data['user']['id']);
 		$data['absensi'] = $this->User_model->izinById($data['pegawai']['id_pegawai']);
@@ -163,12 +172,14 @@ class pegawai extends CI_Controller
 			$data['absen']['keterangan'] = "";
 			$data['absen']['id_pegawai'] = "peg";
 		}
+
 		$this->load->view('backend/f_template/header', $data);
 		$this->load->view('backend/f_template/topbar', $data);
 		$this->load->view('backend/f_template/sidebar', $data);
 		$this->load->view('backend/user/absensekarang/index', $data);
 		$this->load->view('backend/f_template/footer');
 	}
+
 	public function konfirmasi_absen()
 	{
 		$data['title'] = 'Konfirmasi Absen';
@@ -191,7 +202,7 @@ class pegawai extends CI_Controller
 	}
 	public function absen_bulanan()
 	{
-		$data['title'] = 'Absen Bulanan';
+		$data['title'] = 'Absen Bulanan Anda';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$thn = $this->input->post('th');
@@ -202,8 +213,6 @@ class pegawai extends CI_Controller
 		$id_peg = $data['pegawai']['id_pegawai'];
 		// $data['petugas'] = $this->db->get_where('user')->result_array();
 		// 
-
-
 
 		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
 		$data['list_bln'] = $this->Admin_model->getBlnAbsensi();
@@ -497,15 +506,14 @@ class pegawai extends CI_Controller
 		$data['title'] = 'Dashboard';
 		// mengambil data user berdasarkan email yang ada di session
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
 		$id_peg = $this->input->post('id_peg', true);
 		$jenis_izin = $this->input->post('jenisizin', true);
-		$jenis_izin = $jenis_izin == 4 ? 'Sakit' : 'Izin';
+		$jenis_izin = ($jenis_izin == 4) ? 'Sakit' : (($jenis_izin == 5) ? 'Izin' :  'Cuti');
 		$keterangan = $this->input->post('penjelasan', true);
 
 
-		$tglAwal = $this->input->post('tgl_awal', true);
-		$tglAkhir = $this->input->post('tgl_akhir', true);
+		$tglAwal = date('Y/m/d', strtotime($this->input->post('tgl_awal', true)));
+		$tglAkhir = date('Y/m/d', strtotime($this->input->post('tgl_akhir', true)));
 
 		$upload_image = $_FILES['suratsakit']['name'];
 		if ($upload_image) {
@@ -526,6 +534,7 @@ class pegawai extends CI_Controller
 			"id_pegawai" => $id_peg,
 			"jenis" => $jenis_izin,
 			"keterangan" => $keterangan,
+			"role_id" => $this->session->userdata('role_id'),
 			"tanggal_awal" => $tglAwal,
 			"tanggal_akhir" => $tglAkhir,
 			"acc" => false,
@@ -539,12 +548,8 @@ class pegawai extends CI_Controller
 
 	public function laporan_tpp_bulanan()
 	{
-		$data['title'] = 'Cetak Payrol Bulanan';
-
+		$data['title'] = 'Gaji Anda';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-		$userData = $this->db->get_where('tb_pegawai', ['id_user' => $data['user']['id']])->row_array();
-
 		$data['fingerprint'] = $this->Admin_model->getFingerPrintAbsensi();
 		$data['pegawai'] = $this->Admin_model->getPegawai();
 		$data['list_th'] = $this->Admin_model->getTahunAbsensi();
@@ -563,7 +568,7 @@ class pegawai extends CI_Controller
 			$thnpilihan2 = $thn . '-' . $bln . '-' . '31' . ' 23:59:59';
 		}
 		if (empty($this->input->post('th'))) {
-			$data['absensi'] = $this->Admin_model->getAbsensi();
+			$data['absensi'] = $this->supervisor_model->getAbsensi();
 		} else {
 			$data['absensi'] = $this->Admin_model->getAbsensibyDate($thnpilihan1, $thnpilihan2);
 		}
@@ -602,14 +607,19 @@ class pegawai extends CI_Controller
 
 				$hadirLembur  = "Lembur";
 				if (strcmp("Sat", $dayNow) == 0 || strcmp("Sun", $dayNow) == 0) {
-					$overtime = $hours;
+					if (strcmp("Sun", $dayNow) == 0) {
+						$overtime = $hours + 3; // Menambahkan waktu 3 jam di hari Minggu
+					} else {
+						$overtime = $hours; // Jumlah jam kerja pada Sabtu
+					}
 				} else {
 					$overtime = $hours - 8;
 					$hadirLembur  = ($hours - 8 > 0) ? " Lembur" : "";
 				}
 
 				$dataEmployee = $this->Admin_model->getPegawaibyFingerId($value['id_fingerprint'])[0];
-				$jabatan = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+				$jabatan_loop[$dataEmployee['id_pegawai']] = $this->Admin_model->getJabatanById($dataEmployee['jabatan']);
+
 				$dataRecap = [
 					"hadir" =>  "hadir" . $hadirLembur,
 					"name" => $dataEmployee['nama_pegawai'],
@@ -628,7 +638,6 @@ class pegawai extends CI_Controller
 				$onCheck = true;
 			}
 		}
-
 		$data['gaji'] = [];
 
 		// $this->checkData($data['recap']);
@@ -650,37 +659,59 @@ class pegawai extends CI_Controller
 			$dataPenggajian = [];
 			foreach ($data['gaji'] as $keyPegawai => $pegawaiValue) {
 				$pegawai = $recapValue['id_pegawai'];
+				$jabatan = $jabatan_loop[$pegawai];
+				$hasilJamSos = $this->Admin_model->getBpjs_jamsos_total($pegawai);
+				$hasilKes = $this->Admin_model->getBpjs_kes_total($pegawai);
 				if (count($data['gaji'][$date]) == 0) {
 					$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 					$sakit = 0;
 					$valueTotalIzin = 0;
 					$izin = 0;
+					$cuti = 0;
+					$valueTotalSakit = 0;
 					foreach ($totalIzin as $value) {
 						if ($value['acc'] == 1) {
+							$date1 = date_create($value['tanggal_awal']);
+							$date2 = date_create($value['tanggal_akhir']);
+							$diff = date_diff($date2, $date1);
+							$hasil_tanggal = $diff->format("%a") + 1;
 							if (strcmp($value['jenis'], "Sakit") == 0) {
-								$sakit += 1;
+								$sakit += $hasil_tanggal;
+								$valueTotalSakit += $hasil_tanggal;
+							} elseif (strcmp($value['jenis'], "Izin") == 0) {
+								$izin += $hasil_tanggal;
+								$valueTotalIzin += $hasil_tanggal;
 							} else {
-								$izin += 1;
+								$cuti += $hasil_tanggal;
 							}
-							$valueTotalIzin += 1;
 						}
+					}
+					// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+					// check id pegawainya ada gak $pegawai
+					if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+					} else {
+						$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 					}
 					$dataPenggajian = [
 						"id_pegawai" => $recapValue['id_pegawai'],
 						"name" => $recapValue['name'],
 						"jabatan" => $jabatan['jabatan'],
 						"gaji_pokok" => $jabatan['salary'],
+						"total_iuran_sos" => $hasilJamSos,
+						"total_iuran_kes" => $hasilKes,
 						"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 						"Tanggal" => $date,
 						"jam_lembur" => $recapValue['overtime'],
 						"value_pengurangan" => ($jabatan['salary'] / 30),
-						"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+						"pengurangan" => $pengurangan,
 						"gaji_total" => "",
 						"hadir" => 1,
 						"tidak_hadir" => 0,
 						"bonus" => $jabatan['bonus'],
 						"sakit" => $sakit,
 						"izin" => $izin,
+						"cuti" => $cuti,
 						"gaji_bersih" => "-",
 						"keterangan" => $valueTotalIzin,
 					];
@@ -696,33 +727,52 @@ class pegawai extends CI_Controller
 								$totalIzin = $this->Admin_model->totalIzinById($pegawai);
 								$sakit = 0;
 								$izin = 0;
+								$cuti = 0;
 								$valueTotalIzin = 0;
+								$valueTotalSakit = 0;
 								foreach ($totalIzin as $value) {
 									if ($value['acc'] == 1) {
+										$date1 = date_create($value['tanggal_awal']);
+										$date2 = date_create($value['tanggal_akhir']);
+										$diff = date_diff($date2, $date1);
+										$hasil_tanggal = $diff->format("%a") + 1;
 										if (strcmp($value['jenis'], "Sakit") == 0) {
-											$sakit += 1;
+											$sakit += $hasil_tanggal;
+											$valueTotalSakit += $hasil_tanggal;
+										} elseif (strcmp($value['jenis'], "Izin") == 0) {
+											$izin += $hasil_tanggal;
+											$valueTotalIzin += $hasil_tanggal;
 										} else {
-											$izin += 1;
+											$cuti += $hasil_tanggal;
 										}
-										$valueTotalIzin += 1;
 									}
+								}
+								// $pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
+								// check id pegawainya ada gak $pegawai
+								if (empty($this->db->from("bpjs_kes")->where("id_pegawai", $pegawai)->get()->row_array())) {
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalSakit + ($jabatan['salary'] / 30) * $valueTotalIzin;
+								} else {
+									$pengurangan = ($jabatan['salary'] / 30) * $valueTotalIzin;
 								}
 								$dataPenggajian = [
 									"id_pegawai" => $recapValue['id_pegawai'],
 									"name" => $recapValue['name'],
 									"jabatan" => $jabatan['jabatan'],
 									"gaji_pokok" => $jabatan['salary'],
+									"total_iuran_sos" => $hasilJamSos,
+									"total_iuran_kes" => $hasilKes,
 									"lembur" => $recapValue['overtime'] * $jabatan['overtime'],
 									"Tanggal" => $date,
 									"jam_lembur" => $recapValue['overtime'],
 									"value_pengurangan" => ($jabatan['salary'] / 30),
-									"pengurangan" => ($jabatan['salary'] / 30) * $valueTotalIzin,
+									"pengurangan" => $pengurangan,
 									"gaji_total" => "",
 									"hadir" => 1,
 									"tidak_hadir" => 0,
 									"bonus" => $jabatan['bonus'],
 									"sakit" => $sakit,
 									"izin" => $izin,
+									"cuti" => $cuti,
 									"keterangan" => $valueTotalIzin,
 									"gaji_bersih" => "-",
 								];
@@ -734,24 +784,18 @@ class pegawai extends CI_Controller
 			}
 		}
 		// $this->checkData($data['gaji'][$date]);
-		// // 
-		$dataFinal = [];
-
-		$counter = 0;
+		// 
 		foreach ($data['gaji'] as $key => $value) {
 			$workingDaysCount = $this->getWorkingDaysInMonth(intval(substr($key, 3, 5)), intval(substr($key, 1, 1)));
 			foreach ($data['gaji'][$key] as $dateKey => $valueDate) {
 				$data['gaji'][$key][$dateKey]['tidak_hadir'] = $workingDaysCount - $valueDate['hadir'] >= 0 ? $workingDaysCount - $valueDate['hadir'] : 0;
 				$data['gaji'][$key][$dateKey]['pengurangan'] += ($data['gaji'][$key][$dateKey]['tidak_hadir'] * $valueDate['value_pengurangan']);
-				if (strcmp($userData['id_pegawai'], $data['gaji'][$key][$dateKey]['id_pegawai'])) {
-					array_push($dataFinal, $data['gaji'][$key][$dateKey]);
-					$dataFinal[$counter]['date'] = $key;
-					$counter += 1;
-				}
 			}
 		}
-		// $this->checkData($dataFinal);
-		$data['dataFinal'] = $dataFinal;
+
+		// return;
+		// $this->checkData($data['gaji']);
+
 		// return;
 
 		$data['blnnya'] = $bln;
